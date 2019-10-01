@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const beautifyUnique = require("mongoose-beautiful-unique-validation");
-const config = require("./../config");
+import mongoose from "mongoose";
+import beautifyUnique from "mongoose-beautiful-unique-validation";
+import config from "./../config";
 
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);
@@ -10,4 +10,4 @@ mongoose.set("debug", true);
 
 mongoose.plugin(beautifyUnique);
 
-module.exports = mongoose.createConnection(config.mongodb.uri);
+module.exports = mongoose.connect(config.mongodb.uri).then(() => console.log("Connected to mongoDB..."));
