@@ -3,6 +3,7 @@ import express, { json, urlencoded } from "express";
 import { join } from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
+import dbConnection from "./db/mongoose";
 
 import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
