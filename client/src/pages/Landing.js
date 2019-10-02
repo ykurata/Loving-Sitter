@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Route, Link } from "react-router-dom";
 
 import Ping from "./Ping";
+import Picture from "./Picture";
 
 const landinPageStyle = theme => ({
   landingContainer: {
@@ -63,6 +64,21 @@ class LandingPage extends Component {
         {this.state.step >= 3 && (
           <Typography>All done! Now go make a pull request!</Typography>
         )}
+        {
+        <React.Fragment>
+            <Link to="/picture">Test picture upload</Link>
+            <Route
+              path="/picture"
+              render={props => {
+                return (
+                  <Picture
+                    {...props}
+                  />
+                );
+              }}
+            />
+          </React.Fragment>
+        }
       </div>
     );
   }
