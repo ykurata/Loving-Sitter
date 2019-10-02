@@ -3,7 +3,7 @@ import User from "./../models/User";
 var router = express.Router();
 
 
-router.get("/register", function(req, res, next) {
+router.get("/register", async function(req, res, next) {
 	const email = req.body.email;
 	const password = req.body.password;
 
