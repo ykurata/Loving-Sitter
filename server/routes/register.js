@@ -3,7 +3,7 @@ import User from "./../models/User";
 var router = express.Router();
 
 
-router.get("/register", async function(req, res, next) {
+router.post("/", async function(req, res, next) {
 	const email = req.body.email;
 	const password = req.body.password;
 
@@ -35,6 +35,8 @@ router.get("/register", async function(req, res, next) {
 	// setPassword() is a function defined in the userSchema
 	await user.setPassword(password);
 	await user.save();
+
+	res.status(200).json("message: Successfully registered!")
 
 });
 

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import crypto from "crypto";
+import dbConnection from "./../db/mongoose";
 
 const userSchema = mongoose.Schema(
   {
@@ -53,4 +54,4 @@ userSchema.methods.checkPassword = async function(password) {
   return hash === this.passwordHash;
 };
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = dbConnection.model("User", userSchema);
