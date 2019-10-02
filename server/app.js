@@ -3,10 +3,11 @@ import express, { json, urlencoded } from "express";
 import { join } from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import dbConnection from "./db/mongoose";
 
+import dbConnection from "./db/mongoose";
 import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
+import register from "./routes/register"
 
 var app = express();
 
@@ -18,6 +19,7 @@ app.use(express.static(join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
+app.use("/register", register);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
