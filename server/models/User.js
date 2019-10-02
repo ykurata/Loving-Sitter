@@ -1,4 +1,4 @@
-import mongoose from "mongoose/browser";
+import mongoose from "mongoose";
 import crypto from "crypto";
 import dbConnection from "./../db/mongoose";
 

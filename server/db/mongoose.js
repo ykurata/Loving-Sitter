@@ -1,4 +1,4 @@
-import mongoose from "mongoose/browser";
+import mongoose from "mongoose";
 import beautifyUnique from "mongoose-beautiful-unique-validation";
 import config from "./../config";
 
@@ -10,4 +10,6 @@ mongoose.set("debug", true);
 
 mongoose.plugin(beautifyUnique);
 
-module.exports = mongoose.connect(config.mongodb.uri).then(() => console.log("Connected to mongoDB..."));
+module.exports = mongoose.createConnection(config.mongodb.uri)
+						 .then(() => console.log("Connected to mongoDB..."))
+						 .catch(err => console.log(err));
