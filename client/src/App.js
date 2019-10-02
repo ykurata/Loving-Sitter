@@ -6,12 +6,14 @@ import { theme } from "./themes/theme";
 import LandingPage from "./pages/Landing";
 
 import "./App.css";
+import LoginPage from "./pages/Login";
 
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
-        <Route path="/" component={LandingPage} />
+        <Route exact path="/" component={LandingPage} />
+        <Route path="/login" component={LoginPage} />
       </BrowserRouter>
     </MuiThemeProvider>
   );

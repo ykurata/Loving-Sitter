@@ -1,4 +1,95 @@
-.App {
+.App{
+  height: 100vh;
+  display: flex;
+  color: white;
+}
+
+.App_aside{
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+    /* background-color: pink; */
+}
+
+.App_form{
+  width:  50%;
+  overflow: auto;
+  background-image: url('./images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png');
+  background-size: cover;
+  background-position: center;
+}
+
+
+
+
+h1{
+  font-size: 350%;
+  color: black;
+}
+
+
+
+
+.info-box{
+  width: 70%;
+  height: 70%;
+  border: 1px solid grey;
+}
+
+.center{
+  text-align: center;
+}
+
+.mb-0{
+  margin-bottom: 0;
+}
+
+.mt-0{
+  margin-top: 0;
+}
+
+.pb-0{
+  padding-bottom: 0 !important  ;
+}
+
+.pt-0{
+  padding-top: 0 !important;
+}
+
+
+.MuiFormControl-marginNormal{
+  margin-top: 0 !important;  
+}
+
+
+
+
+.container{
+  height: 100vh;
+  width: 100%;
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.infoBox{
+  height: 75%;
+  width: 30%;
+  /* border: 1px solid grey; */
+
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+/* .App_form img{
+  height: 100%;
+  width: 100%;  
+} */
+
+/* .App {
   text-align: center;
 }
 
@@ -30,4 +121,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */
