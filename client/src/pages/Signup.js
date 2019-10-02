@@ -8,11 +8,13 @@ import Button from '@material-ui/core/Button';
 const initalState = {
   email: "",
   emailError: "",
+  name: "",
+  nameError: "",
   password: "",
   passwordError: "",
 }
 
-class LoginPage extends Component {
+class SignUpPage extends Component {
   state = initalState;
 
 
@@ -20,14 +22,23 @@ class LoginPage extends Component {
     this.setState({ email: event.target.value });
   };
 
+  handleNameChange = event => {
+    if(event.target.value.match("^[a-zA-Z]*$")!=null) {
+        this.setState({name: event.target.value});
+      }
+
+  };
+
   handlePasswordChange = event => {
     this.setState({ password: event.target.value });
   };
 
 
+
+
+
   validate = () => {
     let emailError = "";
-    // let passwordError = ""; 
 
     if (!this.state.email.includes('@')) {
       emailError = 'Invalid email';
@@ -62,7 +73,7 @@ class LoginPage extends Component {
                 <form>
                   <Grid container spacing={3}>
                     <Grid item xs={12}>
-                      <h1 className="center">LogIn</h1>
+                      <h1 className="center">Sign Up</h1>
                     </Grid>
                     <Grid item xs={12} className="pb-0 pt-0">
                       <p className="mb-0 mt-0">EMAIL ADDRESS</p>
@@ -81,6 +92,33 @@ class LoginPage extends Component {
                       />
                       <div style={{ color: "red" }}>{this.state.emailError}</div>
                     </Grid>
+                    
+
+                    <Grid item xs={12} className="pb-0 pt-0">
+                      <p className="mb-0 mt-0">NAME</p>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        name="name"
+                        id="outlined-name"
+                        placeholder="Name"
+                        margin="normal"
+                        variant="outlined"
+                        type="text"
+                        value={this.state.name}
+                        onChange={this.handleNameChange}
+                        fullWidth
+                      />
+                      <div style={{ color: "red" }}>{this.state.nameError}</div>
+                    </Grid>
+
+
+
+
+
+
+
+
                     <Grid item xs={12} className="pb-0 pt-0">
                       <p className="mb-0 mt-0">PASSWORD</p>
                     </Grid>
@@ -103,13 +141,13 @@ class LoginPage extends Component {
                         variant="contained"
                         onClick={this.handleSubmit}
                         fullWidth >
-                        Login
+                        Sign Up
                       </Button>
                     </Grid>
                     <Grid item xs={2}></Grid>
 
                     <Grid item xs={12} className="center">
-                      <p>Don't have an Account? <a href="../signup">Register</a></p>
+                      <p>Already have an Account? <a href="../login">Login</a></p>
                     </Grid>
                   </Grid>
                 </form>
@@ -123,4 +161,4 @@ class LoginPage extends Component {
   }
 }
 
-export default LoginPage;
+export default SignUpPage;
