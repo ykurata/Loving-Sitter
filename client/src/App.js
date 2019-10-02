@@ -5,7 +5,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { theme } from "./themes/theme";
 import LandingPage from "./pages/Landing";
 
-import "./App.css";
+import "./App.scss";
 import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/Signup";
 
