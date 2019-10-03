@@ -4,6 +4,14 @@ import dbConnection from "./../db/mongoose";
 
 const userSchema = mongoose.Schema(
   {
+    firstName: {
+      type: String,
+      required: "First name is required"
+    },
+    lastName: {
+      type: String,
+      required: "Last name is required"
+    },
     email: {
       type: String,
       required: "Email is required",
