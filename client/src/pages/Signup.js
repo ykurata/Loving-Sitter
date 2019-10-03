@@ -33,19 +33,26 @@ class SignUpPage extends Component {
     this.setState({ password: event.target.value });
   };
 
-
-
-
-
   validate = () => {
     let emailError = "";
-
-    if (!this.state.email.includes('@')) {
+    let passwordError = "";
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var test = re.test(this.state.email);
+    if (!test === true) {
       emailError = 'Invalid email';
     }
 
     if (emailError) {
       this.setState({ emailError });
+      return false;
+    }
+
+    if(this.state.password.length < 6){
+      passwordError = 'Password is too short';
+    }
+
+    if (passwordError) {
+      this.setState({ passwordError });
       return false;
     }
 
@@ -134,6 +141,7 @@ class SignUpPage extends Component {
                         onChange={this.handlePasswordChange}
                         fullWidth
                       />
+                      <div style={{ color: "red" }}>{this.state.passwordError}</div>
                     </Grid>
                     <Grid item xs={2}></Grid>
                     <Grid item xs={8} className="center">
