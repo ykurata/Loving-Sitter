@@ -65,7 +65,7 @@ class LandingPage extends Component {
           <Typography>All done! Now go make a pull request!</Typography>
         )}
         {
-        <React.Fragment>
+        /*<React.Fragment>
             <Link to="/picture">Test picture upload</Link>
             <Route
               path="/picture"
@@ -77,7 +77,7 @@ class LandingPage extends Component {
                 );
               }}
             />
-          </React.Fragment>
+          </React.Fragment>*/
         }
       </div>
     );
