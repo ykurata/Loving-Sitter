@@ -8,6 +8,7 @@ import LandingPage from "./pages/Landing";
 import "./App.scss";
 import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/Signup";
+import ProfilePage from "./pages/Profile";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route exact path="/" component={LandingPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={SignUpPage} />
+        <Route path="/profile" component={ProfilePage} />
       </BrowserRouter>
     </MuiThemeProvider>
   );

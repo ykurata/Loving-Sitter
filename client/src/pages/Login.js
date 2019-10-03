@@ -27,9 +27,9 @@ class LoginPage extends Component {
 
   validate = () => {
     let emailError = "";
-    // let passwordError = ""; 
-
-    if (!this.state.email.includes('@')) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var test = re.test(this.state.email);
+    if (!test === true) {
       emailError = 'Invalid email';
     }
 
