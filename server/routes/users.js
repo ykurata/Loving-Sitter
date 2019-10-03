@@ -90,7 +90,7 @@ router.post("/login", async function(req, res, next) {
 
   jwt.sign(
     payload,
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET || "temp_secret_key",
     {
       expiresIn: 31556926
     },
