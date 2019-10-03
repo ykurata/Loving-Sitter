@@ -1,23 +1,17 @@
 import express from "express";
 import User from "../models/User";
-import jwt from "jsonwebtoken";
 import validator from "validator";
 var router = express.Router();
 
 router.post("/register", async function(req, res, next) {
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
+  const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
 
   // first validate credentials
-  if (!firstName) {
-    res.status(400).json({ error: "First name is required" });
-    next();
-  }
-  if (!lastName) {
-    res.status(400).json({ error: "Last name is required" });
+  if (!name) {
+    res.status(400).json({ error: "Name is required" });
     next();
   }
   if (!email) {
@@ -54,8 +48,7 @@ router.post("/register", async function(req, res, next) {
     next();
   } else {
     user = new User({
-      firstName,
-      lastName,
+      name,
       email
     });
   }
@@ -64,7 +57,19 @@ router.post("/register", async function(req, res, next) {
   await user.setPassword(password);
   await user.save();
 
-  res.status(200).json("message: Successfully registered!");
+  // now login the user
+  const payload = {
+    id: user._id,
+    name: user.name
+  };
+
+  const token = user.generateToken(payload);
+
+  if (token) {
+    res.json({ token: "Bearer " + token });
+  } else {
+    res.status(401).json({ error: "Login failed" });
+  }
 });
 
 //login router
@@ -85,21 +90,16 @@ router.post("/login", async function(req, res, next) {
 
   const payload = {
     id: user._id,
-    name: user.firstName
+    name: user.name
   };
 
-  jwt.sign(
-    payload,
-    process.env.JWT_SECRET || "temp_secret_key",
-    {
-      expiresIn: 31556926
-    },
-    (err, token) => {
-      res.json({
-        token: "Bearer " + token
-      });
-    }
-  );
+  const token = user.generateToken(payload);
+
+  if (token) {
+    res.json({ token: "Bearer " + token });
+  } else {
+    res.status(401).json({ error: "Login failed" });
+  }
 });
 
 module.exports = router;
