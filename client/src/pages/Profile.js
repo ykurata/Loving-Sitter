@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-
-import { Typography } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
-import { Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
