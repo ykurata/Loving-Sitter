@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import '../App.scss';
-import Button from '@material-ui/core/Button';
-
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import "../App.scss";
+import Button from "@material-ui/core/Button";
 
 const initalState = {
   email: "",
@@ -11,22 +10,20 @@ const initalState = {
   name: "",
   nameError: "",
   password: "",
-  passwordError: "",
-}
+  passwordError: ""
+};
 
 class SignUpPage extends Component {
   state = initalState;
-
 
   handleEmailChange = event => {
     this.setState({ email: event.target.value });
   };
 
   handleNameChange = event => {
-    if(event.target.value.match("^[a-zA-Z]*$")!=null) {
-        this.setState({name: event.target.value});
-      }
-
+    if (event.target.value.match("^[a-zA-Z]*$") != null) {
+      this.setState({ name: event.target.value });
+    }
   };
 
   handlePasswordChange = event => {
@@ -39,7 +36,7 @@ class SignUpPage extends Component {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     var test = re.test(this.state.email);
     if (!test === true) {
-      emailError = 'Invalid email';
+      emailError = "Invalid email";
     }
 
     if (emailError) {
@@ -47,8 +44,8 @@ class SignUpPage extends Component {
       return false;
     }
 
-    if(this.state.password.length < 6){
-      passwordError = 'Password is too short';
+    if (this.state.password.length < 6) {
+      passwordError = "Password is too short";
     }
 
     if (passwordError) {
@@ -58,7 +55,6 @@ class SignUpPage extends Component {
 
     return true;
   };
-
 
   handleSubmit = event => {
     event.preventDefault();
@@ -97,9 +93,10 @@ class SignUpPage extends Component {
                         onChange={this.handleEmailChange}
                         fullWidth
                       />
-                      <div style={{ color: "red" }}>{this.state.emailError}</div>
+                      <div style={{ color: "red" }}>
+                        {this.state.emailError}
+                      </div>
                     </Grid>
-                    
 
                     <Grid item xs={12} className="pb-0 pt-0">
                       <p className="mb-0 mt-0">NAME</p>
@@ -119,13 +116,6 @@ class SignUpPage extends Component {
                       <div style={{ color: "red" }}>{this.state.nameError}</div>
                     </Grid>
 
-
-
-
-
-
-
-
                     <Grid item xs={12} className="pb-0 pt-0">
                       <p className="mb-0 mt-0">PASSWORD</p>
                     </Grid>
@@ -141,21 +131,26 @@ class SignUpPage extends Component {
                         onChange={this.handlePasswordChange}
                         fullWidth
                       />
-                      <div style={{ color: "red" }}>{this.state.passwordError}</div>
+                      <div style={{ color: "red" }}>
+                        {this.state.passwordError}
+                      </div>
                     </Grid>
                     <Grid item xs={2}></Grid>
                     <Grid item xs={8} className="center">
                       <Button
                         variant="contained"
                         onClick={this.handleSubmit}
-                        fullWidth >
+                        fullWidth
+                      >
                         Sign Up
                       </Button>
                     </Grid>
                     <Grid item xs={2}></Grid>
 
                     <Grid item xs={12} className="center">
-                      <p>Already have an Account? <a href="../login">Login</a></p>
+                      <p>
+                        Already have an Account? <a href="../login">Login</a>
+                      </p>
                     </Grid>
                   </Grid>
                 </form>

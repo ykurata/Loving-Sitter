@@ -1,20 +1,18 @@
 import React, { Component } from "react";
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import '../App.scss';
-import Button from '@material-ui/core/Button';
-
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import "../App.scss";
+import Button from "@material-ui/core/Button";
 
 const initalState = {
   email: "",
   emailError: "",
   password: "",
-  passwordError: "",
-}
+  passwordError: ""
+};
 
 class LoginPage extends Component {
   state = initalState;
-
 
   handleEmailChange = event => {
     this.setState({ email: event.target.value });
@@ -24,13 +22,12 @@ class LoginPage extends Component {
     this.setState({ password: event.target.value });
   };
 
-
   validate = () => {
     let emailError = "";
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     var test = re.test(this.state.email);
     if (!test === true) {
-      emailError = 'Invalid email';
+      emailError = "Invalid email";
     }
 
     if (emailError) {
@@ -40,7 +37,6 @@ class LoginPage extends Component {
 
     return true;
   };
-
 
   handleSubmit = event => {
     event.preventDefault();
@@ -79,7 +75,9 @@ class LoginPage extends Component {
                         onChange={this.handleEmailChange}
                         fullWidth
                       />
-                      <div style={{ color: "red" }}>{this.state.emailError}</div>
+                      <div style={{ color: "red" }}>
+                        {this.state.emailError}
+                      </div>
                     </Grid>
                     <Grid item xs={12} className="pb-0 pt-0">
                       <p className="mb-0 mt-0">PASSWORD</p>
@@ -102,14 +100,17 @@ class LoginPage extends Component {
                       <Button
                         variant="contained"
                         onClick={this.handleSubmit}
-                        fullWidth >
+                        fullWidth
+                      >
                         Login
                       </Button>
                     </Grid>
                     <Grid item xs={2}></Grid>
 
                     <Grid item xs={12} className="center">
-                      <p>Don't have an Account? <a href="../signup">Register</a></p>
+                      <p>
+                        Don't have an Account? <a href="../signup">Register</a>
+                      </p>
                     </Grid>
                   </Grid>
                 </form>
