@@ -4,7 +4,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import { theme } from "./themes/theme";
 import LandingPage from "./pages/Landing";
-import PicturePage from "./pages/Picture";
+import PhotoPage from "./pages/Photo";
 
 import "./App.scss";
 import LoginPage from "./pages/Login";
@@ -19,6 +19,7 @@ function App() {
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={SignUpPage} />
         <Route path="/profile" component={ProfilePage} />
+        <Route path="/photo" component={PhotoPage} />
       </BrowserRouter>
     </MuiThemeProvider>
   );
