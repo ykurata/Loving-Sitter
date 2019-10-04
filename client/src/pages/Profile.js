@@ -56,7 +56,7 @@ class ProfilePage extends Component {
   handleSubmit = event => {
     event.preventDefault();
     console.log(this.state);
-    axios.post('localhost:3001/profile', this.state)
+    axios.post('https://localhost:3001/profile', this.state)
     .then(function (response) {
       console.log(response);
     })
@@ -73,7 +73,7 @@ class ProfilePage extends Component {
             <MenuItem component={Link} to="/">
               Edit Profile
             </MenuItem>
-            <MenuItem component={Link} to="/profile-photo">
+            <MenuItem component={Link} to="/photo">
               Profile Photo
             </MenuItem>
             <MenuItem component={Link} to="/payment">
