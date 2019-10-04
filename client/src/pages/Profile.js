@@ -63,7 +63,7 @@ class ProfilePage extends Component {
             <MenuItem component={Link} to="/">
               Edit Profile
             </MenuItem>
-            <MenuItem component={Link} to="/profile-photo">
+            <MenuItem component={Link} to="/photo">
               Profile Photo
             </MenuItem>
             <MenuItem component={Link} to="/payment">
