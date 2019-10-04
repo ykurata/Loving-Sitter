@@ -56,7 +56,7 @@ exports.profile_detail = function (req, res, next) {
 };
 
 // Handle profile create on POST.
-exports.profile_create_post = [
+module.exports.profile_create_post = [
 
     // Validate fields.
     body('firstName', 'First Name must not be empty.').isLength({ min: 1 }).trim(),
