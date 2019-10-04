@@ -9,11 +9,14 @@ import Select from "@material-ui/core/Select";
 
 import Button from "@material-ui/core/Button";
 
+import axios from "axios";
+
 const initalState = {
   firstName: "",
   lastName: "",
   gender: "",
   dob: "",
+  email: "",
   phone: "",
   address: "",
   description: ""
@@ -53,6 +56,13 @@ class ProfilePage extends Component {
   handleSubmit = event => {
     event.preventDefault();
     console.log(this.state);
+    axios.post('localhost:3001/profile', this.state)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
   };
 
   render() {
@@ -207,7 +217,7 @@ class ProfilePage extends Component {
                   <Grid item xs={2}></Grid>
 
                   <Grid item xs={12}>
-                    <Button type="submit" variant="contained" /*onClick={this.handleSubmit}*/>
+                    <Button type="submit" variant="contained" onClick={this.handleSubmit}>
                       Submit
                     </Button>
                   </Grid>
