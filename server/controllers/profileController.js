@@ -57,18 +57,6 @@ exports.profile_detail = function (req, res, next) {
 
 // Handle profile create on POST.
 exports.profile_create_post = [
-    // Convert the lastName to an array.
-    /*(req, res, next) => {
-        if (!(req.body.lastName instanceof Array)) {
-            if (typeof req.body.lastName === 'undefined')
-                req.body.lastName = [];
-            else
-                req.body.lastName = new Array(req.body.lastName);
-        }
-        next();
-    },*/
-
-    console.log("Testing"),
 
     // Validate fields.
     body('firstName', 'First Name must not be empty.').isLength({ min: 1 }).trim(),
@@ -218,17 +206,6 @@ exports.profile_update_get = function (req, res, next) {
 // Handle profile update on POST.
 exports.profile_update_post = [
 
-    // Convert the lastName to an array.
-    (req, res, next) => {
-        if (!(req.body.lastName instanceof Array)) {
-            if (typeof req.body.lastName === 'undefined')
-                req.body.lastName = [];
-            else
-                req.body.lastName = new Array(req.body.lastName);
-        }
-        next();
-    },
-
     // Validate fields.
     body('firstName', 'First Name must not be empty.').isLength({ min: 1 }).trim(),
     body('lastName', 'Last Name must not be empty.').isLength({ min: 1 }).trim(),
@@ -258,11 +235,14 @@ exports.profile_update_post = [
         // Create a Profile object with escaped/trimmed data and old id.
         var profile = new Profile(
             {
-                title: req.body.title,
                 firstName: req.body.firstName,
-                summary: req.body.summary,
-                isbn: req.body.isbn,
-                lastName: (typeof req.body.lastName === 'undefined') ? [] : req.body.lastName,
+                lastName: req.body.lastName,
+                gender: req.body.gender,
+                birthDate: req.body.birthDate,
+                email: req.body.email,
+                phone: req.body.phone,
+                location: req.body.location,
+                description: req.body.description,
                 _id: req.params.id // This is required, or a new ID will be assigned!
             });
 
@@ -289,10 +269,10 @@ exports.profile_update_post = [
         }
         else {
             // Data from form is valid. Update the record.
-            Profile.findByIdAndUpdate(req.params.id, profile, {}, function (err, theprofile) {
+            Profile.findByIdAndUpdate(req.params.id, profile, {}, function (err, profile) {
                 if (err) { return next(err); }
                 // Successful - redirect to profile detail page.
-                res.redirect(theprofile.url);
+                res.redirect(profile.url);
             });
         }
     }

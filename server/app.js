@@ -6,7 +6,9 @@ import logger from "morgan";
 import dbConnection from "./db/mongoose";
 
 import indexRouter from "./routes/index";
-import profileRouter from "./routes/ping";
+import profileRouter from "./routes/profile";
+
+import cors from ("cors");
 
 var app = express();
 
@@ -14,6 +16,7 @@ app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors());
 app.use(express.static(join(__dirname, "public")));
 
 app.use("/", indexRouter);
