@@ -207,8 +207,8 @@ class ProfilePage extends Component {
                   <Grid item xs={2}></Grid>
 
                   <Grid item xs={12}>
-                    <Button variant="contained" onClick={this.handleSubmit}>
-                      Default
+                    <Button type="submit" variant="contained" /*onClick={this.handleSubmit}*/>
+                      Submit
                     </Button>
                   </Grid>
                 </Grid>

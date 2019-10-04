@@ -18,6 +18,7 @@ exports.profile_list = function (req, res, next) {
 
 };
 
+// TESTING
 // Display detail page for a specific profile.
 exports.profile_detail = function (req, res, next) {
 
@@ -57,7 +58,7 @@ exports.profile_detail = function (req, res, next) {
 // Handle profile create on POST.
 exports.profile_create_post = [
     // Convert the lastName to an array.
-    (req, res, next) => {
+    /*(req, res, next) => {
         if (!(req.body.lastName instanceof Array)) {
             if (typeof req.body.lastName === 'undefined')
                 req.body.lastName = [];
@@ -65,7 +66,9 @@ exports.profile_create_post = [
                 req.body.lastName = new Array(req.body.lastName);
         }
         next();
-    },
+    },*/
+
+    console.log("Testing"),
 
     // Validate fields.
     body('firstName', 'First Name must not be empty.').isLength({ min: 1 }).trim(),
@@ -110,6 +113,8 @@ exports.profile_create_post = [
             // There are errors. Render form again with sanitized values/error messages.
 
             // CREATE ERROR RESPONSE
+            console.log("You have errors in your form");
+            res.render('profile_form', { title: 'Create Profile', firstName:results.firstName, lastName:results.lastName, gender:results.gender, birthDate:results.birthDate, phone:results.phone, location:results.location, description:results.description});
         }
         else {
             // Data from form is valid. Save profile.

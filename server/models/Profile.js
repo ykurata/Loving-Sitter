@@ -15,7 +15,8 @@ const ProfileSchema = new Schema({
     required: true
   },
   photo: {
-    { data: Buffer, contentType: String }
+    data: Buffer, 
+    contentType: String
   },
   gender: {
     type: String,

@@ -1,7 +1,9 @@
 var express = require("express");
 var router = express.Router();
 
-router.post("/", function(req, res, next) {
+var profile_controller = require('../controllers/profileController');
+
+/*router.post("/", function(req, res, next) {
   const teamName = req.body.teamName;
 
   if (
@@ -14,6 +16,8 @@ router.post("/", function(req, res, next) {
     res.status(400).send({
       response: `${teamName} is not part of the team. Modify your .env`
     });
-});
+});*/
+
+router.post('/profile', profile_controller.profile_create_post);
 
 module.exports = router;
