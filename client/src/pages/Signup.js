@@ -69,7 +69,6 @@ class SignUpPage extends Component {
   handleSubmit = event => {
     event.preventDefault();
     this.validate();
-    
 
     const { name, email, password, confirmPassword } = this.state;
 

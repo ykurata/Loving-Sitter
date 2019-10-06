@@ -6,7 +6,6 @@ import Grid from "@material-ui/core/Grid";
 import "../App.scss";
 import Button from "@material-ui/core/Button";
 
-// import { LoginUser } from '../helpers/login';
 
 const initalState = {
   email: "",
