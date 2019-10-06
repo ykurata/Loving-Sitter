@@ -58,9 +58,9 @@ class LoginPage extends Component {
     .then(res => {
         const { token } = res.data;
         const decoded = jwt_decode(token);
-        // localStorage.setItem('jwtToken', res.data);
-        console.log(res.data);
-        console.log(decoded);
+        localStorage.setItem('jwtToken', res.data);
+        localStorage.setItem('name', decoded.name);
+        this.props.history.push('/');
     })
     .catch(err => {
         this.setState({

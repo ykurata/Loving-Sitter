@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
+
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import "../App.scss";
@@ -6,13 +9,14 @@ import Button from "@material-ui/core/Button";
 import { ThemeProvider } from "@material-ui/styles";
 
 const initalState = {
-  email: "",
-  emailError: "",
   name: "",
   nameError: "",
+  email: "",
+  emailError: "",
   password: "",
   confirmPassword: "",
-  passwordError: ""
+  passwordError: "",
+  errors: ""
 };
 
 class SignUpPage extends Component {
@@ -65,30 +69,29 @@ class SignUpPage extends Component {
   handleSubmit = event => {
     event.preventDefault();
     this.validate();
-    const newUser = {
-      name: this.state.name,
-      email: this.state.email,
-      password: this.state.password,
-      confirmPassword: this.state.confirmPassword
-    }
     
-    fetch('/users/register', {
-      method: 'POST',
-      body: JSON.stringify(newUser),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+
+    const { name, email, password, confirmPassword } = this.state;
+
+    const newUser = {
+      name: name,
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword
+    }
+
+    axios.post('/users/register', newUser)
     .then(res => {
-      if (res.status === 200) {
-        console.log("You logged in");
-      } else {
-        const error = new Error(res.error);
-        throw error;
-      }
+        const { token } = res.data;
+        const decoded = jwt_decode(token);
+        localStorage.setItem('jwtToken', res.data);
+        localStorage.setItem('name', decoded.name);
+        this.props.history.push('/');
     })
     .catch(err => {
-      console.error(err);
+        this.setState({
+          errors: err.response.data.error  // Error messages from backend
+        });
     });
   };
 
@@ -105,6 +108,32 @@ class SignUpPage extends Component {
                     <Grid item xs={12}>
                       <h1 className="center">Sign Up</h1>
                     </Grid>
+                    {
+                      (this.state.errors)
+                      ? <Grid item xs={12} className="pb-0 pt-0" style={{ color: "red" }}>
+                          <p className="mb-0 mt-0">{this.state.errors}</p>
+                        </Grid>
+                      : <Grid></Grid>
+                    }
+
+                    <Grid item xs={12} className="pb-0 pt-0">
+                      <p className="mb-0 mt-0">NAME</p>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        name="name"
+                        id="outlined-name"
+                        placeholder="Name"
+                        margin="normal"
+                        variant="outlined"
+                        type="text"
+                        value={this.state.name}
+                        onChange={this.handleNameChange}
+                        fullWidth
+                      />
+                      <div style={{ color: "red" }}>{this.state.nameError}</div>
+                    </Grid>
+
                     <Grid item xs={12} className="pb-0 pt-0">
                       <p className="mb-0 mt-0">EMAIL ADDRESS</p>
                     </Grid>
@@ -123,24 +152,6 @@ class SignUpPage extends Component {
                       <div style={{ color: "red" }}>
                         {this.state.emailError}
                       </div>
-                    </Grid>
-
-                    <Grid item xs={12} className="pb-0 pt-0">
-                      <p className="mb-0 mt-0">NAME</p>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        name="name"
-                        id="outlined-name"
-                        placeholder="Name"
-                        margin="normal"
-                        variant="outlined"
-                        type="text"
-                        value={this.state.name}
-                        onChange={this.handleNameChange}
-                        fullWidth
-                      />
-                      <div style={{ color: "red" }}>{this.state.nameError}</div>
                     </Grid>
 
                     <Grid item xs={12} className="pb-0 pt-0">
@@ -178,9 +189,6 @@ class SignUpPage extends Component {
                         onChange={this.handleConfirmPasswordChange}
                         fullWidth
                       />
-                      <div style={{ color: "red" }}>
-                        {this.state.passwordError}
-                      </div>
                     </Grid>
                     <Grid item xs={2}></Grid>
                     <Grid item xs={8} className="center">
