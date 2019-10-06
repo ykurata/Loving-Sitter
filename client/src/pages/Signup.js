@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import "../App.scss";
 import Button from "@material-ui/core/Button";
+import { ThemeProvider } from "@material-ui/styles";
 
 const initalState = {
   email: "",
@@ -10,6 +11,7 @@ const initalState = {
   name: "",
   nameError: "",
   password: "",
+  confirmPassword: "",
   passwordError: ""
 };
 
@@ -28,6 +30,10 @@ class SignUpPage extends Component {
 
   handlePasswordChange = event => {
     this.setState({ password: event.target.value });
+  };
+
+  handleConfirmPasswordChange = event => {
+    this.setState({ confirmPassword: event.target.value });
   };
 
   validate = () => {
@@ -58,11 +64,32 @@ class SignUpPage extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const isValid = this.validate();
-    if (isValid) {
-      console.log(this.state);
-      this.setState(initalState);
+    this.validate();
+    const newUser = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      confirmPassword: this.state.confirmPassword
     }
+    
+    fetch('/users/register', {
+      method: 'POST',
+      body: JSON.stringify(newUser),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+      if (res.status === 200) {
+        console.log("You logged in");
+      } else {
+        const error = new Error(res.error);
+        throw error;
+      }
+    })
+    .catch(err => {
+      console.error(err);
+    });
   };
 
   render() {
@@ -73,7 +100,7 @@ class SignUpPage extends Component {
           <Grid item xs={8}>
             <div className="container">
               <div className="infoBox ">
-                <form>
+                <form onSubmit={this.handleSubmit}>
                   <Grid container spacing={3}>
                     <Grid item xs={12}>
                       <h1 className="center">Sign Up</h1>
@@ -129,6 +156,26 @@ class SignUpPage extends Component {
                         type="password"
                         value={this.state.password}
                         onChange={this.handlePasswordChange}
+                        fullWidth
+                      />
+                      <div style={{ color: "red" }}>
+                        {this.state.passwordError}
+                      </div>
+                    </Grid>
+
+                    <Grid item xs={12} className="pb-0 pt-0">
+                      <p className="mb-0 mt-0">CONFIRM PASSWORD</p>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        name="confirmPassword"
+                        id="outlined-password"
+                        placeholder="Confrim Password"
+                        margin="normal"
+                        variant="outlined"
+                        type="password"
+                        value={this.state.confirmPassword}
+                        onChange={this.handleConfirmPasswordChange}
                         fullWidth
                       />
                       <div style={{ color: "red" }}>

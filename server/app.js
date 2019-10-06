@@ -4,6 +4,7 @@ import { join } from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import passport from "passport";
+import cors from "cors";
 
 import dbConnection from "./db/mongoose";
 import indexRouter from "./routes/index";
@@ -28,6 +29,7 @@ app.use("/ping", pingRouter);
 app.use("/users", usersRouter);
 app.use("/files", fileUploadRouter);
 
+app.use(cors());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
