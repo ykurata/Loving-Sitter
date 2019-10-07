@@ -96,7 +96,7 @@ router.post("/login", async function(req, res, next) {
   const token = user.generateToken(payload);
 
   if (token) {
-    res.json({ token: "Bearer " + token });
+    res.json({ token: token });
   } else {
     res.status(401).json({ error: "Login failed" });
   }
