@@ -56,7 +56,7 @@ class ProfilePage extends Component {
   handleSubmit = event => {
     event.preventDefault();
     console.log(this.state);
-    axios.post('localhost:3001/profile', this.state)
+    axios.post('https://localhost:3001/profile', this.state)
     .then(function (response) {
       console.log(response);
     })
