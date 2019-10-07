@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const RequestSchema = new Schema({
-    requestingUser: [{
+    requestFrom: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
-    requestedUser: [{
+    requestTo: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
