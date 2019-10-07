@@ -40,58 +40,83 @@ class SignUpPage extends Component {
     this.setState({ confirmPassword: event.target.value });
   };
 
-  validate = () => {
+  emailValidate = () => {
     let emailError = "";
-    let passwordError = "";
-    var re = /[^@]+@[^.]+\..+/;
+    var re = /[^@]+@[^.]+..+/;
     var test = re.test(this.state.email);
     if (!test === true) {
       emailError = "Invalid email";
     }
-
+    
     if (emailError) {
       this.setState({ emailError });
       return false;
     }
 
+    this.setState({ emailError: undefined });
+    return true;
+  };
+  
+  nameValidate = () => {
+    let nameError = "";
+    
+    if (this.state.name.length < 1) {
+      nameError = "Please enter your name";
+    }
+    
+    if (nameError) {
+      this.setState({ nameError });
+      return false;
+    }
+    this.setState({ nameError: undefined });
+    return true;
+  };
+
+  passwordValidate = () => {
+    let passwordError = "";
+    
     if (this.state.password.length < 6) {
       passwordError = "Password is too short";
     }
-
+    
     if (passwordError) {
       this.setState({ passwordError });
       return false;
     }
-
+    this.setState({ passwordError: undefined });
     return true;
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    this.validate();
+    const emailIsValid = this.emailValidate();
+    const nameIsValid = this.nameValidate();
+    const passwordIsValid = this.passwordValidate();
+    if (emailIsValid && nameIsValid && passwordIsValid) {
 
-    const { name, email, password, confirmPassword } = this.state;
+      const { name, email, password, confirmPassword } = this.state;
 
-    const newUser = {
-      name: name,
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword
+      const newUser = {
+        name: name,
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword
+      }
+
+      axios.post('/users/register', newUser)
+      .then(res => {
+          const { token } = res.data;
+          const decoded = jwt_decode(token);
+          localStorage.setItem('jwtToken', res.data);
+          localStorage.setItem('name', decoded.name);
+          this.props.history.push('/');
+      })
+      .catch(err => {
+          this.setState({
+            errors: err.response.data.error  // Error messages from backend
+          });
+      });
     }
-
-    axios.post('/users/register', newUser)
-    .then(res => {
-        const { token } = res.data;
-        const decoded = jwt_decode(token);
-        localStorage.setItem('jwtToken', res.data);
-        localStorage.setItem('name', decoded.name);
-        this.props.history.push('/');
-    })
-    .catch(err => {
-        this.setState({
-          errors: err.response.data.error  // Error messages from backend
-        });
-    });
   };
 
   render() {

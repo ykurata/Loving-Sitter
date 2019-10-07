@@ -28,44 +28,47 @@ class LoginPage extends Component {
 
   validate = () => {
     let emailError = "";
-    var re = /[^@]+@[^.]+\..+/;
+    var re = /[^@]+@[^.]+..+/;
     var test = re.test(this.state.email);
     if (!test === true) {
       emailError = "Invalid email";
     }
-
+    
     if (emailError) {
       this.setState({ emailError });
       return false;
     }
 
+    this.setState({ emailError: undefined });
     return true;
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    this.validate();
+    const isValid = this.validate();
+    
+    if (isValid) {
+      const { email, password } = this.state;
 
-    const { email, password } = this.state;
+      const data = {
+        email: email,
+        password: password
+      }
 
-    const data = {
-      email: email,
-      password: password
+      axios.post('/users/login', data)
+      .then(res => {
+          const { token } = res.data;
+          const decoded = jwt_decode(token);
+          localStorage.setItem('jwtToken', res.data);
+          localStorage.setItem('name', decoded.name);
+          this.props.history.push('/');
+      })
+      .catch(err => {
+          this.setState({
+            errors: err.response.data.error  // Error messages from backend
+          });
+      });
     }
-
-    axios.post('/users/login', data)
-    .then(res => {
-        const { token } = res.data;
-        const decoded = jwt_decode(token);
-        localStorage.setItem('jwtToken', res.data);
-        localStorage.setItem('name', decoded.name);
-        this.props.history.push('/');
-    })
-    .catch(err => {
-        this.setState({
-          errors: err.response.data.error  // Error messages from backend
-        });
-    });
   };
   
 
@@ -152,5 +155,4 @@ class LoginPage extends Component {
     );
   }
 }
-
 export default LoginPage;
