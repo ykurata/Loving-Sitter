@@ -1,25 +1,29 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from ("mongoose");
+import dbConnection from "./../db/mongoose";
 
-const RequestSchema = new Schema(
+const RequestSchema = mongoose.Schema(
     {
         userId: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'User'
+                ref: 'User',
+                required: true
             }
         ],
         requestedUserId: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'User'
+                ref: 'User',
+                required: true
             }
         ],
         startTime: {
-            type: Date
+            type: Date,
+            required: true
         },
         endTime: {
-            type: Date
+            type: Date,
+            required: true
         },
         accepted: {
             type: Boolean,
@@ -28,8 +32,11 @@ const RequestSchema = new Schema(
         paid: {
             type: Boolean,
             default: false
-        }
-    } 
+        },
+    },
+    {
+        timestamp: true
+    }
 );
 
-module.export = mongoose.model("Request", RequestSchema);
+module.export = dbConnection.model("Request", RequestSchema);
