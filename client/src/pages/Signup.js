@@ -107,7 +107,7 @@ class SignUpPage extends Component {
       .then(res => {
           const { token } = res.data;
           const decoded = jwt_decode(token);
-          localStorage.setItem('jwtToken', res.data);
+          localStorage.setItem('jwtToken', token);
           localStorage.setItem('name', decoded.name);
           this.props.history.push('/');
       })
