@@ -1,14 +1,18 @@
 import React, { Component } from "react";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import "../App.scss";
 import Button from "@material-ui/core/Button";
 
+
 const initalState = {
   email: "",
   emailError: "",
   password: "",
-  passwordError: ""
+  passwordError: "",
+  errors : ""  
 };
 
 class LoginPage extends Component {
@@ -24,28 +28,49 @@ class LoginPage extends Component {
 
   validate = () => {
     let emailError = "";
-    var re = /[^@]+@[^.]+\..+/;
+    var re = /[^@]+@[^.]+..+/;
     var test = re.test(this.state.email);
     if (!test === true) {
       emailError = "Invalid email";
     }
-
+    
     if (emailError) {
       this.setState({ emailError });
       return false;
     }
 
+    this.setState({ emailError: undefined });
     return true;
   };
 
   handleSubmit = event => {
     event.preventDefault();
     const isValid = this.validate();
+    
     if (isValid) {
-      console.log(this.state);
-      this.setState(initalState);
+      const { email, password } = this.state;
+
+      const data = {
+        email: email,
+        password: password
+      }
+
+      axios.post('/users/login', data)
+      .then(res => {
+          const { token } = res.data;
+          const decoded = jwt_decode(token);
+          localStorage.setItem('jwtToken', res.data);
+          localStorage.setItem('name', decoded.name);
+          this.props.history.push('/');
+      })
+      .catch(err => {
+          this.setState({
+            errors: err.response.data.error  // Error messages from backend
+          });
+      });
     }
   };
+  
 
   render() {
     return (
@@ -55,11 +80,18 @@ class LoginPage extends Component {
           <Grid item xs={8}>
             <div className="container">
               <div className="infoBox ">
-                <form>
+                <form onSubmit={this.handleSubmit}>
                   <Grid container spacing={3}>
                     <Grid item xs={12}>
                       <h1 className="center">LogIn</h1>
                     </Grid>
+                    {
+                      (this.state.errors)
+                      ? <Grid item xs={12} className="pb-0 pt-0" style={{ color: "red" }}>
+                          <p className="mb-0 mt-0">{this.state.errors}</p>
+                        </Grid>
+                      : <Grid></Grid>
+                    }
                     <Grid item xs={12} className="pb-0 pt-0">
                       <p className="mb-0 mt-0">EMAIL ADDRESS</p>
                     </Grid>
@@ -123,5 +155,4 @@ class LoginPage extends Component {
     );
   }
 }
-
 export default LoginPage;
