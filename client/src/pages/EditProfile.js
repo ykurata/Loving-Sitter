@@ -8,20 +8,20 @@ import SideNavigationBar from "./SideNavBar";
 
 import Button from "@material-ui/core/Button";
 
-import SimpleSnackbar from "./snackbar";
+// import SimpleSnackbar from "./snackbar";
 import { Snackbar, IconButton } from "@material-ui/core";
 
 const initalState = {
   firstName: "",
   lastName: "",
   gender: "",
-  dob: "",
+  birthDate: "",
   phone: "",
   address: "",
   description: "",
   disabled: true,
   snackbaropen: true,
-  snackbarmsg: "wow"
+  snackbarmsg: "test"
 };
 
 class EditProfilePage extends Component {
@@ -42,7 +42,7 @@ class EditProfilePage extends Component {
   };
 
   handleDobChange = event => {
-    this.setState({ dob: event.target.value });
+    this.setState({ birthDate: event.target.value });
   };
 
   handlePhoneChange = event => {
@@ -80,6 +80,10 @@ class EditProfilePage extends Component {
     return (
       <div>
         <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left"
+        }}
           open={this.state.snackbaropen}
           autoHideDuration={3000}
           onClose={this.snackbarClose}
@@ -198,8 +202,8 @@ class EditProfilePage extends Component {
                           <Grid item xs={7}>
                             <TextField
                               type="date"
-                              name="dob"
-                              id="standard-dob"
+                              name="birthDate"
+                              id="standard-birthDate"
                               value={this.handleDob}
                               onChange={this.handleDobChange}
                               margin="normal"
@@ -344,7 +348,7 @@ class EditProfilePage extends Component {
             </div>
           </div>
         </div>
-        <SimpleSnackbar></SimpleSnackbar>
+        {/* <SimpleSnackbar></SimpleSnackbar> */}
       </div>
     );
   }
