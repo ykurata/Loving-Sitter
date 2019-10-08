@@ -3,31 +3,26 @@ import dbConnection from "./../db/mongoose";
 
 const RequestSchema = mongoose.Schema(
     {
-        userId: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User',
-                required: true
-            }
-        ],
-        requestedUserId: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User',
-                required: true
-            }
-        ],
-        startTime: {
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        requestedUserId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        startDate: {
             type: Date,
             required: true
         },
-        endTime: {
+        endDate: {
             type: Date,
             required: true
         },
-        accepted: {
-            type: Boolean,
-            default: false
+        status : {
+            type: String
         },
         paid: {
             type: Boolean,
