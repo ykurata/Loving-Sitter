@@ -15,7 +15,7 @@ const initalState = {
   firstName: "",
   lastName: "",
   gender: "",
-  dob: "",
+  birthDate: "",
   email: "",
   phone: "",
   address: "",
@@ -38,7 +38,7 @@ class ProfilePage extends Component {
   };
 
   handleDobChange = event => {
-    this.setState({ dob: event.target.value });
+    this.setState({ birthDate: event.target.value });
   };
 
   handlePhoneChange = event => {
@@ -56,13 +56,26 @@ class ProfilePage extends Component {
   handleSubmit = event => {
     event.preventDefault();
     console.log(this.state);
-    axios.post('https://localhost:3001/profile', this.state)
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    })
+    axios.post('http://localhost:3001/profile', this.state)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+      })
   };
 
   render() {
@@ -149,9 +162,9 @@ class ProfilePage extends Component {
 
                   <Grid item xs={6}>
                     <TextField
-                      name="dob"
-                      id="standard-dob"
-                      label="dob"
+                      name="birthDate"
+                      id="standard-birthDate"
+                      label="birthDate"
                       value={this.handleDob}
                       onChange={this.handleDobChange}
                       margin="normal"
