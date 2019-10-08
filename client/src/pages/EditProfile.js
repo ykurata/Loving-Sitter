@@ -26,6 +26,7 @@ const initalState = {
 
 class EditProfilePage extends Component {
   state = initalState;
+  handleGender = "";
 
   handleFirstNameChange = event => {
     this.setState({ firstName: event.target.value });
@@ -37,6 +38,7 @@ class EditProfilePage extends Component {
 
   handleGenderChange = event => {
     this.setState({ gender: event.target.value });
+    this.handleGender = event.target.value;
   };
 
   handleDobChange = event => {
