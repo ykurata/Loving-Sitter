@@ -4,13 +4,18 @@ import Grid from "@material-ui/core/Grid";
 import "../App.scss";
 import Button from "@material-ui/core/Button";
 
+import { Snackbar, IconButton } from "@material-ui/core";
+
+export const snackbarmsg = "wow";
+
 const initalState = {
   email: "",
   emailError: "",
   name: "",
   nameError: "",
   password: "",
-  passwordError: ""
+  passwordError: "",
+  snackbaropen: false
 };
 
 class SignUpPage extends Component {
@@ -30,9 +35,8 @@ class SignUpPage extends Component {
     this.setState({ password: event.target.value });
   };
 
-  validate = () => {
+  emailValidate = () => {
     let emailError = "";
-    let passwordError = "";
     var re = /[^@]+@[^.]+\..+/;
     var test = re.test(this.state.email);
     if (!test === true) {
@@ -43,6 +47,27 @@ class SignUpPage extends Component {
       this.setState({ emailError });
       return false;
     }
+    this.setState({ emailError: undefined });
+    return true;
+  };
+
+  nameValidate = () => {
+    let nameError = "";
+
+    if (this.state.name.length < 1) {
+      nameError = "Please enter your name";
+    }
+
+    if (nameError) {
+      this.setState({ nameError });
+      return false;
+    }
+    this.setState({ nameError: undefined });
+    return true;
+  };
+
+  passwordValidate = () => {
+    let passwordError = "";
 
     if (this.state.password.length < 6) {
       passwordError = "Password is too short";
@@ -50,24 +75,62 @@ class SignUpPage extends Component {
 
     if (passwordError) {
       this.setState({ passwordError });
+      this.setState({
+        snackbaropen: true,
+        snackbarmsg: "Password is too short!"
+      });
+
       return false;
     }
-
+    this.setState({ passwordError: undefined });
     return true;
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    const isValid = this.validate();
-    if (isValid) {
+    const emailIsValid = this.emailValidate();
+    const nameIsValid = this.nameValidate();
+    const passwordIsValid = this.passwordValidate();
+    if (emailIsValid && nameIsValid && passwordIsValid) {
       console.log(this.state);
       this.setState(initalState);
     }
   };
 
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  snackbarClose = event => {
+    this.setState({ snackbaropen: false });
+  };
+
+  enableEdit = event => {
+    this.setState({ disabled: false });
+  };
+
   render() {
     return (
       <div>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.snackbaropen}
+          autoHideDuration={3000}
+          onClose={this.snackbarClose}
+          message={<span id="message-id">{this.state.snackbarmsg}</span>}
+          action={[
+            <IconButton
+              key="close"
+              arial-label="Close"
+              color="inherit"
+              onClick={this.snackbarClose}
+            ></IconButton>
+          ]}
+        />
         <Grid container spacing={3}>
           <Grid item xs={2}></Grid>
           <Grid item xs={8}>
@@ -141,6 +204,8 @@ class SignUpPage extends Component {
                         variant="contained"
                         onClick={this.handleSubmit}
                         fullWidth
+                        className="submit-button"
+                        size="large"
                       >
                         Sign Up
                       </Button>
