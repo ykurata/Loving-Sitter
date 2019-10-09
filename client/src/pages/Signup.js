@@ -1,21 +1,27 @@
 import React, { Component } from "react";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
+
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import "../App.scss";
 import Button from "@material-ui/core/Button";
+import { ThemeProvider } from "@material-ui/styles";
 
 import { Snackbar, IconButton } from "@material-ui/core";
 
 export const snackbarmsg = "wow";
 
 const initalState = {
-  email: "",
-  emailError: "",
   name: "",
   nameError: "",
+  email: "",
+  emailError: "",
   password: "",
   passwordError: "",
-  snackbaropen: false
+  snackbaropen: false,
+  confirmPassword: "",
+  errors: ""
 };
 
 class SignUpPage extends Component {
@@ -35,14 +41,18 @@ class SignUpPage extends Component {
     this.setState({ password: event.target.value });
   };
 
+  handleConfirmPasswordChange = event => {
+    this.setState({ confirmPassword: event.target.value });
+  };
+
   emailValidate = () => {
     let emailError = "";
-    var re = /[^@]+@[^.]+\..+/;
+    var re = /[^@]+@[^.]+..+/;
     var test = re.test(this.state.email);
     if (!test === true) {
       emailError = "Invalid email";
     }
-
+    
     if (emailError) {
       this.setState({ emailError });
       return false;
@@ -69,10 +79,32 @@ class SignUpPage extends Component {
   passwordValidate = () => {
     let passwordError = "";
 
+    this.setState({ emailError: undefined });
+    return true;
+  };
+  
+  nameValidate = () => {
+    let nameError = "";
+    
+    if (this.state.name.length < 1) {
+      nameError = "Please enter your name";
+    }
+    
+    if (nameError) {
+      this.setState({ nameError });
+      return false;
+    }
+    this.setState({ nameError: undefined });
+    return true;
+  };
+
+  passwordValidate = () => {
+    let passwordError = "";
+    
     if (this.state.password.length < 6) {
       passwordError = "Password is too short";
     }
-
+    
     if (passwordError) {
       this.setState({ passwordError });
       this.setState({
@@ -94,6 +126,29 @@ class SignUpPage extends Component {
     if (emailIsValid && nameIsValid && passwordIsValid) {
       console.log(this.state);
       this.setState(initalState);
+
+      const { name, email, password, confirmPassword } = this.state;
+
+      const newUser = {
+        name: name,
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword
+      }
+
+      axios.post('/users/register', newUser)
+      .then(res => {
+          const { token } = res.data;
+          const decoded = jwt_decode(token);
+          localStorage.setItem('jwtToken', token);
+          localStorage.setItem('name', decoded.name);
+          this.props.history.push('/');
+      })
+      .catch(err => {
+          this.setState({
+            errors: err.response.data.error  // Error messages from backend
+          });
+      });
     }
   };
 
@@ -136,11 +191,37 @@ class SignUpPage extends Component {
           <Grid item xs={8}>
             <div className="container">
               <div className="infoBox ">
-                <form>
+                <form onSubmit={this.handleSubmit}>
                   <Grid container spacing={3}>
                     <Grid item xs={12}>
                       <h1 className="center">Sign Up</h1>
                     </Grid>
+                    {
+                      (this.state.errors)
+                      ? <Grid item xs={12} className="pb-0 pt-0" style={{ color: "red" }}>
+                          <p className="mb-0 mt-0">{this.state.errors}</p>
+                        </Grid>
+                      : <Grid></Grid>
+                    }
+
+                    <Grid item xs={12} className="pb-0 pt-0">
+                      <p className="mb-0 mt-0">NAME</p>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        name="name"
+                        id="outlined-name"
+                        placeholder="Name"
+                        margin="normal"
+                        variant="outlined"
+                        type="text"
+                        value={this.state.name}
+                        onChange={this.handleNameChange}
+                        fullWidth
+                      />
+                      <div style={{ color: "red" }}>{this.state.nameError}</div>
+                    </Grid>
+
                     <Grid item xs={12} className="pb-0 pt-0">
                       <p className="mb-0 mt-0">EMAIL ADDRESS</p>
                     </Grid>
@@ -162,24 +243,6 @@ class SignUpPage extends Component {
                     </Grid>
 
                     <Grid item xs={12} className="pb-0 pt-0">
-                      <p className="mb-0 mt-0">NAME</p>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        name="name"
-                        id="outlined-name"
-                        placeholder="Name"
-                        margin="normal"
-                        variant="outlined"
-                        type="text"
-                        value={this.state.name}
-                        onChange={this.handleNameChange}
-                        fullWidth
-                      />
-                      <div style={{ color: "red" }}>{this.state.nameError}</div>
-                    </Grid>
-
-                    <Grid item xs={12} className="pb-0 pt-0">
                       <p className="mb-0 mt-0">PASSWORD</p>
                     </Grid>
                     <Grid item xs={12}>
@@ -197,6 +260,23 @@ class SignUpPage extends Component {
                       <div style={{ color: "red" }}>
                         {this.state.passwordError}
                       </div>
+                    </Grid>
+
+                    <Grid item xs={12} className="pb-0 pt-0">
+                      <p className="mb-0 mt-0">CONFIRM PASSWORD</p>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        name="confirmPassword"
+                        id="outlined-password"
+                        placeholder="Confrim Password"
+                        margin="normal"
+                        variant="outlined"
+                        type="password"
+                        value={this.state.confirmPassword}
+                        onChange={this.handleConfirmPasswordChange}
+                        fullWidth
+                      />
                     </Grid>
                     <Grid item xs={2}></Grid>
                     <Grid item xs={8} className="center">

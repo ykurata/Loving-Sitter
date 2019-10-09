@@ -1,9 +1,14 @@
 import mongoose from "mongoose";
 import crypto from "crypto";
 import dbConnection from "./../db/mongoose";
+import jwt from "jsonwebtoken";
 
 const userSchema = mongoose.Schema(
   {
+    name: {
+      type: String,
+      required: "Name is required"
+    },
     email: {
       type: String,
       required: "Email is required",
@@ -52,6 +57,15 @@ userSchema.methods.checkPassword = async function(password) {
 
   const hash = await generatePassword(this.salt, password);
   return hash === this.passwordHash;
+};
+
+userSchema.methods.generateToken = function(payload) {
+  const secret = process.env.JWT_SECRET || "temp_secret_key";
+
+  const token = jwt.sign(payload, secret, {
+    expiresIn: 31556926
+  });
+  return token;
 };
 
 module.exports = dbConnection.model("User", userSchema);
