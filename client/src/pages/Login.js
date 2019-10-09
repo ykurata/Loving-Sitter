@@ -133,6 +133,8 @@ class LoginPage extends Component {
                         variant="contained"
                         onClick={this.handleSubmit}
                         fullWidth
+                        className="submit-button"
+                        size="large"
                       >
                         Login
                       </Button>
