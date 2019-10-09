@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-
+import Avatar from '@material-ui/core/Avatar';
+import { Snackbar, IconButton } from "@material-ui/core";
+import NavigationBar from "./Navbar";
+import SideNavigationBar from "./SideNavBar";
 import Button from "@material-ui/core/Button";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -13,6 +14,13 @@ import "../App.scss";
 const photoPageStyle = theme => ({
   photoContainer: {
     margin: theme.spacing.unit * 2
+  },
+  container:{
+    marginBottom: theme.spacing(100),
+  },
+  bigAvatar: {
+    width: 300,
+    height: 300,
   }
 });
 
@@ -37,65 +45,77 @@ class PhotoPage extends Component {
     console.log(this.state);
   };
 
-  componentDidMount() {
-    fetch("/welcome")
-      .then(res => {
-        console.log(res);
-        if (res.status === 200) return res.json();
-        else throw Error("Couldn't connect to the server");
-      })
-      .then(res => {
-        this.setState({ welcomeMessage: res.welcomeMessage });
-        this.incrementStep();
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
-  }
-
   render() {
     const { classes } = this.props;
     return (
-      <div className="pageArea">
-        <div className="menuArea">
-          <MenuList>
-            <MenuItem component={Link} to="/">
-              Edit Profile
-            </MenuItem>
-            <MenuItem component={Link} to="/profile-photo">
-              Profile Photo
-            </MenuItem>
-            <MenuItem component={Link} to="/payment">
-              Payment
-            </MenuItem>
-            <MenuItem component={Link} to="/security">
-              Security
-            </MenuItem>
-            <MenuItem component={Link} to="/settings">
-              Settings
-            </MenuItem>
-          </MenuList>
-        </div>
-        <div className="settingsArea">
-          <div className={classes.photoContainer}>
-            <div>
-              <form>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <img src={this.state.file} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <input type="file" name="pic" accept="image/*" onChange={this.handlePhotoChange} />
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Button variant="contained" onClick={this.handleSubmit}>
-                    Submit
-                    </Button>
-                </Grid>
-              </form>
+      <div>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.snackbaropen}
+          autoHideDuration={3000}
+          onClose={this.snackbarClose}
+          message={<span id="message-id">{this.state.snackbarmsg}</span>}
+          action={[
+            <IconButton
+              key="close"
+              arial-label="Close"
+              color="inherit"
+              onClick={this.snackbarClose}
+            ></IconButton>
+          ]}
+        />
+        <NavigationBar></NavigationBar>
+        <div className="pageArea">
+          <div className="infoArea">
+            <div className="menuArea">
+              <SideNavigationBar></SideNavigationBar>
+            </div>
+            <div className="settingsArea">
+              <div className={classes.photoContainer}>
+                <div>
+                  <form>
+                    <Grid container spacing={3}>
+                      <Grid item xs={12} className="center">
+                        <h1>Profile Photo</h1>
+                      </Grid>
+                      <Grid item xs={12} container justify="center" alignItems="center">
+                        <Avatar alt="Your Profile Picture" src={this.state.file} className={classes.bigAvatar} onClick={this.changePhoto} />
+                      </Grid>
+                      <Grid item xs={12} container justify="center" alignItems="center">
+                        <label>Make sure your photo clearly shows your face</label>
+                      </Grid>
+                      <Grid item xs={12} container spacing={50} justify="center" alignItems="center" style={{ margin: 20 }}>
+                        <input
+                          accept="image/*"
+                          className={classes.input}
+                          className = "invisible"
+                          id="contained-button-file"
+                          multiple
+                          type="file"
+                          name="photo"
+                          onChange={this.handlePhotoChange}
+                        />
+                        <label htmlFor="contained-button-file">
+                          <Button variant="contained" component="span" className={classes.button}>
+                            Upload a file from your device
+                            </Button>
+                        </label>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12} className="center">
+                      <Button fullWidth size="large" variant="contained" className="submit-button" onClick={this.handleSubmit}>
+                        Save
+                        </Button>
+                    </Grid>
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
+          {/* <SimpleSnackbar></SimpleSnackbar> */}
         </div>
       </div>
     );
