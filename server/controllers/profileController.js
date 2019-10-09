@@ -108,11 +108,12 @@ module.exports.profile_create_post = function (req, res, next) {
 
         // Data from form is valid. Save profile.
         profile.save(function (err) {
-            if (err) { return next(err); }
+            if (err) { 
+                return next(err); 
+            }
 
             // Successful - redirect to new profile record.
-            //res.redirect(profile.url);
-            res.redirect("/");
+            res.redirect(profile.url);
         });
     }
 
