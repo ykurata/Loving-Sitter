@@ -8,16 +8,11 @@ import cors from "cors";
 
 import dbConnection from "./db/mongoose";
 import indexRouter from "./routes/index";
-<<<<<<< HEAD
 import profileRouter from "./routes/profile";
 
-import cors from "cors";
-=======
-import pingRouter from "./routes/ping";
 import usersRouter from "./routes/users";
 import fileUploadRouter from "./routes/file-upload";
 
->>>>>>> dev
 
 var app = express();
 
@@ -32,15 +27,11 @@ app.use(passport.initialize());
 require("./libs/passport")(passport);
 
 app.use("/", indexRouter);
-<<<<<<< HEAD
 app.use("/profile", profileRouter);
-=======
-app.use("/ping", pingRouter);
 app.use("/users", usersRouter);
 app.use("/files", fileUploadRouter);
 
 app.use(cors());
->>>>>>> dev
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

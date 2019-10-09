@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-var express = require("express");
-var router = express.Router();
-
-router.get("/users", function(req, res, next) {
-  res.status(200).send({ userMessage: "Preparing to create user route." });
-=======
 import express from "express";
 import User from "../models/User";
 import validator from "validator";
@@ -107,7 +100,6 @@ router.post("/login", async function(req, res, next) {
   } else {
     res.status(401).json({ error: "Login failed" });
   }
->>>>>>> dev
 });
 
 module.exports = router;

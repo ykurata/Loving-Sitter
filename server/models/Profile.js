@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+import dbConnection from "./../db/mongoose";
 
 const ProfileSchema = new Schema({
   userId: [{
@@ -44,4 +45,4 @@ const ProfileSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model("Profile", ProfileSchema);
+module.exports = dbConnection.model("Profile", ProfileSchema);

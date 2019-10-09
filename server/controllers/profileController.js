@@ -33,7 +33,7 @@ exports.profile_detail = function (req, res, next) {
                 .populate('birthDate')
                 .populate('email')
                 .populate('phone')
-                .populate('address')
+                .populate('location')
                 .populate('description')
                 .exec(callback);
         },
@@ -56,65 +56,67 @@ exports.profile_detail = function (req, res, next) {
 };
 
 // Handle profile create on POST.
-module.exports.profile_create_post = [
+module.exports.profile_create_post = function (req, res, next) {
 
     // Validate fields.
     body('firstName', 'First Name must not be empty.').isLength({ min: 1 }).trim(),
-    body('lastName', 'Last Name must not be empty.').isLength({ min: 1 }).trim(),
-    body('gender', 'Gender must not be empty.').isLength({ min: 1 }).trim(),
-    body('birthDate', 'Birth date must not be empty').isLength({ min: 1 }).trim(),
-    body('email', 'Email must not be empty').isLength({ min: 1 }).trim(),
-    body('phone', 'Phone must not be empty').isLength({ min: 1 }).trim(),
-    body('address', 'Location must not be empty').isLength({ min: 1 }).trim(),
-    body('description', 'Description must not be empty').isLength({ min: 1 }).trim(),
+        body('lastName', 'Last Name must not be empty.').isLength({ min: 1 }).trim(),
+        body('gender', 'Gender must not be empty.').isLength({ min: 1 }).trim(),
+        body('birthDate', 'Birth date must not be empty').isLength({ min: 1 }).trim(),
+        body('email', 'Email must not be empty').isLength({ min: 1 }).trim(),
+        body('phone', 'Phone must not be empty').isLength({ min: 1 }).trim(),
+        body('location', 'Location must not be empty').isLength({ min: 1 }).trim(),
+        body('description', 'Description must not be empty').isLength({ min: 1 }).trim(),
 
-    // Sanitize fields.
-    sanitizeBody('firstName').escape(),
-    sanitizeBody('lastName').escape(),
-    sanitizeBody('gender').escape(),
-    sanitizeBody('birthDate').escape(),
-    sanitizeBody('email').escape(),
-    sanitizeBody('phone').escape(),
-    sanitizeBody('address').escape(),
-    sanitizeBody('description').escape(),
-    // Process request after validation and sanitization.
-    (req, res, next) => {
-
+        // Sanitize fields.
+        sanitizeBody('firstName').escape(),
+        sanitizeBody('lastName').escape(),
+        sanitizeBody('gender').escape(),
+        sanitizeBody('birthDate').escape(),
+        sanitizeBody('email').escape(),
+        sanitizeBody('phone').escape(),
+        sanitizeBody('location').escape(),
+        sanitizeBody('description').escape(),
+        // Process request after validation and sanitization.
 
         // Extract the validation errors from a request.
-        const errors = validationResult(req);
+        errors = validationResult(req);
 
-        // Create a Profile object with escaped and trimmed data.
-        var profile = new Profile(
-            {
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                gender: req.body.gender,
-                birthDate: req.body.birthDate,
-                email: req.body.email,
-                phone: req.body.phone,
-                address: req.body.address,
-                description: req.body.description
-            });
+    // Create a Profile object with escaped and trimmed data.
+    var profile = new Profile(
+        {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            gender: req.body.gender,
+            birthDate: req.body.birthDate,
+            email: req.body.email,
+            phone: req.body.phone,
+            location: req.body.location,
+            description: req.body.description
+        });
 
-        if (!errors.isEmpty()) {
-            // There are errors. Render form again with sanitized values/error messages.
+    if (!errors.isEmpty()) {
+        // There are errors. Render form again with sanitized values/error messages.
 
-            // CREATE ERROR RESPONSE
-            console.log("You have errors in your form");
-            console.log(errors);
-            res.render('profile_form', { title: 'Create Profile', firstName:results.firstName, lastName:results.lastName, gender:results.gender, birthDate:results.birthDate, phone:results.phone, address:results.address, description:results.description});
-        }
-        else {
-            // Data from form is valid. Save profile.
-            profile.save(function (err) {
-                if (err) { return next(err); }
-                // Successful - redirect to new profile record.
-                //res.redirect(profile.url);
-            });
-        }
+        // CREATE ERROR RESPONSE
+        console.log("You have errors in your form");
+        console.log(errors);
+        res.render('profile_form', { title: 'Create Profile', firstName: results.firstName, lastName: results.lastName, gender: results.gender, birthDate: results.birthDate, phone: results.phone, location: results.location, description: results.description });
     }
-];
+    else {
+        console.log("Attempting Profile Saving");
+
+        // Data from form is valid. Save profile.
+        profile.save(function (err) {
+            if (err) { return next(err); }
+
+            // Successful - redirect to new profile record.
+            //res.redirect(profile.url);
+            res.redirect("/");
+        });
+    }
+
+};
 
 
 
@@ -214,7 +216,7 @@ exports.profile_update_post = [
     body('birthDate', 'Birth date must not be empty').isLength({ min: 1 }).trim(),
     body('email', 'Email must not be empty').isLength({ min: 1 }).trim(),
     body('phone', 'Phone must not be empty').isLength({ min: 1 }).trim(),
-    body('address', 'Location must not be empty').isLength({ min: 1 }).trim(),
+    body('location', 'Location must not be empty').isLength({ min: 1 }).trim(),
     body('description', 'Description must not be empty').isLength({ min: 1 }).trim(),
 
     // Sanitize fields.
@@ -224,7 +226,7 @@ exports.profile_update_post = [
     sanitizeBody('birthDate').escape(),
     sanitizeBody('email').escape(),
     sanitizeBody('phone').escape(),
-    sanitizeBody('address').escape(),
+    sanitizeBody('location').escape(),
     sanitizeBody('description').escape(),
 
     // Process request after validation and sanitization.
@@ -242,7 +244,7 @@ exports.profile_update_post = [
                 birthDate: req.body.birthDate,
                 email: req.body.email,
                 phone: req.body.phone,
-                address: req.body.address,
+                location: req.body.location,
                 description: req.body.description,
                 _id: req.params.id // This is required, or a new ID will be assigned!
             });

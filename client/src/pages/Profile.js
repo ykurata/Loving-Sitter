@@ -18,7 +18,7 @@ const initalState = {
   birthDate: "",
   email: "",
   phone: "",
-  address: "",
+  location: "",
   description: ""
 };
 
@@ -45,12 +45,16 @@ class ProfilePage extends Component {
     this.setState({ phone: event.target.value });
   };
 
-  handleAddressChange = event => {
-    this.setState({ address: event.target.value });
+  handleLocationChange = event => {
+    this.setState({ location: event.target.value });
   };
 
   handleDescriptionChange = event => {
     this.setState({ description: event.target.value });
+  };
+
+  handleEmailChange = event => {
+    this.setState({ email: event.target.value });
   };
 
   handleSubmit = event => {
@@ -205,11 +209,11 @@ class ProfilePage extends Component {
 
                   <Grid item xs={6}>
                     <TextField
-                      name="address"
-                      id="standard-address"
-                      label="address"
-                      value={this.handleAddress}
-                      onChange={this.handleAddressChange}
+                      name="location"
+                      id="standard-location"
+                      label="location"
+                      value={this.handleLocation}
+                      onChange={this.handleLocationChange}
                       margin="normal"
                     />
                   </Grid>
