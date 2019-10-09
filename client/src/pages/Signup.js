@@ -8,14 +8,19 @@ import "../App.scss";
 import Button from "@material-ui/core/Button";
 import { ThemeProvider } from "@material-ui/styles";
 
+import { Snackbar, IconButton } from "@material-ui/core";
+
+export const snackbarmsg = "wow";
+
 const initalState = {
   name: "",
   nameError: "",
   email: "",
   emailError: "",
   password: "",
-  confirmPassword: "",
   passwordError: "",
+  snackbaropen: false,
+  confirmPassword: "",
   errors: ""
 };
 
@@ -52,6 +57,27 @@ class SignUpPage extends Component {
       this.setState({ emailError });
       return false;
     }
+    this.setState({ emailError: undefined });
+    return true;
+  };
+
+  nameValidate = () => {
+    let nameError = "";
+
+    if (this.state.name.length < 1) {
+      nameError = "Please enter your name";
+    }
+
+    if (nameError) {
+      this.setState({ nameError });
+      return false;
+    }
+    this.setState({ nameError: undefined });
+    return true;
+  };
+
+  passwordValidate = () => {
+    let passwordError = "";
 
     this.setState({ emailError: undefined });
     return true;
@@ -81,6 +107,11 @@ class SignUpPage extends Component {
     
     if (passwordError) {
       this.setState({ passwordError });
+      this.setState({
+        snackbaropen: true,
+        snackbarmsg: "Password is too short!"
+      });
+
       return false;
     }
     this.setState({ passwordError: undefined });
@@ -93,6 +124,8 @@ class SignUpPage extends Component {
     const nameIsValid = this.nameValidate();
     const passwordIsValid = this.passwordValidate();
     if (emailIsValid && nameIsValid && passwordIsValid) {
+      console.log(this.state);
+      this.setState(initalState);
 
       const { name, email, password, confirmPassword } = this.state;
 
@@ -107,7 +140,7 @@ class SignUpPage extends Component {
       .then(res => {
           const { token } = res.data;
           const decoded = jwt_decode(token);
-          localStorage.setItem('jwtToken', res.data);
+          localStorage.setItem('jwtToken', token);
           localStorage.setItem('name', decoded.name);
           this.props.history.push('/');
       })
@@ -119,9 +152,40 @@ class SignUpPage extends Component {
     }
   };
 
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  snackbarClose = event => {
+    this.setState({ snackbaropen: false });
+  };
+
+  enableEdit = event => {
+    this.setState({ disabled: false });
+  };
+
   render() {
     return (
       <div>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.snackbaropen}
+          autoHideDuration={3000}
+          onClose={this.snackbarClose}
+          message={<span id="message-id">{this.state.snackbarmsg}</span>}
+          action={[
+            <IconButton
+              key="close"
+              arial-label="Close"
+              color="inherit"
+              onClick={this.snackbarClose}
+            ></IconButton>
+          ]}
+        />
         <Grid container spacing={3}>
           <Grid item xs={2}></Grid>
           <Grid item xs={8}>
@@ -220,6 +284,8 @@ class SignUpPage extends Component {
                         variant="contained"
                         onClick={this.handleSubmit}
                         fullWidth
+                        className="submit-button"
+                        size="large"
                       >
                         Sign Up
                       </Button>

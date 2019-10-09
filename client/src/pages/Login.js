@@ -59,7 +59,7 @@ class LoginPage extends Component {
       .then(res => {
           const { token } = res.data;
           const decoded = jwt_decode(token);
-          localStorage.setItem('jwtToken', res.data);
+          localStorage.setItem('jwtToken', token);
           localStorage.setItem('name', decoded.name);
           this.props.history.push('/');
       })
@@ -133,6 +133,8 @@ class LoginPage extends Component {
                         variant="contained"
                         onClick={this.handleSubmit}
                         fullWidth
+                        className="submit-button"
+                        size="large"
                       >
                         Login
                       </Button>

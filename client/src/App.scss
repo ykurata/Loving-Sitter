@@ -31,6 +31,7 @@ h1 {
 .info-box {
   width: 70%;
   height: 70%;
+
   border: 1px solid grey;
 }
 
@@ -47,11 +48,15 @@ h1 {
 }
 
 .pb-0 {
-  padding-bottom: 0 !important  ;
+  padding-bottom: 0 !important;
 }
 
 .pt-0 {
   padding-top: 0 !important;
+}
+
+.pb-1 {
+  padding-bottom: 1rem;
 }
 
 .MuiFormControl-marginNormal {
@@ -72,25 +77,45 @@ h1 {
 //Profile page styling
 
 .pageArea {
-  @extend %screen-centering;
-
-  height: 100vh;
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: lightgrey;
+  height: 100%;
   border: 1px solid red;
+  padding-bottom: 10px;
+}
+
+.menuArea {
+  @extend %screen-centering;
 }
 
 .infoArea {
   width: 80%;
-  height: 80%;
   border: 1px solid grey;
 }
 .menuArea {
   border: 1px solid blue;
   width: 20%;
-  height: 80%;
+  float: left;
 }
 .settingsArea {
+  float: right;
+  background-color: white;
   border: 1px solid green;
-  width: 60%;
-  height: 80%;
+  width: 79%;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.submit-button {
+  background-color: #f04040 !important;
+  color: white !important;
+}
+
+.submit-button:disabled {
+  color: rgba(255, 255, 255, 0.3) !important;
+  background-color: #00000065 !important;
 }
