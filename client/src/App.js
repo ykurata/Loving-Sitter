@@ -10,6 +10,7 @@ import "./App.scss";
 import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/Signup";
 import ProfilePage from "./pages/Profile";
+import ProfileListPage from "./pages/ProfileList";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/signup" component={SignUpPage} />
         <Route path="/profile" component={ProfilePage} />
         <Route path="/photo" component={PhotoPage} />
+        <Route path="/sitter-search" component={ProfileListPage} />
       </BrowserRouter>
     </MuiThemeProvider>
   );
