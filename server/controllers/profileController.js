@@ -1,5 +1,5 @@
 //Needs to create the profile models later
-import Profile from "../models/profile";
+import Profile from "../models/Profile";
 
 import { body, validationResult } from "express-validator/check";
 import { sanitizeBody } from "express-validator/filter";
