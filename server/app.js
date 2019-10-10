@@ -9,6 +9,7 @@ import cors from "cors";
 import dbConnection from "./db/mongoose";
 import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
+import photoRouter from "./routes/photo";
 import usersRouter from "./routes/users";
 import fileUploadRouter from "./routes/file-upload";
 
@@ -26,6 +27,7 @@ require("./libs/passport")(passport);
 
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
+app.use("/profile-photo", photoRouter);
 app.use("/users", usersRouter);
 app.use("/files", fileUploadRouter);
 
