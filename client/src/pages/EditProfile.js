@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import NavigationBar from "./Navbar";
+import axios from "axios";
 
 import SideNavigationBar from "./SideNavBar";
 
@@ -12,15 +13,17 @@ import Button from "@material-ui/core/Button";
 import { Snackbar, IconButton } from "@material-ui/core";
 
 const initalState = {
-  firstName: "",
-  lastName: "",
-  gender: "",
-  birthDate: "",
-  phone: "",
-  address: "",
-  description: "",
-  rate: "",
-  disabled: true,
+  user: {
+    firstName: "",
+    lastName: "",
+    gender: "",
+    birthDate: "",
+    phone: "",
+    address: "",
+    rate: "",
+    description: ""
+  },
+  disabled: false,
   snackbaropen: true,
   snackbarmsg: "test"
 };
@@ -30,32 +33,45 @@ class EditProfilePage extends Component {
   handleGender = "";
 
   handleFirstNameChange = event => {
-    this.setState({ firstName: event.target.value });
+    let user = { ...this.state.user };
+    user.firstName = event.target.value;
+    this.setState({ user });
   };
 
   handleLastNameChange = event => {
-    this.setState({ lastName: event.target.value });
+    let user = { ...this.state.user };
+    user.lastName = event.target.value;
+    this.setState({ user });
   };
 
   handleGenderChange = event => {
-    this.setState({ gender: event.target.value });
-    this.handleGender = event.target.value;
+    let user = { ...this.state.user };
+    user.gender = event.target.value;
+    this.setState({ user });
   };
 
   handleDobChange = event => {
-    this.setState({ birthDate: event.target.value });
+    let user = { ...this.state.user };
+    user.birthDate = event.target.value;
+    this.setState({ user });
   };
 
   handlePhoneChange = event => {
-    this.setState({ phone: event.target.value });
+    let user = { ...this.state.user };
+    user.phone = event.target.value;
+    this.setState({ user });
   };
 
   handleAddressChange = event => {
-    this.setState({ address: event.target.value });
+    let user = { ...this.state.user };
+    user.address = event.target.value;
+    this.setState({ user });
   };
 
   handleDescriptionChange = event => {
-    this.setState({ description: event.target.value });
+    let user = { ...this.state.user };
+    user.description = event.target.value;
+    this.setState({ user });
   };
 
   handleRateChange = event => {
@@ -65,6 +81,14 @@ class EditProfilePage extends Component {
   handleSubmit = event => {
     event.preventDefault();
     console.log(this.state);
+    axios
+      .post("/profile", this.state.user)
+      .then(res => {
+        console.log("res", res);
+      })
+      .catch(err => {
+        console.log("err", { err });
+      });
     this.setState({ disabled: true });
   };
 
@@ -123,7 +147,17 @@ class EditProfilePage extends Component {
                             <p>FIRST NAME</p>
                           </Grid>
                           <Grid item xs={7}>
-                            <TextField name="firstName" id="standard-firstName" placeholder="John" value={this.handleFirstName} onChange={this.handleFirstNameChange} margin="normal" variant="outlined" disabled={this.state.disabled ? "disabled" : ""} fullWidth />
+                            <TextField
+                              name="firstName"
+                              id="standard-firstName"
+                              placeholder="John"
+                              value={this.handleFirstName}
+                              onChange={this.handleFirstNameChange}
+                              margin="normal"
+                              variant="outlined"
+                              disabled={this.state.disabled ? "disabled" : ""}
+                              fullWidth
+                            />
                           </Grid>
                         </Grid>
                       </Grid>
@@ -138,7 +172,17 @@ class EditProfilePage extends Component {
                             <p>LAST NAME</p>
                           </Grid>
                           <Grid item xs={7}>
-                            <TextField name="lastName" id="standard-lastName" placeholder="Doe" value={this.handleLastName} onChange={this.handleLastNameChange} margin="normal" variant="outlined" disabled={this.state.disabled ? "disabled" : ""} fullWidth />
+                            <TextField
+                              name="lastName"
+                              id="standard-lastName"
+                              placeholder="Doe"
+                              value={this.handleLastName}
+                              onChange={this.handleLastNameChange}
+                              margin="normal"
+                              variant="outlined"
+                              disabled={this.state.disabled ? "disabled" : ""}
+                              fullWidth
+                            />
                           </Grid>
                         </Grid>
                       </Grid>
@@ -153,7 +197,18 @@ class EditProfilePage extends Component {
                             <p>GENDER</p>
                           </Grid>
                           <Grid item xs={7}>
-                            <TextField select name="gender" id="standard-gender" label="gender" value={this.handleGender} onChange={this.handleGenderChange} margin="normal" variant="outlined" disabled={this.state.disabled ? "disabled" : ""} fullWidth>
+                            <TextField
+                              select
+                              name="gender"
+                              id="standard-gender"
+                              label="gender"
+                              value={this.handleGender}
+                              onChange={this.handleGenderChange}
+                              margin="normal"
+                              variant="outlined"
+                              disabled={this.state.disabled ? "disabled" : ""}
+                              fullWidth
+                            >
                               <MenuItem value="">
                                 <em>Gender</em>
                               </MenuItem>
@@ -174,7 +229,17 @@ class EditProfilePage extends Component {
                             <p>BIRTH DATE</p>
                           </Grid>
                           <Grid item xs={7}>
-                            <TextField type="date" name="birthDate" id="standard-birthDate" value={this.handleDob} onChange={this.handleDobChange} margin="normal" variant="outlined" disabled={this.state.disabled ? "disabled" : ""} fullWidth />
+                            <TextField
+                              type="date"
+                              name="birthDate"
+                              id="standard-birthDate"
+                              value={this.handleDob}
+                              onChange={this.handleDobChange}
+                              margin="normal"
+                              variant="outlined"
+                              disabled={this.state.disabled ? "disabled" : ""}
+                              fullWidth
+                            />
                           </Grid>
                         </Grid>
                       </Grid>
@@ -189,7 +254,17 @@ class EditProfilePage extends Component {
                             <p>EMAIL ADDRESS</p>
                           </Grid>
                           <Grid item xs={7}>
-                            <TextField name="email" placeholder="john-doe.s@gmail.com" id="standard-email" value={this.handleEmail} onChange={this.handleEmailChange} margin="normal" variant="outlined" disabled={this.state.disabled ? "disabled" : ""} fullWidth />
+                            <TextField
+                              name="email"
+                              placeholder="john-doe.s@gmail.com"
+                              id="standard-email"
+                              value={this.handleEmail}
+                              onChange={this.handleEmailChange}
+                              margin="normal"
+                              variant="outlined"
+                              disabled={this.state.disabled ? "disabled" : ""}
+                              fullWidth
+                            />
                           </Grid>
                         </Grid>
                       </Grid>
@@ -204,7 +279,16 @@ class EditProfilePage extends Component {
                             <p>PHONE NUMBER</p>
                           </Grid>
                           <Grid item xs={7}>
-                            <TextField name="phone" id="standard-phone" value={this.handlePhone} onChange={this.handlePhoneChange} margin="normal" variant="outlined" disabled={this.state.disabled ? "disabled" : ""} fullWidth />
+                            <TextField
+                              name="phone"
+                              id="standard-phone"
+                              value={this.handlePhone}
+                              onChange={this.handlePhoneChange}
+                              margin="normal"
+                              variant="outlined"
+                              disabled={this.state.disabled ? "disabled" : ""}
+                              fullWidth
+                            />
                           </Grid>
                         </Grid>
                       </Grid>
@@ -219,7 +303,17 @@ class EditProfilePage extends Component {
                             <p>WHERE YOU LIVE</p>
                           </Grid>
                           <Grid item xs={7}>
-                            <TextField name="address" placeholder="Address" id="standard-address" value={this.handleAddress} onChange={this.handleAddressChange} margin="normal" variant="outlined" disabled={this.state.disabled ? "disabled" : ""} fullWidth />
+                            <TextField
+                              name="address"
+                              placeholder="Address"
+                              id="standard-address"
+                              value={this.handleAddress}
+                              onChange={this.handleAddressChange}
+                              margin="normal"
+                              variant="outlined"
+                              disabled={this.state.disabled ? "disabled" : ""}
+                              fullWidth
+                            />
                           </Grid>
                         </Grid>
                       </Grid>
@@ -233,7 +327,17 @@ class EditProfilePage extends Component {
                             <p>DESCRIBE YOURSELF</p>
                           </Grid>
                           <Grid item xs={7}>
-                            <TextField name="description" placeholder="About you" id="standard-description" value={this.handleDescription} onChange={this.handleDescriptionChange} margin="normal" variant="outlined" disabled={this.state.disabled ? "disabled" : ""} fullWidth />
+                            <TextField
+                              name="description"
+                              placeholder="About you"
+                              id="standard-description"
+                              value={this.handleDescription}
+                              onChange={this.handleDescriptionChange}
+                              margin="normal"
+                              variant="outlined"
+                              disabled={this.state.disabled ? "disabled" : ""}
+                              fullWidth
+                            />
                           </Grid>
                         </Grid>
                       </Grid>
@@ -265,12 +369,26 @@ class EditProfilePage extends Component {
                       <Grid item xs={4}></Grid>
 
                       <Grid item xs={4} className="center">
-                        <Button fullWidth size="large" variant="contained" className="submit-button" onClick={this.handleSubmit} disabled={this.state.disabled ? "disabled" : ""}>
+                        <Button
+                          fullWidth
+                          size="large"
+                          variant="contained"
+                          className="submit-button"
+                          onClick={this.handleSubmit}
+                          disabled={this.state.disabled ? "disabled" : ""}
+                        >
                           Save
                         </Button>
                       </Grid>
                       <Grid item xs={2}>
-                        <Button fullWidth size="large" variant="contained" className="submit-button" onClick={this.enableEdit} disabled={this.state.disabled ? "" : "disabled"}>
+                        <Button
+                          fullWidth
+                          size="large"
+                          variant="contained"
+                          className="submit-button"
+                          onClick={this.enableEdit}
+                          disabled={this.state.disabled ? "" : "disabled"}
+                        >
                           Edit
                         </Button>
                       </Grid>

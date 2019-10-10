@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+import dbConnection from "./../db/mongoose";
 
 const ProfileSchema = new Schema({
-  userId: [{
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }],
+    ref: "User"
+  },
   firstName: {
     type: String,
     required: true
@@ -14,11 +15,14 @@ const ProfileSchema = new Schema({
     type: String,
     required: true
   },
-  photo: {
-    data: Buffer, 
-    contentType: String 
+  photoUrl: {
+    type: String
   },
   gender: {
+    type: String,
+    required: true
+  },
+  email: {
     type: String,
     required: true
   },
@@ -26,16 +30,15 @@ const ProfileSchema = new Schema({
     type: Date,
     required: true
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
   phone: {
-    type: Number
+    type: String
   },
-  location: {
+  address: {
     type: String,
+    required: true
+  },
+  rate: {
+    type: Number,
     required: true
   },
   description: {
@@ -44,4 +47,4 @@ const ProfileSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model("Profile", ProfileSchema);
+module.exports = dbConnection.model("Profile", ProfileSchema);
