@@ -9,13 +9,16 @@ import Select from "@material-ui/core/Select";
 
 import Button from "@material-ui/core/Button";
 
+import axios from "axios";
+
 const initalState = {
   firstName: "",
   lastName: "",
   gender: "",
-  dob: "",
+  birthDate: "",
+  email: "",
   phone: "",
-  address: "",
+  location: "",
   description: ""
 };
 
@@ -35,24 +38,48 @@ class ProfilePage extends Component {
   };
 
   handleDobChange = event => {
-    this.setState({ dob: event.target.value });
+    this.setState({ birthDate: event.target.value });
   };
 
   handlePhoneChange = event => {
     this.setState({ phone: event.target.value });
   };
 
-  handleAddressChange = event => {
-    this.setState({ address: event.target.value });
+  handleLocationChange = event => {
+    this.setState({ location: event.target.value });
   };
 
   handleDescriptionChange = event => {
     this.setState({ description: event.target.value });
   };
 
+  handleEmailChange = event => {
+    this.setState({ email: event.target.value });
+  };
+
   handleSubmit = event => {
     event.preventDefault();
     console.log(this.state);
+    axios.post('http://localhost:3001/profile', this.state)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+      })
   };
 
   render() {
@@ -139,9 +166,9 @@ class ProfilePage extends Component {
 
                   <Grid item xs={6}>
                     <TextField
-                      name="dob"
-                      id="standard-dob"
-                      label="dob"
+                      name="birthDate"
+                      id="standard-birthDate"
+                      label="birthDate"
                       value={this.handleDob}
                       onChange={this.handleDobChange}
                       margin="normal"
@@ -182,11 +209,11 @@ class ProfilePage extends Component {
 
                   <Grid item xs={6}>
                     <TextField
-                      name="address"
-                      id="standard-address"
-                      label="address"
-                      value={this.handleAddress}
-                      onChange={this.handleAddressChange}
+                      name="location"
+                      id="standard-location"
+                      label="location"
+                      value={this.handleLocation}
+                      onChange={this.handleLocationChange}
                       margin="normal"
                     />
                   </Grid>
@@ -207,8 +234,8 @@ class ProfilePage extends Component {
                   <Grid item xs={2}></Grid>
 
                   <Grid item xs={12}>
-                    <Button variant="contained" onClick={this.handleSubmit}>
-                      Default
+                    <Button type="submit" variant="contained" onClick={this.handleSubmit}>
+                      Submit
                     </Button>
                   </Grid>
                 </Grid>
