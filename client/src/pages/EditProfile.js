@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import NavigationBar from "./Navbar";
+import axios from "axios";
 
 import SideNavigationBar from "./SideNavBar";
 
@@ -12,13 +13,15 @@ import Button from "@material-ui/core/Button";
 import { Snackbar, IconButton } from "@material-ui/core";
 
 const initalState = {
-  firstName: "",
-  lastName: "",
-  gender: "",
-  birthDate: "",
-  phone: "",
-  address: "",
-  description: "",
+  user: {
+    firstName: "",
+    lastName: "",
+    gender: "",
+    birthDate: "",
+    phone: "",
+    address: "",
+    description: ""
+  },
   disabled: false,
   snackbaropen: true,
   snackbarmsg: "test"
@@ -29,37 +32,58 @@ class EditProfilePage extends Component {
   handleGender = "";
 
   handleFirstNameChange = event => {
-    this.setState({ firstName: event.target.value });
+    let user = { ...this.state.user };
+    user.firstName = event.target.value;
+    this.setState({ user });
   };
 
   handleLastNameChange = event => {
-    this.setState({ lastName: event.target.value });
+    let user = { ...this.state.user };
+    user.lastName = event.target.value;
+    this.setState({ user });
   };
 
   handleGenderChange = event => {
-    this.setState({ gender: event.target.value });
-    this.handleGender = event.target.value;
+    let user = { ...this.state.user };
+    user.gender = event.target.value;
+    this.setState({ user });
   };
 
   handleDobChange = event => {
-    this.setState({ birthDate: event.target.value });
+    let user = { ...this.state.user };
+    user.birthDate = event.target.value;
+    this.setState({ user });
   };
 
   handlePhoneChange = event => {
-    this.setState({ phone: event.target.value });
+    let user = { ...this.state.user };
+    user.phone = event.target.value;
+    this.setState({ user });
   };
 
   handleAddressChange = event => {
-    this.setState({ address: event.target.value });
+    let user = { ...this.state.user };
+    user.address = event.target.value;
+    this.setState({ user });
   };
 
   handleDescriptionChange = event => {
-    this.setState({ description: event.target.value });
+    let user = { ...this.state.user };
+    user.description = event.target.value;
+    this.setState({ user });
   };
 
   handleSubmit = event => {
     event.preventDefault();
     console.log(this.state);
+    axios
+      .post("/profile", this.state.user)
+      .then(res => {
+        console.log("res", res);
+      })
+      .catch(err => {
+        console.log("err", { err });
+      });
     this.setState({ disabled: true });
   };
 

@@ -22,19 +22,18 @@ const ProfileSchema = new Schema({
     type: String,
     required: true
   },
+  email: {
+    type: String,
+    required: true
+  },
   birthDate: {
     type: Date,
     required: true
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
   phone: {
-    type: Number
+    type: String
   },
-  location: {
+  address: {
     type: String,
     required: true
   },
