@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import Avatar from '@material-ui/core/Avatar';
+import Avatar from "@material-ui/core/Avatar";
 import { Snackbar, IconButton } from "@material-ui/core";
 import NavigationBar from "./Navbar";
 import SideNavigationBar from "./SideNavBar";
 import Button from "@material-ui/core/Button";
+import axios from "axios";
 
 import { withStyles } from "@material-ui/core/styles";
 
@@ -13,36 +14,54 @@ import "../App.scss";
 
 const photoPageStyle = theme => ({
   photoContainer: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
-  container:{
-    marginBottom: theme.spacing(100),
+  container: {
+    marginBottom: theme.spacing(100)
   },
   bigAvatar: {
     width: 300,
-    height: 300,
+    height: 300
   }
 });
 
 class PhotoPage extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       file: null
-    }
-    this.handlePhotoChange = this.handlePhotoChange.bind(this)
+    };
+    this.handlePhotoChange = this.handlePhotoChange.bind(this);
   }
 
   handlePhotoChange(event) {
     this.setState({
-      file: URL.createObjectURL(event.target.files[0])
-    })
+      file: event.target.files[0]
+    });
   }
 
   handleSubmit = event => {
     event.preventDefault();
     console.log(this.state);
+    let image = this.state.file;
+    if (image) {
+      let formData = new FormData();
+      formData.append("image", image);
+      axios
+        .post("/files/image-upload", formData, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(res => {
+          // res.data.imageUrl has the public image url you can use
+          console.log(res.data);
+        })
+        .catch(err => {
+          console.log({ err });
+        });
+    }
   };
 
   render() {
@@ -81,17 +100,44 @@ class PhotoPage extends Component {
                       <Grid item xs={12} className="center">
                         <h1>Profile Photo</h1>
                       </Grid>
-                      <Grid item xs={12} container justify="center" alignItems="center">
-                        <Avatar alt="Your Profile Picture" src={this.state.file} className={classes.bigAvatar} onClick={this.changePhoto} />
+                      <Grid
+                        item
+                        xs={12}
+                        container
+                        justify="center"
+                        alignItems="center"
+                      >
+                        <Avatar
+                          alt="Your Profile Picture"
+                          src={this.state.file}
+                          className={classes.bigAvatar}
+                          onClick={this.changePhoto}
+                        />
                       </Grid>
-                      <Grid item xs={12} container justify="center" alignItems="center">
-                        <label>Make sure your photo clearly shows your face</label>
+                      <Grid
+                        item
+                        xs={12}
+                        container
+                        justify="center"
+                        alignItems="center"
+                      >
+                        <label>
+                          Make sure your photo clearly shows your face
+                        </label>
                       </Grid>
-                      <Grid item xs={12} container spacing={50} justify="center" alignItems="center" style={{ margin: 20 }}>
+                      <Grid
+                        item
+                        xs={12}
+                        container
+                        spacing={10}
+                        justify="center"
+                        alignItems="center"
+                        style={{ margin: 20 }}
+                      >
                         <input
                           accept="image/*"
                           className={classes.input}
-                          className = "invisible"
+                          className="invisible"
                           id="contained-button-file"
                           multiple
                           type="file"
@@ -99,16 +145,26 @@ class PhotoPage extends Component {
                           onChange={this.handlePhotoChange}
                         />
                         <label htmlFor="contained-button-file">
-                          <Button variant="contained" component="span" className={classes.button}>
+                          <Button
+                            variant="contained"
+                            component="span"
+                            className={classes.button}
+                          >
                             Upload a file from your device
-                            </Button>
+                          </Button>
                         </label>
                       </Grid>
                     </Grid>
                     <Grid item xs={12} className="center">
-                      <Button fullWidth size="large" variant="contained" className="submit-button" onClick={this.handleSubmit}>
+                      <Button
+                        fullWidth
+                        size="large"
+                        variant="contained"
+                        className="submit-button"
+                        onClick={this.handleSubmit}
+                      >
                         Save
-                        </Button>
+                      </Button>
                     </Grid>
                   </form>
                 </div>
