@@ -10,9 +10,9 @@ This app allows dog owners to see dog sitter's profiles and reviews, so dog owne
 The following software is required to be installed on your system:
 
 * NodeJS
-    * The projects uses NodeJs as a backend language. Installation tutorial is [here]. 
+    * The project uses NodeJs as a backend language. Make sure you have [NodeJS] installed.
 
-[here]: https://nodejs.org/en/download/    
+[NodeJS]: https://nodejs.org/en/download/    
     
 * MongoDB 
     * The project uses MongoDB as a database. Installation tutorial is here [here].
