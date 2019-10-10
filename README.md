@@ -22,11 +22,11 @@ The following software is required to be installed on your system:
 
 ## Getting Started 
 
-* To get started, clone the repo to your local machime.
+* To get started, clone the repo to your local machine.
 
     ```https://github.com/hatchways/team-hazelnut.git```
 
-* Install all dependencies on the both fron end and back end. 
+* Install all dependencies on the both front end and back end. 
 
     **Frontend (Client)**
 
@@ -36,13 +36,13 @@ The following software is required to be installed on your system:
 
     **Backend (Server)**
         
-    * Got to server directory, and run `npm install`.
+    * Go to server directory, and run `npm install`.
 
     * To start server, run `npm start`.
 
 * Ensure that you have MongoDB installed globally on your system.
 
-    *  Open a `Command` or `Terminal` and run `mongod (or sudo mongod)` to start 
+    *  Open Command or Command Prompt and run `mongod (or sudo mongod)` to start 
         the MongoDB daemon.
 
         
