@@ -19,6 +19,7 @@ const initalState = {
   phone: "",
   address: "",
   description: "",
+  rate: "",
   disabled: true,
   snackbaropen: true,
   snackbarmsg: "test"
@@ -55,6 +56,10 @@ class EditProfilePage extends Component {
 
   handleDescriptionChange = event => {
     this.setState({ description: event.target.value });
+  };
+
+  handleRateChange = event => {
+    this.setState({ rate: event.target.value });
   };
 
   handleSubmit = event => {
@@ -229,6 +234,29 @@ class EditProfilePage extends Component {
                           </Grid>
                           <Grid item xs={7}>
                             <TextField name="description" placeholder="About you" id="standard-description" value={this.handleDescription} onChange={this.handleDescriptionChange} margin="normal" variant="outlined" disabled={this.state.disabled ? "disabled" : ""} fullWidth />
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={2}></Grid>
+
+                      {/*Hourly Rate*/}
+                      <Grid item xs={1}></Grid>
+                      <Grid item xs={9}>
+                        <Grid container spacing={3}>
+                          <Grid item xs={5} className="text-right">
+                            <p>YOUR HOURLY RATE</p>
+                          </Grid>
+                          <Grid item xs={7}>
+                            <TextField 
+                            name="rate" 
+                            placeholder="Your hourly rate" 
+                            id="standard-rate" 
+                            value={this.handleRate} 
+                            onChange={this.handleRateChange} 
+                            margin="normal" 
+                            variant="outlined" 
+                            disabled={this.state.disabled ? "disabled" : ""} 
+                            fullWidth />
                           </Grid>
                         </Grid>
                       </Grid>

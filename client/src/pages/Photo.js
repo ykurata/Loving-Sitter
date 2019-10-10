@@ -19,6 +19,7 @@ const photoPageStyle = theme => ({
     marginBottom: theme.spacing(100),
   },
   bigAvatar: {
+    //Make Responsize
     width: 300,
     height: 300,
   }
