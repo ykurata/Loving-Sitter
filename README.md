@@ -15,7 +15,7 @@ The following software is required to be installed on your system:
 [NodeJS]: https://nodejs.org/en/download/    
     
 * MongoDB 
-    * The project uses MongoDB as a database. Installation tutorial is here [here].
+    * The project uses MongoDB as a database. Installation tutorial is [here].
 
 [here]: https://docs.mongodb.com/manual/installation/
 
