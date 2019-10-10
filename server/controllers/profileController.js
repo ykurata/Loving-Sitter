@@ -70,6 +70,7 @@ module.exports.profile_create_post = async function(req, res, next) {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     gender: req.body.gender,
+    email: req.body.email,
     birthDate: req.body.birthDate,
     phone: req.body.phone,
     address: req.body.address,
@@ -79,6 +80,7 @@ module.exports.profile_create_post = async function(req, res, next) {
     firstName: "First name",
     lastName: "Last name",
     gender: "Gender",
+    email: "Email",
     birthDate: "Birth Date",
     phone: "Phone",
     address: "Address",
@@ -99,7 +101,6 @@ module.exports.profile_create_post = async function(req, res, next) {
 
   // Create a Profile object with escaped and trimmed data.
   var profile = await Profile.findOne({ userId: user.userId });
-  console.log("PROFILE           ", profile);
   if (!profile) {
     profile = new Profile(user);
   } else {
