@@ -49,10 +49,10 @@ The following software is required to be installed on your system:
 
 ## Built With 
 
-* [NodeJs](https://nodejs.org/en/download/)
+* [NodeJS](https://nodejs.org/en/download/)
 * [MongoDB](https://www.mongodb.com/)
 * [ExpressJS](https://expressjs.com/)
-* [ReactJs](https://reactjs.org/)
+* [ReactJS](https://reactjs.org/)
 
 
 ## Authors 
