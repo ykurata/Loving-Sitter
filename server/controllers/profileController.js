@@ -1,5 +1,6 @@
 //Needs to create the profile models later
 import Profile from "../models/Profile";
+import mongoose from "mongoose";
 
 import { body, validationResult } from "express-validator/check";
 import { sanitizeBody } from "express-validator/filter";
@@ -64,7 +65,7 @@ exports.profile_detail = function(req, res, next) {
 };
 
 // Handle profile create on POST.
-module.exports.profile_create_post = async function(req, res, next) {
+module.exports.createOrUpdateProfile = async function(req, res, next) {
   // Validate fields.
   const user = {
     firstName: req.body.firstName,
@@ -113,6 +114,22 @@ module.exports.profile_create_post = async function(req, res, next) {
   res.status(200).json({ message: `Profile successfully updated!` });
 };
 
+module.exports.getProfile = async function(req, res, next) {
+  if (mongoose.Types.ObjectId.isValid(req.body.userId)) {
+    let profile = await Profile.findOne(
+      { userId: req.body.userId },
+      (err, profile) => {
+        if (err) {
+          res.status(404).json({ error: "Profile not found" });
+        } else {
+          res.status(200).json({ profile: profile });
+        }
+      }
+    );
+  } else {
+    res.status(404).json({ error: "Invalid user ID" });
+  }
+};
 // Display profile delete form on GET.
 exports.profile_delete_get = function(req, res, next) {
   async.parallel(

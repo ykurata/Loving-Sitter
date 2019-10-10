@@ -37,6 +37,10 @@ const ProfileSchema = new Schema({
     type: String,
     required: true
   },
+  rate: {
+    type: Number,
+    required: true
+  },
   description: {
     type: String,
     required: true
