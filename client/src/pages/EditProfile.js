@@ -339,7 +339,7 @@ class EditProfilePage extends Component {
                       <Grid item xs={4}></Grid>
 
                       <Grid item xs={4} className="center">
-                        {this.state.edit == "1" ? (
+                        {this.state.edit === "1" ? (
                           <Button
                             fullWidth
                             size="large"
@@ -362,7 +362,7 @@ class EditProfilePage extends Component {
                         )}
                       </Grid>
 
-                      {this.state.edit == "1" ? (
+                      {this.state.edit === "1" ? (
                         <Grid item xs={2}>
                           <Button
                             variant="outlined"

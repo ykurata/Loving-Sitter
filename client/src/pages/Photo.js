@@ -82,7 +82,7 @@ class PhotoPage extends Component {
               <form>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
-                    <img src={this.state.file} />
+                    <img src={this.state.file} alt=""/>
                   </Grid>
                   <Grid item xs={12}>
                     <input type="file" name="pic" accept="image/*" onChange={this.handlePhotoChange} />
