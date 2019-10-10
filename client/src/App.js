@@ -21,7 +21,7 @@ function App() {
         <Route path="/signup" component={SignUpPage} />
         <Route path="/profile" component={EditProfilePage} />
         <Route path="/profile-payment" component={ProfilePayment} />
-        <Route path="/photo" component={PhotoPage} />
+        <Route path="/profile-photo" component={PhotoPage} />
       </BrowserRouter>
     </MuiThemeProvider>
   );

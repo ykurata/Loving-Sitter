@@ -10,7 +10,7 @@ import dbConnection from "./db/mongoose";
 import indexRouter from "./routes/index";
 import profileRouter from "./routes/profile";
 import pingRouter from "./routes/ping";
-
+import photoRouter from "./routes/photo";
 import usersRouter from "./routes/users";
 import fileUploadRouter from "./routes/file-upload";
 
@@ -29,6 +29,7 @@ require("./libs/passport")(passport);
 app.use("/", indexRouter);
 app.use("/profile", profileRouter);
 app.use("/ping", pingRouter);
+app.use("/profile-photo", photoRouter);
 app.use("/users", usersRouter);
 app.use("/files", fileUploadRouter);
 

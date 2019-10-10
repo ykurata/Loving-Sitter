@@ -240,6 +240,31 @@ class EditProfilePage extends Component {
                       </Grid>
                       <Grid item xs={2}></Grid>
 
+                      {/* Email */}
+
+                      <Grid item xs={1}></Grid>
+                      <Grid item xs={9}>
+                        <Grid container spacing={3}>
+                          <Grid item xs={5} className="text-right">
+                            <p>EMAIL ADDRESS</p>
+                          </Grid>
+                          <Grid item xs={7}>
+                            <TextField
+                              name="email"
+                              placeholder="john-doe.s@gmail.com"
+                              id="standard-email"
+                              value={this.handleEmail}
+                              onChange={this.handleEmailChange}
+                              margin="normal"
+                              variant="outlined"
+                              disabled={this.state.disabled ? "disabled" : ""}
+                              fullWidth
+                            />
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={2}></Grid>
+
                       {/* Phone number */}
 
                       <Grid item xs={1}></Grid>
