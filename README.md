@@ -27,15 +27,15 @@ The following software is required to be installed on your system:
 
     **Frontend (Client)**
 
-        * Go to client directory, and run `npm install`.
+    * Go to client directory, and run `npm install`.
 
-        * To start client, run `npm start`.
+    * To start client, run `npm start`.
 
     **Backend (Server)**
         
-        * Got to server directory, and run `npm install`.
+    * Got to server directory, and run `npm install`.
 
-        * To start server, run `npm start`.
+    * To start server, run `npm start`.
 
 * Ensure that you have MongoDB installed globally on your system.
 
