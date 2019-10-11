@@ -6,6 +6,6 @@ var profile_controller = require("../controllers/profileController");
 
 router.post("/", authenticate, profile_controller.createOrUpdateProfile);
 router.post("/getProfile", profile_controller.getProfile);
-router.put('/updateProfile/:id', authenticate, profile_controller.profileUpdatePost);
+router.put('/update/:id', authenticate, profile_controller.profileUpdatePost);
 
 module.exports = router;
