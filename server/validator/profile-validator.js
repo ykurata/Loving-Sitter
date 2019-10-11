@@ -54,7 +54,7 @@ function ValidateProfileInput(data){
 
     // rate check
     if (Validator.isEmpty(data.rate)) {
-        errors.rate = "Rate is required";
+        errors.rate = "Hourly rate is required";
     } else if (!Validator.isNumeric(data.rate)) {
         errors.rate = "Please enter number";
     }

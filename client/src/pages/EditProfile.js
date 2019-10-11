@@ -372,36 +372,6 @@ class EditProfilePage extends Component {
                       </Grid>
                       <Grid item xs={2}></Grid>
 
-                      {/* Rate */}
-
-                      <Grid item xs={1}></Grid>
-                      <Grid item xs={9}>
-                        <Grid container spacing={3}>
-                          <Grid item xs={5} className="text-right">
-                            <p>HOURLY RATE</p>
-                            {
-                              (this.state.errors)
-                              ? <div style={{ color: "red" }}>{this.state.errors.rate}</div>
-                              : <div></div>
-                            }
-                          </Grid>
-                          <Grid item xs={7}>
-                            <TextField
-                              name="rate"
-                              placeholder="Hourly Rate"
-                              id="standard-rate"
-                              value={this.handleRate}
-                              onChange={this.handleRateChange}
-                              margin="normal"
-                              variant="outlined"
-                              disabled={this.state.disabled ? "disabled" : ""}
-                              fullWidth
-                            />
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                      <Grid item xs={2}></Grid>
-
                       {/* Description */}
                       <Grid item xs={1}></Grid>
                       <Grid item xs={9}>
@@ -426,6 +396,34 @@ class EditProfilePage extends Component {
                               disabled={this.state.disabled ? "disabled" : ""}
                               fullWidth
                             />
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={2}></Grid>
+
+                      {/*Hourly Rate*/}
+                      <Grid item xs={1}></Grid>
+                      <Grid item xs={9}>
+                        <Grid container spacing={3}>
+                          <Grid item xs={5} className="text-right">
+                            <p>YOUR HOURLY RATE</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.rate}</div>
+                              : <div></div>
+                            }
+                          </Grid>
+                          <Grid item xs={7}>
+                            <TextField 
+                            name="rate" 
+                            placeholder="Your hourly rate" 
+                            id="standard-rate" 
+                            value={this.handleRate} 
+                            onChange={this.handleRateChange} 
+                            margin="normal" 
+                            variant="outlined" 
+                            disabled={this.state.disabled ? "disabled" : ""} 
+                            fullWidth />
                           </Grid>
                         </Grid>
                       </Grid>
