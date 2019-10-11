@@ -6,7 +6,7 @@ import { body, validationResult } from "express-validator/check";
 import { sanitizeBody } from "express-validator/filter";
 
 
-// import input validation
+// import input profile input validation
 const validateProfileInput = require("../validator/profile-validator");
 
 // TESTING
@@ -69,7 +69,7 @@ exports.profile_detail = function(req, res, next) {
 };
 
 // Handle profile create on POST.
-module.exports.createOrUpdateProfile = function(req, res, next) {
+module.exports.createProfile = function(req, res, next) {
   // Form validation
   const { errors, isValid } = validateProfileInput(req.body);
 
@@ -78,7 +78,7 @@ module.exports.createOrUpdateProfile = function(req, res, next) {
     return res.status(400).json(errors);
   }
 
-  const profile =  new Profile({
+  const profile = new Profile({
     userId: req.user,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -146,6 +146,7 @@ module.exports.getProfile = async function(req, res, next) {
     res.status(404).json({ error: "Invalid user ID" });
   }
 };
+
 // Display profile delete form on GET.
 exports.profile_delete_get = function(req, res, next) {
   async.parallel(

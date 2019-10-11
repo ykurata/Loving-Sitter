@@ -34,7 +34,7 @@ function ValidateProfileInput(data){
     if (Validator.isEmpty(data.email)) {
         errors.email = "Email is required";
     } else if (!Validator.isEmail(data.email)) {
-        errors.email = "Eamil is invalid";
+        errors.email = "Email is invalid";
     }
 
     // birthDate check
