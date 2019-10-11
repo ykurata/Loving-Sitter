@@ -1,10 +1,13 @@
 //Needs to create the profile models later
 import Profile from "../models/Profile";
 import mongoose from "mongoose";
-import validator from "validator";
 
 import { body, validationResult } from "express-validator/check";
 import { sanitizeBody } from "express-validator/filter";
+
+
+// import input validation
+const validateProfileInput = require("../validator/profile-validator");
 
 // TESTING
 // Display list of all profiles.
@@ -67,7 +70,16 @@ exports.profile_detail = function(req, res, next) {
 
 // Handle profile create on POST.
 module.exports.createOrUpdateProfile = function(req, res, next) {
-  const profile = new Profile({
+  // Form validation
+  const { errors, isValid } = validateProfileInput(req.body);
+
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const profile =  new Profile({
+    userId: req.user,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     gender: req.body.gender,
@@ -76,56 +88,46 @@ module.exports.createOrUpdateProfile = function(req, res, next) {
     phone: req.body.phone,
     address: req.body.address,
     description: req.body.description,
-    rate: req.body.rate,
+    rate: req.body.rate
   });
 
-  // Validate required fields.
-  if (!req.body.firstName) {
-    res.status(400).json({ error: "First Name is required" });
-    next();
-  }
-  if (!req.body.lastName) {
-    res.status(400).json({ error: "Last name is required" });
-    next();
-  }
-  if (!req.body.gender) {
-    res.status(400).json({ error: "Please select your gender" });
-    next();
-  }
-  if (!req.body.email) {
-    res.status(400).json({ error: "Email is required" });
-    next();
-  }
-  if (!validator.isEmail(email)) {
-    res.status(400).json({ error: "Incorrect email format" });
-    next();
-  }
-  if (!req.body.birthDate) {
-    res.status(400).json({ error: "Birth Date is required" });
-    next();
-  }
-  if (!req.body.phone) {
-    res.status(400).json({ error: "Phone number is required" });
-    next();
-  }
-  if (!req.body.address) {
-    res.status(400).json({ error: "Address is required" });
-    next();
-  }
-  if (!req.body.description) {
-    res.status(400).json({ error: "Description is required" });
-    next();
-  }
-  if (!req.body.rate) {
-    res.status(400).json({ error: "Please enter your hourly rate" });
-    next();
-  }
-  
-  profile.save(function(err, profile) {
+  profile.save(function(err, profile){
     if (err) return next(err);
+    console.log("USER SAVED!");
     res.json(profile);
   });
 };
+
+
+//Handle profile update on POST.
+module.exports.profileUpdatePost = function(req, res, next) {
+  // Form validation
+  const { errors, isValid } = validateProfileInput(req.body);
+
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  Profile.findById(req.params.id, function(err, profile){
+    if (err) return next(err);
+    profile.firstName = req.body.firstName,
+    profile.lastName = req.body.lastName,
+    profile.gender = req.body.gender,
+    profile.email = req.body.email,
+    profile.birthDate = req.body.birthDate,
+    profile.phone = req.body.phone,
+    profile.address = req.body.address,
+    profile.description = req.body.description,
+    profile.rate = req.body.rate
+
+    profile.save(function(err, profile){
+      if (err) return next(err);
+      res.json(profile);
+    });
+  });
+}
+ 
 
 
 module.exports.getProfile = async function(req, res, next) {
@@ -273,106 +275,6 @@ exports.profile_update_get = function(req, res, next) {
   );
 };
 
-// NEEDS FIXING
-// Handle profile update on POST.
-exports.profile_update_post = [
-  // Validate fields.
-  body("firstName", "First Name must not be empty.")
-    .isLength({ min: 1 })
-    .trim(),
-  body("lastName", "Last Name must not be empty.")
-    .isLength({ min: 1 })
-    .trim(),
-  body("gender", "Gender must not be empty.")
-    .isLength({ min: 1 })
-    .trim(),
-  body("birthDate", "Birth date must not be empty")
-    .isLength({ min: 1 })
-    .trim(),
-  body("email", "Email must not be empty")
-    .isLength({ min: 1 })
-    .trim(),
-  body("phone", "Phone must not be empty")
-    .isLength({ min: 1 })
-    .trim(),
-  body("location", "Location must not be empty")
-    .isLength({ min: 1 })
-    .trim(),
-  body("description", "Description must not be empty")
-    .isLength({ min: 1 })
-    .trim(),
 
-  // Sanitize fields.
-  sanitizeBody("firstName").escape(),
-  sanitizeBody("lastName").escape(),
-  sanitizeBody("gender").escape(),
-  sanitizeBody("birthDate").escape(),
-  sanitizeBody("email").escape(),
-  sanitizeBody("phone").escape(),
-  sanitizeBody("location").escape(),
-  sanitizeBody("description").escape(),
 
-  // Process request after validation and sanitization.
-  (req, res, next) => {
-    // Extract the validation errors from a request.
-    const errors = validationResult(req);
-
-    // Create a Profile object with escaped/trimmed data and old id.
-    var profile = new Profile({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      gender: req.body.gender,
-      birthDate: req.body.birthDate,
-      email: req.body.email,
-      phone: req.body.phone,
-      location: req.body.location,
-      description: req.body.description,
-      _id: req.params.id // This is required, or a new ID will be assigned!
-    });
-
-    if (!errors.isEmpty()) {
-      // There are errors. Render form again with sanitized values/error messages.
-
-      // Get all firstNames and lastNames for form
-      async.parallel(
-        {
-          id: function(callback) {
-            Profile.find(callback);
-          }
-        },
-        function(err, results) {
-          if (err) {
-            return next(err);
-          }
-
-          // Mark our selected lastNames as checked.
-          for (let i = 0; i < results.lastNames.length; i++) {
-            if (profile.lastName.indexOf(results.lastNames[i]._id) > -1) {
-              results.lastNames[i].checked = "true";
-            }
-          }
-          res.render("profile_form", {
-            title: "Update Profile",
-            firstNames: results.firstNames,
-            lastNames: results.lastNames,
-            profile: profile,
-            errors: errors.array()
-          });
-        }
-      );
-      return;
-    } else {
-      // Data from form is valid. Update the record.
-      Profile.findByIdAndUpdate(req.params.id, profile, {}, function(
-        err,
-        profile
-      ) {
-        if (err) {
-          return next(err);
-        }
-        // Successful - redirect to profile detail page.
-        res.redirect(profile.url);
-      });
-    }
-  }
-];
+  
