@@ -11,6 +11,7 @@ import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/Signup";
 import EditProfilePage from "./pages/EditProfile";
 import ProfilePayment from "./pages/ProfilePayment";
+import MyJobsPage from "./pages/MyJobs";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/profile" component={EditProfilePage} />
         <Route path="/profile-payment" component={ProfilePayment} />
         <Route path="/profile-photo" component={PhotoPage} />
+        <Route path="/my-jobs" component={MyJobsPage} />
       </BrowserRouter>
     </MuiThemeProvider>
   );
