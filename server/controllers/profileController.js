@@ -1,6 +1,7 @@
 //Needs to create the profile models later
 import Profile from "../models/Profile";
 import mongoose from "mongoose";
+import validator from "validator";
 
 import { body, validationResult } from "express-validator/check";
 import { sanitizeBody } from "express-validator/filter";
@@ -65,9 +66,8 @@ exports.profile_detail = function(req, res, next) {
 };
 
 // Handle profile create on POST.
-module.exports.createOrUpdateProfile = async function(req, res, next) {
-  // Validate fields.
-  const user = {
+module.exports.createOrUpdateProfile = function(req, res, next) {
+  const profile = new Profile({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     gender: req.body.gender,
@@ -75,44 +75,58 @@ module.exports.createOrUpdateProfile = async function(req, res, next) {
     birthDate: req.body.birthDate,
     phone: req.body.phone,
     address: req.body.address,
-    description: req.body.description
-  };
-  const dict = {
-    firstName: "First name",
-    lastName: "Last name",
-    gender: "Gender",
-    email: "Email",
-    birthDate: "Birth Date",
-    phone: "Phone",
-    address: "Address",
-    description: "Description of services"
-  };
+    description: req.body.description,
+    rate: req.body.rate,
+  });
 
-  const keys = Object.keys(user);
-
-  for (const key of keys) {
-    if (!user[key]) {
-      res.status(400).json({ error: `${dict[key]} is required` });
-      next();
-    }
+  // Validate required fields.
+  if (!req.body.firstName) {
+    res.status(400).json({ error: "First Name is required" });
+    next();
   }
-
-  // adding userId
-  user.userId = req.user;
-
-  // Create a Profile object with escaped and trimmed data.
-  var profile = await Profile.findOne({ userId: user.userId });
-  if (!profile) {
-    profile = new Profile(user);
-  } else {
-    for (const key of keys) {
-      profile[key] = user[key];
-    }
+  if (!req.body.lastName) {
+    res.status(400).json({ error: "Last name is required" });
+    next();
   }
-  await profile.save();
-  console.log("USER SAVED!");
-  res.status(200).json({ message: `Profile successfully updated!` });
+  if (!req.body.gender) {
+    res.status(400).json({ error: "Please select your gender" });
+    next();
+  }
+  if (!req.body.email) {
+    res.status(400).json({ error: "Email is required" });
+    next();
+  }
+  if (!validator.isEmail(email)) {
+    res.status(400).json({ error: "Incorrect email format" });
+    next();
+  }
+  if (!req.body.birthDate) {
+    res.status(400).json({ error: "Birth Date is required" });
+    next();
+  }
+  if (!req.body.phone) {
+    res.status(400).json({ error: "Phone number is required" });
+    next();
+  }
+  if (!req.body.address) {
+    res.status(400).json({ error: "Address is required" });
+    next();
+  }
+  if (!req.body.description) {
+    res.status(400).json({ error: "Description is required" });
+    next();
+  }
+  if (!req.body.rate) {
+    res.status(400).json({ error: "Please enter your hourly rate" });
+    next();
+  }
+  
+  profile.save(function(err, profile) {
+    if (err) return next(err);
+    res.json(profile);
+  });
 };
+
 
 module.exports.getProfile = async function(req, res, next) {
   if (mongoose.Types.ObjectId.isValid(req.body.userId)) {
