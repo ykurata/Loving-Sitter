@@ -20,9 +20,6 @@ const photoPageStyle = theme => ({
         width: 100,
         height: 100,
         margin: "10px"
-      },
-      boxShadow: {
-        boxShadow: "0px 0px 10px 10px lightgrey"
       }
     });
 
@@ -44,7 +41,7 @@ class MyJobsPage extends Component {
 
         <Grid item xs={8}>
            
-        <Card className={classes.boxShadow}>
+        <Card>
       <div>
       <Grid container spacing={3}>
         <Grid item xs={2}
