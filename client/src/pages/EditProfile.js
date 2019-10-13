@@ -166,7 +166,7 @@ class EditProfilePage extends Component {
                             {
                               (this.state.errors)
                               ? <div style={{ color: "red" }}>{this.state.errors.firstName}</div>
-                              : <div></div>
+                              : null
                             }
                           </Grid>
                           <Grid item xs={7}>
@@ -196,7 +196,7 @@ class EditProfilePage extends Component {
                             {
                               (this.state.errors)
                               ? <div style={{ color: "red" }}>{this.state.errors.lastName}</div>
-                              : <div></div>
+                              : null
                             }
                           </Grid>
                           <Grid item xs={7}>
@@ -263,7 +263,7 @@ class EditProfilePage extends Component {
                             {
                               (this.state.errors)
                               ? <div style={{ color: "red" }}>{this.state.errors.birthDate}</div>
-                              : <div></div>
+                              : null
                             }
                           </Grid>
                           <Grid item xs={7}>
@@ -293,7 +293,7 @@ class EditProfilePage extends Component {
                             {
                               (this.state.errors)
                               ? <div style={{ color: "red" }}>{this.state.errors.email}</div>
-                              : <div></div>
+                              : null
                             }
                           </Grid>
                           <Grid item xs={7}>
@@ -323,7 +323,7 @@ class EditProfilePage extends Component {
                             {
                               (this.state.errors)
                               ? <div style={{ color: "red" }}>{this.state.errors.phone}</div>
-                              : <div></div>
+                              : null
                             }
                           </Grid>
                           <Grid item xs={7}>
@@ -352,7 +352,7 @@ class EditProfilePage extends Component {
                             {
                               (this.state.errors)
                               ? <div style={{ color: "red" }}>{this.state.errors.address}</div>
-                              : <div></div>
+                              : null
                             }
                           </Grid>
                           <Grid item xs={7}>
@@ -381,7 +381,7 @@ class EditProfilePage extends Component {
                             {
                               (this.state.errors)
                               ? <div style={{ color: "red" }}>{this.state.errors.description}</div>
-                              : <div></div>
+                              : null
                             }
                           </Grid>
                           <Grid item xs={7}>
@@ -410,7 +410,7 @@ class EditProfilePage extends Component {
                             {
                               (this.state.errors)
                               ? <div style={{ color: "red" }}>{this.state.errors.rate}</div>
-                              : <div></div>
+                              : null
                             }
                           </Grid>
                           <Grid item xs={7}>
