@@ -32,7 +32,6 @@ const initalState = {
 
 class EditProfilePage extends Component {
   state = initalState;
-  handleGender = "";
 
   handleFirstNameChange = event => {
     let user = { ...this.state.user };
@@ -226,7 +225,7 @@ class EditProfilePage extends Component {
                             {
                               (this.state.errors)
                               ? <div style={{ color: "red" }}>{this.state.errors.gender}</div>
-                              : <div></div>
+                              : null
                             }
                           </Grid>
                           <Grid item xs={7}>
@@ -235,7 +234,7 @@ class EditProfilePage extends Component {
                               name="gender"
                               id="standard-gender"
                               label="gender"
-                              value={this.handleGender}
+                              value={this.state.user.gender}
                               onChange={this.handleGenderChange}
                               margin="normal"
                               variant="outlined"
