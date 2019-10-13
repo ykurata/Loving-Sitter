@@ -5,6 +5,10 @@ import mongoose from "mongoose";
 import { body, validationResult } from "express-validator/check";
 import { sanitizeBody } from "express-validator/filter";
 
+
+// import input profile input validation
+const validateProfileInput = require("../validator/profile-validator");
+
 // TESTING
 // Display list of all profiles.
 exports.profile_list = function(req, res, next) {
@@ -65,9 +69,17 @@ exports.profile_detail = function(req, res, next) {
 };
 
 // Handle profile create on POST.
-module.exports.createOrUpdateProfile = async function(req, res, next) {
-  // Validate fields.
-  const user = {
+module.exports.createProfile = function(req, res, next) {
+  // Form validation
+  const { errors, isValid } = validateProfileInput(req.body);
+
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const profile = new Profile({
+    userId: req.user,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     gender: req.body.gender,
@@ -75,44 +87,48 @@ module.exports.createOrUpdateProfile = async function(req, res, next) {
     birthDate: req.body.birthDate,
     phone: req.body.phone,
     address: req.body.address,
-    description: req.body.description
-  };
-  const dict = {
-    firstName: "First name",
-    lastName: "Last name",
-    gender: "Gender",
-    email: "Email",
-    birthDate: "Birth Date",
-    phone: "Phone",
-    address: "Address",
-    description: "Description of services"
-  };
+    description: req.body.description,
+    rate: req.body.rate
+  });
 
-  const keys = Object.keys(user);
-
-  for (const key of keys) {
-    if (!user[key]) {
-      res.status(400).json({ error: `${dict[key]} is required` });
-      next();
-    }
-  }
-
-  // adding userId
-  user.userId = req.user;
-
-  // Create a Profile object with escaped and trimmed data.
-  var profile = await Profile.findOne({ userId: user.userId });
-  if (!profile) {
-    profile = new Profile(user);
-  } else {
-    for (const key of keys) {
-      profile[key] = user[key];
-    }
-  }
-  await profile.save();
-  console.log("USER SAVED!");
-  res.status(200).json({ message: `Profile successfully updated!` });
+  profile.save(function(err, profile){
+    if (err) return next(err);
+    console.log("USER SAVED!");
+    res.json(profile);
+  });
 };
+
+
+//Handle profile update on POST.
+module.exports.profileUpdatePost = function(req, res, next) {
+  // Form validation
+  const { errors, isValid } = validateProfileInput(req.body);
+
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  Profile.findById(req.params.id, function(err, profile){
+    if (err) return next(err);
+    profile.firstName = req.body.firstName,
+    profile.lastName = req.body.lastName,
+    profile.gender = req.body.gender,
+    profile.email = req.body.email,
+    profile.birthDate = req.body.birthDate,
+    profile.phone = req.body.phone,
+    profile.address = req.body.address,
+    profile.description = req.body.description,
+    profile.rate = req.body.rate
+
+    profile.save(function(err, profile){
+      if (err) return next(err);
+      res.json(profile);
+    });
+  });
+}
+ 
+
 
 module.exports.getProfile = async function(req, res, next) {
   if (mongoose.Types.ObjectId.isValid(req.body.userId)) {
@@ -130,6 +146,7 @@ module.exports.getProfile = async function(req, res, next) {
     res.status(404).json({ error: "Invalid user ID" });
   }
 };
+
 // Display profile delete form on GET.
 exports.profile_delete_get = function(req, res, next) {
   async.parallel(
@@ -259,106 +276,6 @@ exports.profile_update_get = function(req, res, next) {
   );
 };
 
-// NEEDS FIXING
-// Handle profile update on POST.
-exports.profile_update_post = [
-  // Validate fields.
-  body("firstName", "First Name must not be empty.")
-    .isLength({ min: 1 })
-    .trim(),
-  body("lastName", "Last Name must not be empty.")
-    .isLength({ min: 1 })
-    .trim(),
-  body("gender", "Gender must not be empty.")
-    .isLength({ min: 1 })
-    .trim(),
-  body("birthDate", "Birth date must not be empty")
-    .isLength({ min: 1 })
-    .trim(),
-  body("email", "Email must not be empty")
-    .isLength({ min: 1 })
-    .trim(),
-  body("phone", "Phone must not be empty")
-    .isLength({ min: 1 })
-    .trim(),
-  body("location", "Location must not be empty")
-    .isLength({ min: 1 })
-    .trim(),
-  body("description", "Description must not be empty")
-    .isLength({ min: 1 })
-    .trim(),
 
-  // Sanitize fields.
-  sanitizeBody("firstName").escape(),
-  sanitizeBody("lastName").escape(),
-  sanitizeBody("gender").escape(),
-  sanitizeBody("birthDate").escape(),
-  sanitizeBody("email").escape(),
-  sanitizeBody("phone").escape(),
-  sanitizeBody("location").escape(),
-  sanitizeBody("description").escape(),
 
-  // Process request after validation and sanitization.
-  (req, res, next) => {
-    // Extract the validation errors from a request.
-    const errors = validationResult(req);
-
-    // Create a Profile object with escaped/trimmed data and old id.
-    var profile = new Profile({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      gender: req.body.gender,
-      birthDate: req.body.birthDate,
-      email: req.body.email,
-      phone: req.body.phone,
-      location: req.body.location,
-      description: req.body.description,
-      _id: req.params.id // This is required, or a new ID will be assigned!
-    });
-
-    if (!errors.isEmpty()) {
-      // There are errors. Render form again with sanitized values/error messages.
-
-      // Get all firstNames and lastNames for form
-      async.parallel(
-        {
-          id: function(callback) {
-            Profile.find(callback);
-          }
-        },
-        function(err, results) {
-          if (err) {
-            return next(err);
-          }
-
-          // Mark our selected lastNames as checked.
-          for (let i = 0; i < results.lastNames.length; i++) {
-            if (profile.lastName.indexOf(results.lastNames[i]._id) > -1) {
-              results.lastNames[i].checked = "true";
-            }
-          }
-          res.render("profile_form", {
-            title: "Update Profile",
-            firstNames: results.firstNames,
-            lastNames: results.lastNames,
-            profile: profile,
-            errors: errors.array()
-          });
-        }
-      );
-      return;
-    } else {
-      // Data from form is valid. Update the record.
-      Profile.findByIdAndUpdate(req.params.id, profile, {}, function(
-        err,
-        profile
-      ) {
-        if (err) {
-          return next(err);
-        }
-        // Successful - redirect to profile detail page.
-        res.redirect(profile.url);
-      });
-    }
-  }
-];
+  
