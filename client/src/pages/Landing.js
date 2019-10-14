@@ -34,10 +34,11 @@ class LandingPage extends Component {
                     </div>
                   : <Link to="/login" >Log In</Link>
               }
-             
+              
             </Grid>
           </div>
         </div>
+        <Link to="/profile">Become a sitter</Link>
         <div className="App_form"></div>
       </div>
     );

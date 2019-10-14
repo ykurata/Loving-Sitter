@@ -6,7 +6,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 export default function SideNavigationBar() {
   var pageURL = window.location.href;
   var lastURLSegment = pageURL.substr(pageURL.lastIndexOf("/") + 1);
-  console.log(lastURLSegment);
   return (
     <MenuList>
       <MenuItem

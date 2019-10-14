@@ -12,6 +12,7 @@ import SignUpPage from "./pages/Signup";
 import EditProfilePage from "./pages/EditProfile";
 import ProfilePayment from "./pages/ProfilePayment";
 import ProfileDetails from "./pages/ProfileDetails";
+import PrivateRoute from "./pages/PrivateRoute";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
         <Route exact path="/" component={LandingPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={SignUpPage} />
-        <Route path="/profile" component={EditProfilePage} />
+        <PrivateRoute path='/profile' component={EditProfilePage} />
         <Route path="/profile-payment" component={ProfilePayment} />
         <Route path="/profile-photo" component={PhotoPage} />
         <Route path="/profile-details" component={ProfileDetails} />

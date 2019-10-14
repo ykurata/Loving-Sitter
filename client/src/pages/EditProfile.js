@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 
 // import SimpleSnackbar from "./snackbar";
 import { Snackbar, IconButton } from "@material-ui/core";
+import { positions } from "@material-ui/system";
 
 const initalState = {
   user: {
@@ -20,8 +21,14 @@ const initalState = {
     birthDate: "",
     phone: "",
     address: "",
+<<<<<<< HEAD
     rate: "",
     description: ""
+=======
+    description: "",
+    rate: "",
+    errors: {}
+>>>>>>> 529bc3f4c155f4b381118f87508c48be2b9bdc72
   },
   disabled: false,
   snackbaropen: true,
@@ -30,7 +37,6 @@ const initalState = {
 
 class EditProfilePage extends Component {
   state = initalState;
-  handleGender = "";
 
   handleFirstNameChange = event => {
     let user = { ...this.state.user };
@@ -49,6 +55,13 @@ class EditProfilePage extends Component {
     user.gender = event.target.value;
     this.setState({ user });
   };
+
+  handleEmailChange = event => {
+    let user = { ...this.state.user };
+    user.email = event.target.value;
+    this.setState({ user });
+  };
+
 
   handleDobChange = event => {
     let user = { ...this.state.user };
@@ -75,22 +88,35 @@ class EditProfilePage extends Component {
   };
 
   handleRateChange = event => {
+<<<<<<< HEAD
     this.setState({ rate: event.target.value });
+=======
+    let user = { ...this.state.user };
+    user.rate = event.target.value;
+    this.setState({ user });
+>>>>>>> 529bc3f4c155f4b381118f87508c48be2b9bdc72
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log(this.state);
-    axios
-      .post("/profile", this.state.user)
+
+    // Get token from local storage
+    const token = localStorage.getItem("jwtToken");
+
+    const { user } = this.state;
+
+    axios.post("/profile", user, { headers: {"Authorization" : `Bearer ${token}`} })
       .then(res => {
-        console.log("res", res);
+        this.props.history.push('/');
+        console.log(res.data);
       })
       .catch(err => {
-        console.log("err", { err });
+        this.setState({
+          errors: err.response.data // Error messages from server
+        });
       });
     this.setState({ disabled: true });
-  };
+  }
 
   constructor(props) {
     super(props);
@@ -138,13 +164,18 @@ class EditProfilePage extends Component {
                   <h1>Edit Profile</h1>
                 </Grid>
                 <Grid item xs={12}>
-                  <form noValidate autoComplete="off" method="POST">
+                  <form noValidate autoComplete="off" method="POST" onSubmit={this.handleSubmit}>
                     <Grid container spacing={3} className="pb-1">
                       <Grid item xs={1}></Grid>
                       <Grid item xs={9}>
-                        <Grid container spacing={3}>
+                        <Grid container spacing={3}>  
                           <Grid item xs={5} className="text-right">
                             <p>FIRST NAME</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.firstName}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -170,6 +201,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>LAST NAME</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.lastName}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -195,6 +231,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>GENDER</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.gender}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -202,7 +243,7 @@ class EditProfilePage extends Component {
                               name="gender"
                               id="standard-gender"
                               label="gender"
-                              value={this.handleGender}
+                              value={this.state.user.gender}
                               onChange={this.handleGenderChange}
                               margin="normal"
                               variant="outlined"
@@ -227,6 +268,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>BIRTH DATE</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.birthDate}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -252,6 +298,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>EMAIL ADDRESS</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.email}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -277,6 +328,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>PHONE NUMBER</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.phone}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -301,6 +357,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>WHERE YOU LIVE</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.address}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -325,6 +386,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>DESCRIBE YOURSELF</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.description}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -349,6 +415,14 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>YOUR HOURLY RATE</p>
+<<<<<<< HEAD
+=======
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.rate}</div>
+                              : null
+                            }
+>>>>>>> 529bc3f4c155f4b381118f87508c48be2b9bdc72
                           </Grid>
                           <Grid item xs={7}>
                             <TextField 
