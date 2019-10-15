@@ -17,6 +17,11 @@ function subscribeToTimer(cb) {
 }
 
 
+// connect to server 
+// emit user to server 
+// update table 
+
+
 const initalState = {
   email: "",
   emailError: "",
