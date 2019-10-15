@@ -3,11 +3,6 @@ import User from "../models/User";
 import validator from "validator";
 var router = express.Router();
 
-// Testing socket.io
-import app from "../app";
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-
 
 router.post("/register", async function(req, res, next) {
   const name = req.body.name;
@@ -106,16 +101,6 @@ router.post("/login", async function(req, res, next) {
   } else {
     res.status(401).json({ error: "Login failed" });
   }
-  
-  // Testing socket.io connection
-  io.on('connection', function(client){
-    client.on('subscribeToTimer', (interval) => {
-      console.log('client is subscribing to timer with interval ', interval);
-      setInterval(() => {
-        client.emit('timer', new Date());
-      }, interval);
-    });
-  })
 });
 
 module.exports = router;

@@ -5,13 +5,6 @@ import Grid from "@material-ui/core/Grid";
 
 import "../App.scss";
 
-import openSocket from 'socket.io-client';
-const socket = openSocket('http://localhost:3001');
-
-function subscribeToTimer(cb) {
-  socket.on('timer', timestamp => cb(null, timestamp));
-  socket.emit('subscribeToTimer', 1000);
-}
 
 class LandingPage extends Component {
   handleLogout = e => {
@@ -52,7 +45,5 @@ class LandingPage extends Component {
     );
   }
 }
-
-export { subscribeToTimer };
 
 export default LandingPage;
