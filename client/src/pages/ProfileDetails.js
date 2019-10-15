@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
-import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import NavigationBar from "./Navbar";
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
-
-import SideNavigationBar from "./SideNavBar";
 
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";

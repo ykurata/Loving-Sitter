@@ -40,11 +40,11 @@ h1 {
 }
 
 .mb-0 {
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
 }
 
 .mt-0 {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 .pb-0 {
@@ -56,11 +56,27 @@ h1 {
 }
 
 .pb-1 {
-  padding-bottom: 1rem;
+  padding-bottom: 1rem !important;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
 }
 
 .mb-1 {
-  margin-bottom: 100rem;
+  margin-bottom: 1rem;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.pr-2 {
+  padding-right: 2rem !important;
+}
+
+.pr-1 {
+  padding-right: 1rem !important;
 }
 
 .MuiFormControl-marginNormal {

@@ -11,7 +11,6 @@ import Button from "@material-ui/core/Button";
 
 // import SimpleSnackbar from "./snackbar";
 import { Snackbar, IconButton } from "@material-ui/core";
-import { positions } from "@material-ui/system";
 
 const initalState = {
   user: {
@@ -27,10 +26,26 @@ const initalState = {
   },
   disabled: false,
   snackbaropen: true,
-  snackbarmsg: "test"
+  snackbarmsg: "test",
+  edit: "0",
+  formChanges: false
 };
 
 class EditProfilePage extends Component {
+  wowState = {
+    firstName: "",
+    lastName: "",
+    gender: "",
+    birthDate: "",
+    phone: "",
+    address: "",
+    description: "",
+    disabled: true,
+    snackbaropen: true,
+    snackbarmsg: "test",
+    edit: "0",
+    formChanges: false
+  };
   state = initalState;
 
   handleFirstNameChange = event => {
@@ -119,7 +134,11 @@ class EditProfilePage extends Component {
   };
 
   enableEdit = event => {
-    this.setState({ disabled: false });
+    this.setState({ disabled: false, edit: "1" });
+  };
+
+  cancelEdit = event => {
+    this.setState({ disabled: true, edit: "0" });
   };
 
   render() {
@@ -454,6 +473,22 @@ class EditProfilePage extends Component {
                           Edit
                         </Button>
                       </Grid>
+
+                      {this.state.edit === "1" ? (
+                        <Grid item xs={2}>
+                          <Button
+                            variant="outlined"
+                            color="secondary"
+                            fullWidth
+                            size="large"
+                            onClick={this.cancelEdit}
+                          >
+                            Cancel
+                          </Button>
+                        </Grid>
+                      ) : (
+                        <Grid item xs={2}></Grid>
+                      )}
                       <Grid item xs={2}></Grid>
                     </Grid>
                   </form>
