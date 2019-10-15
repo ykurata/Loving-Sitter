@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import NavigationBar from "./Navbar";
 import Grid from "@material-ui/core/Grid";
 import "../App.scss";
 import Card from "@material-ui/core/Card";
@@ -29,8 +28,6 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from "@material-ui/pickers";
-import { red } from "@material-ui/core/colors";
-// import { borderRadius } from "@material-ui/system";
 
 const photoPageStyle = theme => ({
   bigAvatar: {
@@ -136,14 +133,13 @@ class ProfileListPage extends Component {
                       <Grid container spacing={3}>
                         <Grid item xs={12} className="center">
                           <Box component="fieldset" borderColor="transparent">
-                            <Rating value="5" readOnly />
+                            <Rating value={5} readOnly />
                           </Box>
                         </Grid>
                       </Grid>
 
                       <Typography
                         variant="body1"
-                        // variant="h5" component="h2"
                         className="center"
                         component="p"
                       >
@@ -173,12 +169,14 @@ class ProfileListPage extends Component {
 
               {/* End of looping and will end with -> )}  */}
 
+              {/* Starting from line below */}
               <Grid item xs={4} className="center">
                 <h1>2</h1>
               </Grid>
               <Grid item xs={4} className="center">
                 <h1>3</h1>
               </Grid>
+              {/* To line above can we removed once connected to DB and loop is working */}
             </Grid>
           </Grid>
           <Grid item xs={1}></Grid>
