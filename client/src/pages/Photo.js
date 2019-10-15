@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import { Snackbar, IconButton } from "@material-ui/core";
@@ -20,6 +19,7 @@ const photoPageStyle = theme => ({
     marginBottom: theme.spacing(100)
   },
   bigAvatar: {
+    //Make Responsize
     width: 300,
     height: 300
   }
@@ -136,8 +136,7 @@ class PhotoPage extends Component {
                       >
                         <input
                           accept="image/*"
-                          className={classes.input}
-                          className="invisible"
+                          className={ `${classes.input} ${"invisible"}`}
                           id="contained-button-file"
                           multiple
                           type="file"

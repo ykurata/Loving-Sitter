@@ -1,6 +1,8 @@
 import express from "express";
 import User from "../models/User";
 import validator from "validator";
+import requestsController from "../controllers/requestsController";
+import authenticate from "../routes/utils/auth";
 var router = express.Router();
 
 router.post("/register", async function(req, res, next) {
@@ -101,5 +103,8 @@ router.post("/login", async function(req, res, next) {
     res.status(401).json({ error: "Login failed" });
   }
 });
+
+router.post("/sendrequest", authenticate, requestsController.createRequest);
+router.post("/updaterequest", authenticate, requestsController.updateRequest);
 
 module.exports = router;
