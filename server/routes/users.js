@@ -13,41 +13,34 @@ router.post("/register", async function(req, res, next) {
 
   // first validate credentials
   if (!name) {
-    res.status(400).json({ error: "Name is required" });
-    next();
+    return res.status(400).json({ error: "Name is required" });
   }
   if (!email) {
-    res.status(400).json({ error: "Email is required" });
-    next();
+    return res.status(400).json({ error: "Email is required" });
   }
   if (!validator.isEmail(email)) {
-    res.status(400).json({ error: "Incorrect email format" });
-    next();
+    return res.status(400).json({ error: "Incorrect email format" });
   }
   if (!password) {
-    res.status(400).json({ error: "Password is required" });
-    next();
+    return res.status(400).json({ error: "Password is required" });
   }
   if (password !== confirmPassword) {
-    res.status(400).json({ error: "Passwords do not match" });
-    next();
+    return res.status(400).json({ error: "Passwords do not match" });
   }
   // regex to test if a string contains a number
   const regex = RegExp(".*\\d.*");
 
   if (!regex.test(password) || password.length < 8) {
-    res.status(400).json({
+    return res.status(400).json({
       error:
         "Password has to contain a number and be at least 8 characters long"
     });
-    next();
   }
 
   // if credentials are valid see if user already exists
   var user = await User.findOne({ email: email });
   if (user) {
-    res.status(409).json({ error: "User already exists" });
-    next();
+    return res.status(409).json({ error: "User already exists" });
   } else {
     user = new User({
       name,
@@ -82,12 +75,12 @@ router.post("/login", async function(req, res, next) {
 
   var user = await User.findOne({ email: email });
   if (!user) {
-    res.status(404).json({ error: "User not found" });
+    return res.status(404).json({ error: "User not found" });
   }
 
   var validPass = await user.checkPassword(password);
   if (!validPass) {
-    res.status(401).json({ error: "Password is incorrect" });
+    return res.status(401).json({ error: "Password is incorrect" });
   }
 
   const payload = {
@@ -106,5 +99,7 @@ router.post("/login", async function(req, res, next) {
 
 router.post("/sendrequest", authenticate, requestsController.createRequest);
 router.post("/updaterequest", authenticate, requestsController.updateRequest);
+router.get("/getrequests", authenticate, requestsController.getRequests);
+router.get("/getrequested", authenticate, requestsController.getRequested);
 
 module.exports = router;
