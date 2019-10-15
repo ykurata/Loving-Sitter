@@ -16,7 +16,7 @@ import { Snackbar, IconButton } from "@material-ui/core";
 
 const detailsPageStyle = theme => ({
     detailsContainer: {
-        margin: theme.spacing.unit * 2
+        margin: theme.spacing(2)
     },
     container: {
         marginBottom: theme.spacing(100),

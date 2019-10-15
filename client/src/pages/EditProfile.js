@@ -21,14 +21,9 @@ const initalState = {
     birthDate: "",
     phone: "",
     address: "",
-<<<<<<< HEAD
-    rate: "",
-    description: ""
-=======
     description: "",
     rate: "",
     errors: {}
->>>>>>> 529bc3f4c155f4b381118f87508c48be2b9bdc72
   },
   disabled: false,
   snackbaropen: true,
@@ -88,13 +83,9 @@ class EditProfilePage extends Component {
   };
 
   handleRateChange = event => {
-<<<<<<< HEAD
-    this.setState({ rate: event.target.value });
-=======
     let user = { ...this.state.user };
     user.rate = event.target.value;
     this.setState({ user });
->>>>>>> 529bc3f4c155f4b381118f87508c48be2b9bdc72
   };
 
   handleSubmit = event => {
@@ -415,14 +406,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>YOUR HOURLY RATE</p>
-<<<<<<< HEAD
-=======
                             {
                               (this.state.errors)
                               ? <div style={{ color: "red" }}>{this.state.errors.rate}</div>
                               : null
                             }
->>>>>>> 529bc3f4c155f4b381118f87508c48be2b9bdc72
                           </Grid>
                           <Grid item xs={7}>
                             <TextField 
