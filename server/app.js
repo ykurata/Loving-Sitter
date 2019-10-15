@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import passport from "passport";
 import cors from "cors";
+var path = require('path');
 
 import dbConnection from "./db/mongoose";
 import indexRouter from "./routes/index";
@@ -15,6 +16,25 @@ import usersRouter from "./routes/users";
 import fileUploadRouter from "./routes/file-upload";
 
 var app = express();
+
+// socket.io
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+io.on('connection', function(client){
+  client.on('subscribeToTimer', (interval) => {
+    console.log('client is subscribing to timer with interval ', interval);
+    setInterval(() => {
+      client.emit('timer', new Date());
+    }, interval);
+  });
+})
+
+// Socket.io middleware
+app.use(function(req, res, next){
+  res.io = io;
+  next();
+});
 
 app.use(logger("dev"));
 app.use(json());
@@ -35,6 +55,7 @@ app.use("/files", fileUploadRouter);
 
 app.use(cors());
 
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -51,4 +72,4 @@ app.use(function(err, req, res, next) {
   res.json({ error: err });
 });
 
-module.exports = app;
+module.exports = {app: app, server: server};
