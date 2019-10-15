@@ -5,7 +5,6 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import passport from "passport";
 import cors from "cors";
-var path = require('path');
 
 import dbConnection from "./db/mongoose";
 import indexRouter from "./routes/index";
