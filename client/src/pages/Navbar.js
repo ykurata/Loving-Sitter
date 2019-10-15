@@ -68,7 +68,7 @@ export default function NavigationBar() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}><a href="./profile">Profile</a></MenuItem>
+                <MenuItem><a href="./profile">Profile</a></MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
               </Menu>
         

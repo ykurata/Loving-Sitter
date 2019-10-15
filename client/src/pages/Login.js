@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import "../App.scss";
 import Button from "@material-ui/core/Button";
 
+import { withRouter, Redirect } from 'react-router-dom';
 
 const initalState = {
   email: "",
@@ -53,6 +54,7 @@ class LoginPage extends Component {
       const data = {
         email: email,
         password: password
+
       }
 
       axios.post('/users/login', data)
@@ -62,6 +64,8 @@ class LoginPage extends Component {
           localStorage.setItem('jwtToken', token);
           localStorage.setItem('name', decoded.name);
           this.props.history.push('/');
+      return <Redirect to="/profile" />
+
       })
       .catch(err => {
           this.setState({
@@ -157,4 +161,4 @@ class LoginPage extends Component {
     );
   }
 }
-export default LoginPage;
+export default withRouter(LoginPage);
