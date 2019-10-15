@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import NavigationBar from "./Navbar";
+import axios from "axios";
 
 import SideNavigationBar from "./SideNavBar";
 
@@ -12,14 +13,18 @@ import Button from "@material-ui/core/Button";
 import { Snackbar, IconButton } from "@material-ui/core";
 
 const initalState = {
-  firstName: "",
-  lastName: "",
-  gender: "",
-  birthDate: "",
-  phone: "",
-  address: "",
-  description: "",
-  disabled: true,
+  user: {
+    firstName: "",
+    lastName: "",
+    gender: "",
+    birthDate: "",
+    phone: "",
+    address: "",
+    description: "",
+    rate: "",
+    errors: {}
+  },
+  disabled: false,
   snackbaropen: true,
   snackbarmsg: "test",
   edit: "0",
@@ -42,44 +47,82 @@ class EditProfilePage extends Component {
     formChanges: false
   };
   state = initalState;
-  handleGender = "";
 
   handleFirstNameChange = event => {
-    this.setState({ formChanges: true, firstName: event.target.value });
+    let user = { ...this.state.user };
+    user.firstName = event.target.value;
+    this.setState({ user });
   };
 
   handleLastNameChange = event => {
-    this.setState({ lastName: event.target.value });
+    let user = { ...this.state.user };
+    user.lastName = event.target.value;
+    this.setState({ user });
   };
 
   handleGenderChange = event => {
-    this.setState({ gender: event.target.value });
-    this.handleGender = event.target.value;
+    let user = { ...this.state.user };
+    user.gender = event.target.value;
+    this.setState({ user });
   };
 
+  handleEmailChange = event => {
+    let user = { ...this.state.user };
+    user.email = event.target.value;
+    this.setState({ user });
+  };
+
+
   handleDobChange = event => {
-    this.setState({ birthDate: event.target.value });
+    let user = { ...this.state.user };
+    user.birthDate = event.target.value;
+    this.setState({ user });
   };
 
   handlePhoneChange = event => {
-    this.setState({ phone: event.target.value });
+    let user = { ...this.state.user };
+    user.phone = event.target.value;
+    this.setState({ user });
   };
 
   handleAddressChange = event => {
-    this.setState({ address: event.target.value });
+    let user = { ...this.state.user };
+    user.address = event.target.value;
+    this.setState({ user });
   };
 
   handleDescriptionChange = event => {
-    this.setState({ description: event.target.value });
+    let user = { ...this.state.user };
+    user.description = event.target.value;
+    this.setState({ user });
+  };
+
+  handleRateChange = event => {
+    let user = { ...this.state.user };
+    user.rate = event.target.value;
+    this.setState({ user });
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log(this.state);
-    this.setState({ edit: "0" });
 
+    // Get token from local storage
+    const token = localStorage.getItem("jwtToken");
+
+    const { user } = this.state;
+
+    axios.post("/profile", user, { headers: {"Authorization" : `Bearer ${token}`} })
+      .then(res => {
+        this.props.history.push('/');
+        console.log(res.data);
+      })
+      .catch(err => {
+        this.setState({
+          errors: err.response.data // Error messages from server
+        });
+      });
     this.setState({ disabled: true });
-  };
+  }
 
   constructor(props) {
     super(props);
@@ -131,13 +174,18 @@ class EditProfilePage extends Component {
                   <h1>Edit Profile</h1>
                 </Grid>
                 <Grid item xs={12}>
-                  <form noValidate autoComplete="off" method="POST">
+                  <form noValidate autoComplete="off" method="POST" onSubmit={this.handleSubmit}>
                     <Grid container spacing={3} className="pb-1">
                       <Grid item xs={1}></Grid>
                       <Grid item xs={9}>
-                        <Grid container spacing={3}>
+                        <Grid container spacing={3}>  
                           <Grid item xs={5} className="text-right">
                             <p>FIRST NAME</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.firstName}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -163,6 +211,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>LAST NAME</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.lastName}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -188,6 +241,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>GENDER</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.gender}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -195,7 +253,7 @@ class EditProfilePage extends Component {
                               name="gender"
                               id="standard-gender"
                               label="gender"
-                              value={this.handleGender}
+                              value={this.state.user.gender}
                               onChange={this.handleGenderChange}
                               margin="normal"
                               variant="outlined"
@@ -220,6 +278,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>BIRTH DATE</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.birthDate}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -245,6 +308,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>EMAIL ADDRESS</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.email}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -270,6 +338,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>PHONE NUMBER</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.phone}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -294,6 +367,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>WHERE YOU LIVE</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.address}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -318,6 +396,11 @@ class EditProfilePage extends Component {
                         <Grid container spacing={3}>
                           <Grid item xs={5} className="text-right">
                             <p>DESCRIBE YOURSELF</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.description}</div>
+                              : null
+                            }
                           </Grid>
                           <Grid item xs={7}>
                             <TextField
@@ -336,30 +419,59 @@ class EditProfilePage extends Component {
                       </Grid>
                       <Grid item xs={2}></Grid>
 
+                      {/*Hourly Rate*/}
+                      <Grid item xs={1}></Grid>
+                      <Grid item xs={9}>
+                        <Grid container spacing={3}>
+                          <Grid item xs={5} className="text-right">
+                            <p>YOUR HOURLY RATE</p>
+                            {
+                              (this.state.errors)
+                              ? <div style={{ color: "red" }}>{this.state.errors.rate}</div>
+                              : null
+                            }
+                          </Grid>
+                          <Grid item xs={7}>
+                            <TextField 
+                            name="rate" 
+                            placeholder="Your hourly rate" 
+                            id="standard-rate" 
+                            value={this.handleRate} 
+                            onChange={this.handleRateChange} 
+                            margin="normal" 
+                            variant="outlined" 
+                            disabled={this.state.disabled ? "disabled" : ""} 
+                            fullWidth />
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={2}></Grid>
+
                       <Grid item xs={4}></Grid>
 
                       <Grid item xs={4} className="center">
-                        {this.state.edit === "1" ? (
-                          <Button
-                            fullWidth
-                            size="large"
-                            variant="contained"
-                            className="submit-button"
-                            onClick={this.handleSubmit}
-                          >
-                            Save
-                          </Button>
-                        ) : (
-                          <Button
-                            fullWidth
-                            size="large"
-                            variant="contained"
-                            className="submit-button"
-                            onClick={this.enableEdit}
-                          >
-                            Edit
-                          </Button>
-                        )}
+                        <Button
+                          fullWidth
+                          size="large"
+                          variant="contained"
+                          className="submit-button"
+                          onClick={this.handleSubmit}
+                          disabled={this.state.disabled ? "disabled" : ""}
+                        >
+                          Save
+                        </Button>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Button
+                          fullWidth
+                          size="large"
+                          variant="contained"
+                          className="submit-button"
+                          onClick={this.enableEdit}
+                          disabled={this.state.disabled ? "" : "disabled"}
+                        >
+                          Edit
+                        </Button>
                       </Grid>
 
                       {this.state.edit === "1" ? (

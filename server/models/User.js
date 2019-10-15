@@ -52,7 +52,7 @@ userSchema.methods.setPassword = async function setPassword(password) {
   this.passwordHash = await generatePassword(this.salt, password);
 };
 
-userSchema.methods.checkPassword = async function(password) {
+userSchema.methods.checkPassword = async function (password) {
   if (!password) return false;
 
   const hash = await generatePassword(this.salt, password);

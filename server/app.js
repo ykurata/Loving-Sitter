@@ -8,10 +8,11 @@ import cors from "cors";
 
 import dbConnection from "./db/mongoose";
 import indexRouter from "./routes/index";
+import profileRouter from "./routes/profile";
 import pingRouter from "./routes/ping";
+import photoRouter from "./routes/photo";
 import usersRouter from "./routes/users";
 import fileUploadRouter from "./routes/file-upload";
-
 
 var app = express();
 
@@ -19,13 +20,16 @@ app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors());
 app.use(express.static(join(__dirname, "public")));
 
 app.use(passport.initialize());
 require("./libs/passport")(passport);
 
 app.use("/", indexRouter);
+app.use("/profile", profileRouter);
 app.use("/ping", pingRouter);
+app.use("/profile-photo", photoRouter);
 app.use("/users", usersRouter);
 app.use("/files", fileUploadRouter);
 

@@ -67,8 +67,24 @@ h1 {
   padding-bottom: 1rem !important;
 }
 
+.pl-0 {
+  padding-left: 0 !important;
+}
+
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
 .mt-1 {
   margin-top: 1rem !important;
+}
+
+.pr-2 {
+  padding-right: 2rem !important;
+}
+
+.pr-1 {
+  padding-right: 1rem !important;
 }
 
 .MuiFormControl-marginNormal {
@@ -134,4 +150,8 @@ h1 {
 
 .MuiInput-underline:before{
   border-bottom: none !important;
+}
+
+.invisible {
+  display: none;
 }
