@@ -33,7 +33,7 @@ const photoPageStyle = theme => ({
   bigAvatar: {
     width: 100,
     height: 100,
-    margin: 10
+    marginBottom: 10
   },
 
   cardDivider: {
@@ -44,7 +44,9 @@ const photoPageStyle = theme => ({
     border: "1px solid rgba(0, 0, 0, 0.23)",
     borderRadius: "4px",
     height: "85%"
-  }
+  },
+
+
 });
 
 const initalState = {
@@ -76,7 +78,7 @@ class ProfileListPage extends Component {
     return (
       <div>
         <NavigationBar></NavigationBar>
-        <Grid container spacing={3}>
+        <Grid container>
           <Grid item xs={12} className="center">
             <h1>Your search results</h1>
           </Grid>
@@ -120,13 +122,15 @@ class ProfileListPage extends Component {
               {/* Looping code, will be used later on starts with this -> {
              numbers.map(el =>
               */}
-              <Grid item xs={4} className="mt-1">
+              <Grid item xs={4} align="center">
                 <Card>
                   <CardActionArea className={classes.cardDivider}>
-                    <Grid container spacing={3}>
-                      <Grid item xs={4}></Grid>
+                  <CardContent>
 
-                      <Grid item xs={4} className="center">
+                    <Grid container>
+                    <Grid item xs={4}></Grid>
+
+                      <Grid item xs={4}>
                         <Avatar
                           alt="Remy Sharp"
                           src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
@@ -135,7 +139,6 @@ class ProfileListPage extends Component {
                       </Grid>
                       <Grid item xs={4}></Grid>
                     </Grid>
-                    <CardContent>
                       <Typography
                         gutterBottom
                         variant="h5"
