@@ -2,16 +2,14 @@ import Conversation from "../models/Conversation";
 import Message from "../models/Message";
 
 
-// Create a conversation (new conversation)
+// POST a conversation (new conversation)
 module.exports.createConversation = function(req, res, next) {
     const conversation = new Conversation({
         senderId : req.user,
         recipientId : req.body.recipientId
     });
     if (!conversation.recipientId) {
-        const err = new Error("Please select recipient");
-        err.status = 400;
-        next(err);
+        return res.status(400).json({ message: "Please select recipient"});
     } else {
         conversation.save(function(err, conversation){
             if (err) return next(err);
@@ -21,35 +19,34 @@ module.exports.createConversation = function(req, res, next) {
 };
 
 
-// Get all conversations
+// GET all conversations
 module.exports.getConversations = function(req, res, next) {
     Conversation.find({})
         .populate("senderId")
         .exec(function(err, conversations){
             if (err) return next(err);
             if (!conversations) {
-                res.json({ message: "There is no conversations" });
+                return res.status(400).json({ message: "There is no conversations" });
             }
             res.json(conversations);
         });
 };
 
 
-// CREATE /conversation/:conversation_id/message (new message)
+// POST /conversation/:conversation_id/message (new message)
 module.exports.createMessage = function(req, res, next) {
     const message = new Message({
-        conversationId: req.params.id,
-        message: req.body.message
+        conversationId: req.body.conversationId,
+        userId: req.user,
+        body: req.body.body
     });
-    if (!message.conversationId) {
-        const err = new Error("Please select conversation");
-        err.status = 400;
-        next(err);
-    } else {
-        message.save(function(err, message){
+    if (message.conversationId && message.body) {
+        message.save(function(err, conversation){
             if (err) return next(err);
-            res.json(message);
+            res.json(conversation);
         });
+    } else {
+        return res.status(400).json({ message: "Please enter conversationId and message"});
     }
 };
 
@@ -57,12 +54,12 @@ module.exports.createMessage = function(req, res, next) {
 // GET /conversation/:conversation_id (body list of messages sent already)
 module.exports.getMessages = function(req, res, next) {
     Message.find({})
-        .populate("conversationId")
-        .exec(function(err, messages){
-            if (err) return next(err);
-            if (!messages) {
-                res.json({ message: "There is no messages" });
-            }
-            res.json(messages);
+        .populate('conversationId') 
+        .populate("userId")
+        .exec(function(err, courses){
+            if(err) return next(err);
+            res.json(courses);
         });
 };
+
+

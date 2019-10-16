@@ -99,7 +99,7 @@ module.exports.createProfile = function(req, res, next) {
 };
 
 
-//Handle profile update on POST.
+//Handle profile update on PUT.
 module.exports.profileUpdatePost = function(req, res, next) {
   // Form validation
   const { errors, isValid } = validateProfileInput(req.body);
@@ -126,7 +126,7 @@ module.exports.profileUpdatePost = function(req, res, next) {
       res.json(profile);
     });
   });
-}
+};
  
 
 
@@ -275,7 +275,3 @@ exports.profile_update_get = function(req, res, next) {
     }
   );
 };
-
-
-
-  

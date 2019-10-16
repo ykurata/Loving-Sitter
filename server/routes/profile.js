@@ -5,7 +5,7 @@ const authenticate = require("./utils/auth");
 var profile_controller = require("../controllers/profileController");
 
 router.post("/", authenticate, profile_controller.createProfile);
-router.post("/getProfile", profile_controller.getProfile);
+router.get("/getProfile", profile_controller.getProfile);
 router.put('/update/:id', authenticate, profile_controller.profileUpdatePost);
 
 module.exports = router;

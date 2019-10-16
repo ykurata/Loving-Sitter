@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+import dbConnection from "./../db/mongoose";
 
 const ConversationSchema = new Schema(
     {
@@ -14,5 +15,4 @@ const ConversationSchema = new Schema(
     }
 );
 
-const Conversation = mongoose.model("Conversation", ConversationSchema);
-module.exports = Conversation;
+module.exports = dbConnection.model("Conversation", ConversationSchema);
