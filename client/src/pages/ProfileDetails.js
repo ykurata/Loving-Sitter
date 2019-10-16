@@ -4,6 +4,10 @@ import TextField from "@material-ui/core/TextField";
 import NavigationBar from "./Navbar";
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
+import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Rating from "@material-ui/lab/Rating";
 
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -19,24 +23,49 @@ const detailsPageStyle = theme => ({
         marginBottom: theme.spacing(100),
     },
     bigAvatar: {
-        //Make Responsive
         width: 300,
         height: 300,
+    },
+    roundedBigAvatar: {
+        width: 300,
+        height: 300,
+        borderRadius: 10,
     },
     root: {
         flexGrow: 1,
     },
+    marginHorizontal: {
+        marginLeft: 60,
+        marginRight: 30,
+    },
+    marginBottom: {
+        marginBottom: 30,
+    },
+    squareBackground: {
+        borderRadius: 0,
+        width: 300,
+        height: 300,
+    },
+    border: {
+        border: 10,
+    },
+    requestBtn: {
+        backgroundColor: "red",
+        color: "white",
+    }
+
 });
 
 const initalState = {
-    firstName: "Your Name",
-    lastName: "",
+    firstName: "Norma",
+    lastName: "Byers",
     gender: "",
     birthDate: "",
     phone: "",
     address: "Your address",
     description: "Lorem ipsum dolor sit amet adipiscing bibendum sem orci tempus aliquet gravida, orci amet iaculis aptent blandit quam accumsan donec in facilisis, cursus ante curabitur aliquet condimentum tincidunt facilisis non cubilia lorem et pretium aliquam phasellus ipsum metus quisque auctor tristique donec nibh, praesent congue ultricies aenean ornare ligula sagittis proin sed vestibulum purus tempus aenean neque aliquam curae vivamus purus egestas ligula tincidunt nullam. Dolor id fri",
     rate: "$14/hr",
+    photo: "../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png"
 };
 
 class ProfileDetails extends Component {
@@ -76,43 +105,63 @@ class ProfileDetails extends Component {
                     ]}
                 />
                 <NavigationBar></NavigationBar>
-                <div className={classes.root}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}></Grid>
-                        <Grid item xs={1}></Grid>
-                        <Grid item xs={7}>
+                <Grid container spacing={5}>
+                    <Grid item xs={12}></Grid>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={7}>
+                        <Grid container spacing={4} align="center" direction="column" justify="center">
                             <Box width={1} boxShadow={2}>
-                                <Box width={1} display="flex" justifyContent="center" >
-                                    <Avatar alt="Your Profile Picture" src={this.state.file} className={classes.bigAvatar} />
-                                </Box>
-                                <Box width={1} display="flex" justifyContent="center" >
-                                    <h2>{this.state.firstName} {this.state.lastName}</h2>
-                                </Box>
-                                <Box width={1} display="flex" justifyContent="center" >
-                                    <p>Loving pet sitter</p>
-                                </Box>
+                                <Grid item >
+                                    {/*Replace with picture later*/}
+                                    <Avatar alt="Your Profile Picture" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.bigAvatar} />
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="h4">{this.state.firstName} {this.state.lastName}</Typography>
+                                </Grid>
+                                <Grid item className={classes.marginBottom} >
+                                    <Typography variant="subtitle2">Loving pet sitter</Typography>
+                                </Grid>
 
-                                <Box width={1} display="flex" justifyContent="center" >
-                                    <em>{this.state.address}</em>
-                                </Box>
-
-                                <Box width={1} display="flex" justifyContent="flex-start">
+                                <Grid item className={classes.marginBottom} >
+                                    <Typography variant="subtitle2">{this.state.address}</Typography>
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={11}
+                                    align="left"
+                                    className={classes.marginBottom}
+                                >
                                     <h2>About Me</h2>
-                                </Box>
-                                <Box width={1} display="flex" justifyContent="flex-start">
-                                    <p>{this.state.description}</p>
-                                </Box>
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={11}
+                                    align="left"
+                                    className={classes.marginBottom}
+                                >
+                                    <Typography className={classes.marginHorizontal} variant="body1">{this.state.description}</Typography>
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={11}
+                                    align="left"
+                                    className={classes.marginBottom}
+                                >
+                                    <Avatar alt="Your Pets" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.roundedBigAvatar} style={{ borderRadius: 10 }} />
+                                </Grid>
                             </Box>
-
                         </Grid>
-                        <Grid item xs={3}>
-                            <Box width={1} boxShadow={2}>
-                                <Box display="flex" justifyContent="center">
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Box width={1} boxShadow={2}>
+                            <Grid container align="center" direction="column" justify="center" spacing={4}>
+                                <Grid item>
                                     <h2>{this.state.rate}</h2>
-                                </Box>
-
-                                {/*Implement Rating Stars*/}
-                                <Box display="flex" justifyContent="center">
+                                </Grid>
+                                <Grid item>
+                                    <Rating value={5} readOnly />
+                                </Grid>
+                                <Grid item>
                                     <TextField
                                         id="drop-in"
                                         label="Drop In"
@@ -122,8 +171,8 @@ class ProfileDetails extends Component {
                                             shrink: true,
                                         }}
                                     />
-                                </Box>
-                                <Box display="flex" justifyContent="center">
+                                </Grid>
+                                <Grid item>
                                     <TextField
                                         id="drop-out"
                                         label="Drop Out"
@@ -133,16 +182,17 @@ class ProfileDetails extends Component {
                                             shrink: true,
                                         }}
                                     />
-                                </Box>
-                                <Box display="flex" justifyContent="center">
-                                    <Button size="large" variant="contained" className="request-button" >
+                                </Grid>
+                                <Grid item>
+                                    <Button size="large" variant="contained" className={classes.requestBtn}>
                                         Send Request
-                                </Button>
-                                </Box>
-                            </Box>
-                        </Grid>
+                                        </Button>
+                                </Grid>
+                            </Grid>
+                        </Box>
                     </Grid>
-                </div>
+                    <Grid item xs={3}><Avatar alt="Your Profile Picture" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.smallAvatar} /></Grid>
+                </Grid>
                 {/* <SimpleSnackbar></SimpleSnackbar> */}
             </div>
         );
