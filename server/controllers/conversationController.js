@@ -3,7 +3,7 @@ import Message from "../models/Message";
 
 
 // Create a conversation (new conversation)
-module.exports = createConversation = function(req, res, next) {
+module.exports.createConversation = function(req, res, next) {
     const conversation = new Conversation({
         senderId : req.user,
         recipientId : req.body.recipientId
@@ -22,21 +22,24 @@ module.exports = createConversation = function(req, res, next) {
 
 
 // Get all conversations
-module.exports = getConversations = function(req, res, next) {
+module.exports.getConversations = function(req, res, next) {
     Conversation.find({})
         .populate("senderId")
         .exec(function(err, conversations){
             if (err) return next(err);
+            if (!conversations) {
+                res.json({ message: "There is no conversations" });
+            }
             res.json(conversations);
         });
 };
 
 
 // CREATE /conversation/:conversation_id/message (new message)
-module.exports = createMessage = function(req, res, next) {
+module.exports.createMessage = function(req, res, next) {
     const message = new Message({
         conversationId: req.params.id,
-        body = req.body.body
+        message: req.body.message
     });
     if (!message.conversationId) {
         const err = new Error("Please select conversation");
@@ -52,11 +55,14 @@ module.exports = createMessage = function(req, res, next) {
 
 
 // GET /conversation/:conversation_id (body list of messages sent already)
-module.exports = getMessages = function(req, res, next) {
+module.exports.getMessages = function(req, res, next) {
     Message.find({})
         .populate("conversationId")
         .exec(function(err, messages){
             if (err) return next(err);
+            if (!messages) {
+                res.json({ message: "There is no messages" });
+            }
             res.json(messages);
         });
 };
