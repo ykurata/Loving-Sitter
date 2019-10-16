@@ -22,6 +22,10 @@ const detailsPageStyle = theme => ({
     container: {
         marginBottom: theme.spacing(100),
     },
+    smallAvatar: {
+        width: 100,
+        height: 100,
+    },
     bigAvatar: {
         width: 300,
         height: 300,
@@ -65,7 +69,8 @@ const initalState = {
     address: "Your address",
     description: "Lorem ipsum dolor sit amet adipiscing bibendum sem orci tempus aliquet gravida, orci amet iaculis aptent blandit quam accumsan donec in facilisis, cursus ante curabitur aliquet condimentum tincidunt facilisis non cubilia lorem et pretium aliquam phasellus ipsum metus quisque auctor tristique donec nibh, praesent congue ultricies aenean ornare ligula sagittis proin sed vestibulum purus tempus aenean neque aliquam curae vivamus purus egestas ligula tincidunt nullam. Dolor id fri",
     rate: "$14/hr",
-    photo: "../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png"
+    photo: "../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png",
+    status: "Available",
 };
 
 class ProfileDetails extends Component {
@@ -153,8 +158,12 @@ class ProfileDetails extends Component {
                         </Grid>
                     </Grid>
                     <Grid item xs={3}>
-                        <Box width={1} boxShadow={2}>
+                        <Box width={1} boxShadow={2} className={classes.marginBottom}>
                             <Grid container align="center" direction="column" justify="center" spacing={4}>
+                                {/*Add color based on status*/}
+                                <Box width={1}>
+                                    <h2>{this.state.status}</h2>
+                                </Box>
                                 <Grid item>
                                     <h2>{this.state.rate}</h2>
                                 </Grid>
@@ -190,8 +199,13 @@ class ProfileDetails extends Component {
                                 </Grid>
                             </Grid>
                         </Box>
+                        <Grid container align="center" direction="column" justify="center" spacing={4} className={classes.marginBottom}>
+                            <Avatar alt="Your Profile Picture" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.smallAvatar} />
+                        </Grid>
+                        <Grid container align="center" direction="column" justify="center" spacing={4} className={classes.marginBottom}>
+                            <Avatar alt="Your Profile Picture" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.smallAvatar} />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={3}><Avatar alt="Your Profile Picture" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.smallAvatar} /></Grid>
                 </Grid>
                 {/* <SimpleSnackbar></SimpleSnackbar> */}
             </div>
