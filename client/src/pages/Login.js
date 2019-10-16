@@ -12,7 +12,6 @@ const initalState = {
   password: "",
   passwordError: "",
   errors : "",
-  timestamp: 'no timestamp yet'
 };
 
 class LoginPage extends Component {
