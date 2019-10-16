@@ -62,4 +62,5 @@ app.use(function(err, req, res, next) {
   res.json({ error: err });
 });
 
-module.exports = {app: app, server: server};
+module.exports = app;
+module.exports = server;
