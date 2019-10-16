@@ -32,20 +32,6 @@ const initalState = {
 };
 
 class EditProfilePage extends Component {
-  wowState = {
-    firstName: "",
-    lastName: "",
-    gender: "",
-    birthDate: "",
-    phone: "",
-    address: "",
-    description: "",
-    disabled: true,
-    snackbaropen: true,
-    snackbarmsg: "test",
-    edit: "0",
-    formChanges: false
-  };
   state = initalState;
 
   handleFirstNameChange = event => {
@@ -192,7 +178,7 @@ class EditProfilePage extends Component {
                               name="firstName"
                               id="standard-firstName"
                               placeholder="John"
-                              value={this.handleFirstName}
+                              value={this.state.firstName}
                               onChange={this.handleFirstNameChange}
                               margin="normal"
                               variant="outlined"
@@ -222,7 +208,7 @@ class EditProfilePage extends Component {
                               name="lastName"
                               id="standard-lastName"
                               placeholder="Doe"
-                              value={this.handleLastName}
+                              value={this.state.lastName}
                               onChange={this.handleLastNameChange}
                               margin="normal"
                               variant="outlined"
@@ -289,7 +275,7 @@ class EditProfilePage extends Component {
                               type="date"
                               name="birthDate"
                               id="standard-birthDate"
-                              value={this.handleDob}
+                              value={this.state.birthDate}
                               onChange={this.handleDobChange}
                               margin="normal"
                               variant="outlined"
@@ -319,7 +305,7 @@ class EditProfilePage extends Component {
                               name="email"
                               placeholder="john-doe.s@gmail.com"
                               id="standard-email"
-                              value={this.handleEmail}
+                              value={this.state.email}
                               onChange={this.handleEmailChange}
                               margin="normal"
                               variant="outlined"
@@ -348,7 +334,7 @@ class EditProfilePage extends Component {
                             <TextField
                               name="phone"
                               id="standard-phone"
-                              value={this.handlePhone}
+                              value={this.state.phone}
                               onChange={this.handlePhoneChange}
                               margin="normal"
                               variant="outlined"
@@ -378,7 +364,7 @@ class EditProfilePage extends Component {
                               name="address"
                               placeholder="Address"
                               id="standard-address"
-                              value={this.handleAddress}
+                              value={this.state.address}
                               onChange={this.handleAddressChange}
                               margin="normal"
                               variant="outlined"
@@ -407,7 +393,7 @@ class EditProfilePage extends Component {
                               name="description"
                               placeholder="About you"
                               id="standard-description"
-                              value={this.handleDescription}
+                              value={this.state.description}
                               onChange={this.handleDescriptionChange}
                               margin="normal"
                               variant="outlined"
@@ -436,7 +422,7 @@ class EditProfilePage extends Component {
                             name="rate" 
                             placeholder="Your hourly rate" 
                             id="standard-rate" 
-                            value={this.handleRate} 
+                            value={this.state.rate} 
                             onChange={this.handleRateChange} 
                             margin="normal" 
                             variant="outlined" 
