@@ -47,7 +47,28 @@ const photoPageStyle = theme => ({
   }
 });
 
+const initalState = {
+  user: {
+    location: "",
+    selectedDate: ""
+  }
+};
+
 class ProfileListPage extends Component {
+  state = initalState;
+
+  handleLocationChange = event => {
+    let user = { ...this.state.user };
+    user.location = event.target.value;
+    this.setState({ user });
+  };
+
+  handleDateChange = event => {
+    let user = { ...this.state.user };
+    user.selectedDate = event.target.value;
+    this.setState({ user });
+  };
+
   render() {
     // Note: Code below will be used for looping, will be used when calling from backend
     // var numbers = [...Array(7).keys()];
@@ -77,19 +98,22 @@ class ProfileListPage extends Component {
                   placeholder="Search Location"
                   margin="normal"
                   variant="outlined"
+                  value={this.state.location}
+                  onChange={this.handleLocationChange}
                   fullWidth
                 />
               </Grid>
               <Grid item xs={2} className="pl-0">
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    margin="normal"
-                    id="date-picker-dialog"
-                    label=" "
-                    format="MM/dd/yyyy"
-                    className={classes.dateOutline}
-                  />
-                </MuiPickersUtilsProvider>
+                <TextField
+                  type="date"
+                  name="selectedDate"
+                  id="standard-selectedDate"
+                  value={this.state.selectedDate}
+                  onChange={this.handleDateChange}
+                  margin="normal"
+                  variant="outlined"
+                  fullWidth
+                />
               </Grid>
               <Grid item xs={3}></Grid>
 
