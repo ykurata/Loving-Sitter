@@ -14,6 +14,10 @@ import ProfilePayment from "./pages/ProfilePayment";
 import ProfileDetails from "./pages/ProfileDetails";
 import PrivateRoute from "./pages/PrivateRoute";
 
+// import socket.io client
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://localhost:3001');
+
 function App() {
   return (
     <MuiThemeProvider theme={theme}>

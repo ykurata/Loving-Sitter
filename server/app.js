@@ -17,22 +17,13 @@ import fileUploadRouter from "./routes/file-upload";
 var app = express();
 
 // socket.io
-var server = require('http').Server(app);
+var server = require('http').Server(app); 
 var io = require('socket.io')(server);
 
-io.on('connection', function(client){
-  client.on('subscribeToTimer', (interval) => {
-    console.log('client is subscribing to timer with interval ', interval);
-    setInterval(() => {
-      client.emit('timer', new Date());
-    }, interval);
-  });
-})
 
-// Socket.io middleware
-app.use(function(req, res, next){
-  res.io = io;
-  next();
+// When a client connects, show message in the console
+io.sockets.on('connection', function (socket) {
+  console.log('A client is connected!');
 });
 
 app.use(logger("dev"));

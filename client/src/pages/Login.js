@@ -6,22 +6,6 @@ import Grid from "@material-ui/core/Grid";
 import "../App.scss";
 import Button from "@material-ui/core/Button";
 
-// import socket.io client
-import openSocket from 'socket.io-client';
-const socket = openSocket('http://localhost:3001');
-
-// test for socket.io
-function subscribeToTimer(cb) {
-  socket.on('timer', timestamp => cb(null, timestamp));
-  socket.emit('subscribeToTimer', 1000);
-}
-
-
-// connect to server 
-// emit user to server 
-// update table 
-
-
 const initalState = {
   email: "",
   emailError: "",
@@ -33,13 +17,6 @@ const initalState = {
 
 class LoginPage extends Component {
   state = initalState;
-
-  constructor(props) {
-    super(props);
-    subscribeToTimer((err, timestamp) => this.setState({ 
-      timestamp 
-    }));
-  }
 
   handleEmailChange = event => {
     this.setState({ email: event.target.value });
@@ -108,15 +85,6 @@ class LoginPage extends Component {
                     <Grid item xs={12}>
                       <h1 className="center">LogIn</h1>
                     </Grid>
-                    
-                    {/* Testing for socket.io */}
-                    <div>
-                        <p>
-                            This is the timer value: {this.state.timestamp}
-                        </p>
-                    </div>
-
-
                     {
                       (this.state.errors)
                       ? <Grid item xs={12} className="pb-0 pt-0" style={{ color: "red" }}>
