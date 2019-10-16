@@ -200,6 +200,9 @@ class ProfileDetails extends Component {
                             </Grid>
                         </Box>
                         <Grid item spacing={4} className={classes.marginBottom}>
+                            <Grid container direction="column" align="center" className={classes.marginBottom}>
+                                <Typography variant="h4">Reviews</Typography>
+                            </Grid>
                             <Grid container direction="row">
                                 <Grid item>
                                     <Avatar alt="Your Profile Picture" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.smallAvatar} />
