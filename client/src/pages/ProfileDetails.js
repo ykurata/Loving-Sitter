@@ -23,8 +23,8 @@ const detailsPageStyle = theme => ({
         marginBottom: theme.spacing(100),
     },
     smallAvatar: {
-        width: 100,
-        height: 100,
+        width: 75,
+        height: 75,
     },
     bigAvatar: {
         width: 300,
@@ -114,10 +114,10 @@ class ProfileDetails extends Component {
                     <Grid item xs={12}></Grid>
                     <Grid item xs={1}></Grid>
                     <Grid item xs={7}>
-                        <Grid container spacing={4} align="center" direction="column" justify="center">
+                        <Grid container spacing={4} align="center">
                             <Box width={1} boxShadow={2}>
                                 <Grid item >
-                                    {/*Replace with picture later*/}
+                                    {/*Replace with picture later, add background image*/}
                                     <Avatar alt="Your Profile Picture" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.bigAvatar} />
                                 </Grid>
                                 <Grid item>
@@ -158,8 +158,8 @@ class ProfileDetails extends Component {
                         </Grid>
                     </Grid>
                     <Grid item xs={3}>
-                        <Box width={1} boxShadow={2} className={classes.marginBottom}>
-                            <Grid container align="center" direction="column" justify="center" spacing={4}>
+                        <Box boxShadow={2} className={classes.marginBottom}>
+                            <Grid container align="center" direction="column" spacing={4}>
                                 {/*Add color based on status*/}
                                 <Box width={1}>
                                     <h2>{this.state.status}</h2>
@@ -199,11 +199,35 @@ class ProfileDetails extends Component {
                                 </Grid>
                             </Grid>
                         </Box>
-                        <Grid container align="center" direction="column" justify="center" spacing={4} className={classes.marginBottom}>
-                            <Avatar alt="Your Profile Picture" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.smallAvatar} />
+                        <Grid item spacing={4} className={classes.marginBottom}>
+                            <Grid container direction="row">
+                                <Grid item>
+                                    <Avatar alt="Your Profile Picture" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.smallAvatar} />
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="h5">Sarah Blakeney</Typography>
+                                    <Rating value={5} readOnly />
+                                </Grid>
+                                <Grid container direction="column">
+                                    <Grid item>
+                                        <Typography variant="subtitle2">I recommend Norma as a pet sitter!</Typography>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </Grid>
-                        <Grid container align="center" direction="column" justify="center" spacing={4} className={classes.marginBottom}>
-                            <Avatar alt="Your Profile Picture" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.smallAvatar} />
+                        <Grid container direction="row">
+                            <Grid item>
+                                <Avatar alt="Your Profile Picture" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.smallAvatar} />
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="h5">Tom Williams</Typography>
+                                <Rating value={5} readOnly />
+                            </Grid>
+                            <Grid container direction="column">
+                                <Grid item>
+                                    <Typography variant="subtitle2">I recommend Norma as a pet sitter!</Typography>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
