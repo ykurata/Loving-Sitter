@@ -5,7 +5,6 @@ import mongoose from "mongoose";
 import { body, validationResult } from "express-validator/check";
 import { sanitizeBody } from "express-validator/filter";
 
-
 // import input profile input validation
 const validateProfileInput = require("../validator/profile-validator");
 
@@ -91,13 +90,12 @@ module.exports.createProfile = function(req, res, next) {
     rate: req.body.rate
   });
 
-  profile.save(function(err, profile){
+  profile.save(function(err, profile) {
     if (err) return next(err);
     console.log("USER SAVED!");
     res.json(profile);
   });
 };
-
 
 //Handle profile update on POST.
 module.exports.profileUpdatePost = function(req, res, next) {
@@ -109,42 +107,47 @@ module.exports.profileUpdatePost = function(req, res, next) {
     return res.status(400).json(errors);
   }
 
-  Profile.findById(req.params.id, function(err, profile){
+  Profile.findById(req.params.id, function(err, profile) {
     if (err) return next(err);
-    profile.firstName = req.body.firstName,
-    profile.lastName = req.body.lastName,
-    profile.gender = req.body.gender,
-    profile.email = req.body.email,
-    profile.birthDate = req.body.birthDate,
-    profile.phone = req.body.phone,
-    profile.address = req.body.address,
-    profile.description = req.body.description,
-    profile.rate = req.body.rate
+    (profile.firstName = req.body.firstName),
+      (profile.lastName = req.body.lastName),
+      (profile.gender = req.body.gender),
+      (profile.email = req.body.email),
+      (profile.birthDate = req.body.birthDate),
+      (profile.phone = req.body.phone),
+      (profile.address = req.body.address),
+      (profile.description = req.body.description),
+      (profile.rate = req.body.rate);
 
-    profile.save(function(err, profile){
+    profile.save(function(err, profile) {
       if (err) return next(err);
       res.json(profile);
     });
   });
-}
- 
-
+};
 
 module.exports.getProfile = async function(req, res, next) {
-  if (mongoose.Types.ObjectId.isValid(req.body.userId)) {
-    let profile = await Profile.findOne(
-      { userId: req.body.userId },
-      (err, profile) => {
-        if (err) {
-          res.status(404).json({ error: "Profile not found" });
-        } else {
-          res.status(200).json({ profile: profile });
-        }
+  if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+    Profile.findOne({ userId: req.params.id }, (err, profile) => {
+      if (err) {
+        res.status(404).json({ error: "Profile not found" });
+      } else {
+        res.status(200).json({ profile: profile });
       }
-    );
+    });
   } else {
     res.status(404).json({ error: "Invalid user ID" });
   }
+};
+
+module.exports.getAllProfiles = async function(req, res, next) {
+  Profile.find({}, (err, profiles) => {
+    if (err) {
+      res.status(404).json({ error: "No profiles found" });
+    } else {
+      res.status(200).json({ profile: profiles });
+    }
+  });
 };
 
 // Display profile delete form on GET.
@@ -275,7 +278,3 @@ exports.profile_update_get = function(req, res, next) {
     }
   );
 };
-
-
-
-  
