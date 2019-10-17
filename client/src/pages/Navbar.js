@@ -19,6 +19,11 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1
+  },
+
+  transparentNavbar: {
+    backgroundColor: "transparent",
+    boxShadow: "none"
   }
 }));
 
@@ -84,7 +89,8 @@ export default function NavigationBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" className="transparentNavbar">
+      <AppBar position="fixed" className={classes.transparentNavbar}>
+      {/* <AppBar position="fixed" className="transparentNavbar"> */}
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             <img src={require("../images/loving-sitter-logo.png")} alt="logo of app"/>
