@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Avatar from '@material-ui/core/Avatar';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -42,8 +43,45 @@ export default function NavigationBar() {
   }
 
   const token = localStorage.getItem('jwtToken');
+  let buttons;
 
-  
+  if (token) {
+    buttons = <div className={classes.menuButton}>
+                <Button color="inherit">BECOME A SITTER</Button>
+                <Button color="inherit">My Sitters</Button>
+                <Button color="inherit">Messages</Button>
+
+                <IconButton aria-label="avatar" onClick={handleClick}>
+                  <Avatar alt="Remy Sharp" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.bigAvatar}/>
+                </IconButton>
+                <Menu
+                      id="menu-appbar"
+                      anchorEl={anchorEl}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      open={open}
+                      onClose={handleClose}
+                    >
+                      <MenuItem><a href="./profile">Profile</a></MenuItem>
+                      <MenuItem onClick={handleClose}>My account</MenuItem>
+                      <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+                </Menu>
+              </div> 
+  } else {
+    buttons = <div>
+                <Button className={classes.menuButton} color="inherit">BECOME A SITTER</Button>
+                <Button className={classes.menuButton} variant="outlined" color="secondary" component={Link} to={"/login"}>Log In</Button>
+                <Button variant="contained" color="secondary" component={Link} to={"/signup"}>Sign Up</Button>
+              </div>
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position="static" color="inherit">
@@ -51,39 +89,9 @@ export default function NavigationBar() {
           <Typography variant="h6" className={classes.title}>
             <img src={require("../images/loving-sitter-logo.png")} alt="logo of app"/>
           </Typography>
-          <Button color="inherit">BECOME A SITTER</Button>
-          <Button color="inherit">My Sitters</Button>
-          <Button color="inherit">Messages</Button>
-
-          <IconButton aria-label="avatar" onClick={handleClick}>
-          <Avatar alt="Remy Sharp" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.bigAvatar}/>
-
-      </IconButton>
-
-      
-
-      <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={open}
-                onClose={handleClose}
-              >
-                <MenuItem><a href="./profile">Profile</a></MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleLogout}>Log Out</MenuItem>
-              </Menu>
-        
+          { buttons }
         </Toolbar>
       </AppBar>
     </div>
   );
-}
+};

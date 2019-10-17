@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import "../App.scss";
 import Button from "@material-ui/core/Button";
 
-import { withRouter, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 const initalState = {
   email: "",
@@ -56,8 +56,6 @@ class LoginPage extends Component {
         email: email,
         password: password
       }
-      console.log("wonderww");
-      console.log(data);
       axios.post('/users/login', data)
       .then(res => {
           console.log("here2");
@@ -69,12 +67,10 @@ class LoginPage extends Component {
           this.props.history.push('/profile');
       })
       .catch(err => {
-        console.log("TEST");
         this.setState({
           errors: err.response.data.error  // Error messages from backend
           });
       });
-
     }
   };
   
@@ -97,7 +93,7 @@ class LoginPage extends Component {
                       ? <Grid item xs={12} className="pb-0 pt-0" style={{ color: "red" }}>
                           <p className="mb-0 mt-0">{this.state.errors}</p>
                         </Grid>
-                      : <Grid></Grid>
+                      : null
                     }
                     <Grid item xs={12} className="pb-0 pt-0">
                       <p className="mb-0 mt-0">EMAIL ADDRESS</p>
