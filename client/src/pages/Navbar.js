@@ -21,9 +21,17 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
 
-  transparentNavbar: {
+  logInNavbar: {
     backgroundColor: "transparent",
-    boxShadow: "none"
+    boxShadow: "none",
+    position: "fixed"
+  },
+
+  loggedInNavbar: {
+    backgroundColor: "transparent",
+    boxShadow: "none",
+    position: "static"
+
   }
 }));
 
@@ -89,7 +97,7 @@ export default function NavigationBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" className={classes.transparentNavbar}>
+      <AppBar className={ token ? classes.loggedInNavbar : classes.logInNavbar}>
       {/* <AppBar position="fixed" className="transparentNavbar"> */}
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
