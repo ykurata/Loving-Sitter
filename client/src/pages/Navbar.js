@@ -84,7 +84,7 @@ export default function NavigationBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="inherit">
+      <AppBar position="fixed" className="transparentNavbar">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             <img src={require("../images/loving-sitter-logo.png")} alt="logo of app"/>
