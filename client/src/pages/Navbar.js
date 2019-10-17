@@ -46,8 +46,8 @@ export default function NavigationBar() {
   let buttons;
 
   if (token) {
-    buttons = <div className={classes.menuButton}>
-                <Button color="inherit">BECOME A SITTER</Button>
+    buttons = <div>
+                <Button color="inherit" component={Link} to={"/profile"}>BECOME A SITTER</Button>
                 <Button color="inherit">My Sitters</Button>
                 <Button color="inherit">Messages</Button>
 
@@ -76,7 +76,7 @@ export default function NavigationBar() {
               </div> 
   } else {
     buttons = <div>
-                <Button className={classes.menuButton} color="inherit">BECOME A SITTER</Button>
+                <Button className={classes.menuButton} color="inherit" component={Link} to={"/profile"}>BECOME A SITTER</Button>
                 <Button className={classes.menuButton} variant="outlined" color="secondary" component={Link} to={"/login"}>Log In</Button>
                 <Button variant="contained" color="secondary" component={Link} to={"/signup"}>Sign Up</Button>
               </div>

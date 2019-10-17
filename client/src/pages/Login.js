@@ -51,14 +51,12 @@ class LoginPage extends Component {
     if (isValid) {
       const { email, password } = this.state;
       
-      console.log("here");
       const data = {
         email: email,
         password: password
       }
       axios.post('/users/login', data)
       .then(res => {
-          console.log("here2");
           const { token } = res.data;
           const decoded = jwt_decode(token);
           localStorage.setItem('jwtToken', token);
