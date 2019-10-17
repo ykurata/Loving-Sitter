@@ -35,6 +35,15 @@ export default function NavigationBar() {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleLogout = e => {
+    e.preventDefault();
+    localStorage.clear();
+    window.location.href = "/";
+  }
+
+  const token = localStorage.getItem('jwtToken');
+
+  
   return (
     <div className={classes.root}>
       <AppBar position="static" color="inherit">
@@ -51,7 +60,7 @@ export default function NavigationBar() {
 
       </IconButton>
 
-     
+      
 
       <Menu
                 id="menu-appbar"
@@ -70,6 +79,7 @@ export default function NavigationBar() {
               >
                 <MenuItem><a href="./profile">Profile</a></MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleLogout}>Log Out</MenuItem>
               </Menu>
         
         </Toolbar>
