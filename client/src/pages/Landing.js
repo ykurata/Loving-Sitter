@@ -21,7 +21,7 @@ class LandingPage extends Component {
           </div>
           <div className="App_form"></div>
         </div>
-       </div>
+      </div>
     );
   }
 }
