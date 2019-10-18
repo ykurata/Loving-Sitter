@@ -29,31 +29,20 @@ const photoPageStyle = theme => ({
   }
 });
 
-
-
 const initalState = {
-
-  status: "",
+  status: ""
 };
 
 class MyJobsPage extends Component {
-
   state = initalState;
 
-  accept = event  => {
+  jobResquestResponse = event => {
     console.log("in accept");
     console.log(event);
-    console.log(event.target.value);
-  }
-
-
-  decline = event  => {
-    console.log("in decline");
-    console.log(event);
-    console.log(event.target.value);
-  }
-
- 
+    console.log(event.currentTarget.value);
+    this.setState({ status: event.currentTarget.value });
+    console.log(this.state);
+  };
 
   render() {
     const { classes } = this.props;
@@ -198,7 +187,11 @@ class MyJobsPage extends Component {
                       <Grid item xs={4}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
-                            Status: Pending
+                            {this.state.status === ""
+                              ? "Status: Pending"
+                              : this.state.status === "accepted"
+                              ? "Status: Accepted"
+                              : "Status: Declined"}
                           </Typography>
                         </CardContent>
                       </Grid>
@@ -211,31 +204,48 @@ class MyJobsPage extends Component {
                         </CardContent>
                       </Grid>
                       <Grid item xs={1} className="pt-0"></Grid>
+
                       <Grid item xs={3} className="pt-0">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          fullWidth
-                          size="large"
-                          onClick={this.accept}
-                          value="accepted"
-                        >
-                          Accept
-                        </Button>
+                        {this.state.status === "" ? (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                            size="large"
+                            onClick={this.jobResquestResponse}
+                            value="accepted"
+                          >
+                            Accept
+                          </Button>
+                        ) : (
+                          ""
+                        )}
                       </Grid>
 
                       <Grid item xs={3} className="pt-0 pr-2">
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          fullWidth
-                          size="large"
-                          onClick={this.decline}
-                          value="declined"
-
-                        >
-                          Decline
-                        </Button>
+                        {this.state.status === "" ? (
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            fullWidth
+                            size="large"
+                            onClick={this.jobResquestResponse}
+                            value="declined"
+                          >
+                            Decline
+                          </Button>
+                        ) : this.state.status === "accepted" ? (
+                          <Button
+                            variant="contained"
+                            className={classes.contactBtn}
+                            fullWidth
+                            size="large"
+                          >
+                            Contact User
+                          </Button>
+                        ) : (
+                          ""
+                        )}
                       </Grid>
                     </Grid>
                   </Grid>
