@@ -11,7 +11,6 @@ import Button from "@material-ui/core/Button";
 
 // import SimpleSnackbar from "./snackbar";
 import { Snackbar, IconButton } from "@material-ui/core";
-import { positions } from "@material-ui/system";
 
 const initalState = {
   user: {
@@ -27,7 +26,9 @@ const initalState = {
   },
   disabled: false,
   snackbaropen: true,
-  snackbarmsg: "test"
+  snackbarmsg: "test",
+  edit: "0",
+  formChanges: false
 };
 
 class EditProfilePage extends Component {
@@ -119,7 +120,11 @@ class EditProfilePage extends Component {
   };
 
   enableEdit = event => {
-    this.setState({ disabled: false });
+    this.setState({ disabled: false, edit: "1" });
+  };
+
+  cancelEdit = event => {
+    this.setState({ disabled: true, edit: "0" });
   };
 
   render() {
@@ -173,7 +178,7 @@ class EditProfilePage extends Component {
                               name="firstName"
                               id="standard-firstName"
                               placeholder="John"
-                              value={this.handleFirstName}
+                              value={this.state.firstName}
                               onChange={this.handleFirstNameChange}
                               margin="normal"
                               variant="outlined"
@@ -203,7 +208,7 @@ class EditProfilePage extends Component {
                               name="lastName"
                               id="standard-lastName"
                               placeholder="Doe"
-                              value={this.handleLastName}
+                              value={this.state.lastName}
                               onChange={this.handleLastNameChange}
                               margin="normal"
                               variant="outlined"
@@ -270,7 +275,7 @@ class EditProfilePage extends Component {
                               type="date"
                               name="birthDate"
                               id="standard-birthDate"
-                              value={this.handleDob}
+                              value={this.state.birthDate}
                               onChange={this.handleDobChange}
                               margin="normal"
                               variant="outlined"
@@ -300,7 +305,7 @@ class EditProfilePage extends Component {
                               name="email"
                               placeholder="john-doe.s@gmail.com"
                               id="standard-email"
-                              value={this.handleEmail}
+                              value={this.state.email}
                               onChange={this.handleEmailChange}
                               margin="normal"
                               variant="outlined"
@@ -329,7 +334,7 @@ class EditProfilePage extends Component {
                             <TextField
                               name="phone"
                               id="standard-phone"
-                              value={this.handlePhone}
+                              value={this.state.phone}
                               onChange={this.handlePhoneChange}
                               margin="normal"
                               variant="outlined"
@@ -359,7 +364,7 @@ class EditProfilePage extends Component {
                               name="address"
                               placeholder="Address"
                               id="standard-address"
-                              value={this.handleAddress}
+                              value={this.state.address}
                               onChange={this.handleAddressChange}
                               margin="normal"
                               variant="outlined"
@@ -388,7 +393,7 @@ class EditProfilePage extends Component {
                               name="description"
                               placeholder="About you"
                               id="standard-description"
-                              value={this.handleDescription}
+                              value={this.state.description}
                               onChange={this.handleDescriptionChange}
                               margin="normal"
                               variant="outlined"
@@ -417,7 +422,7 @@ class EditProfilePage extends Component {
                             name="rate" 
                             placeholder="Your hourly rate" 
                             id="standard-rate" 
-                            value={this.handleRate} 
+                            value={this.state.rate} 
                             onChange={this.handleRateChange} 
                             margin="normal" 
                             variant="outlined" 
@@ -454,6 +459,22 @@ class EditProfilePage extends Component {
                           Edit
                         </Button>
                       </Grid>
+
+                      {this.state.edit === "1" ? (
+                        <Grid item xs={2}>
+                          <Button
+                            variant="outlined"
+                            color="secondary"
+                            fullWidth
+                            size="large"
+                            onClick={this.cancelEdit}
+                          >
+                            Cancel
+                          </Button>
+                        </Grid>
+                      ) : (
+                        <Grid item xs={2}></Grid>
+                      )}
                       <Grid item xs={2}></Grid>
                     </Grid>
                   </form>
