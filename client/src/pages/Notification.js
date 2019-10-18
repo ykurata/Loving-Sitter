@@ -7,14 +7,11 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
-    // overflow: 'hidden',
-    // padding: theme.spacing(0, 0),
+    flexGrow: 1
   },
   paper: {
     maxWidth: 450,
     margin: `${theme.spacing(1)}px auto`,
-    padding: theme.spacing(1),
     boxShadow: 'none',
   },
   image: {
@@ -26,12 +23,10 @@ const useStyles = makeStyles(theme => ({
     display: 'block',
     maxWidth: '100%',
     maxHeight: '100%',
-
-  },
+  }
 }));
 
-
-export default function AutoGridNoWrap() {
+export default function Notification() {
   const classes = useStyles();
 
   return (
@@ -44,12 +39,12 @@ export default function AutoGridNoWrap() {
             </ButtonBase>
           </Grid>
           <Grid item xs zeroMinWidth>
-            <Typography variant='subtitle1'>Marry has requested your service for 2 hours</Typography>
+            <Typography noWrap variant='subtitle1'>Marry has requested your service</Typography>
             <Typography variant="caption" color="textSecondary">Dog Sitting</Typography>
             <Typography variant="subtitle1">18/10/2019</Typography>
           </Grid>
         </Grid>
-
+        
         <Grid container wrap="nowrap" spacing={2}>
           <Grid item>
             <ButtonBase className={classes.image}>
@@ -57,7 +52,7 @@ export default function AutoGridNoWrap() {
             </ButtonBase>
           </Grid>
           <Grid item xs zeroMinWidth>
-            <Typography variant='subtitle1'>Yasuko kurata sdfswgs has requested your service for 5 hours</Typography>
+            <Typography noWrap variant='subtitle1'>Scott has requested your service</Typography>
             <Typography variant="caption" color="textSecondary">Dog Sitting</Typography>
             <Typography variant="subtitle1">25/10/2019</Typography>
           </Grid>
@@ -65,4 +60,4 @@ export default function AutoGridNoWrap() {
       </Paper>
     </div>
   );
-}
+};

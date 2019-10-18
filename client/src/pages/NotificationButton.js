@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
 
 import Notification from "./Notification";
-import Notification2 from "./Notification2";
 
-class MenuButton extends Component {
+class NotificationButton extends Component {
   state = {
     anchorEl: null
   };
@@ -53,7 +51,6 @@ class MenuButton extends Component {
       </span>
     );
   }
-
 }
 
-export default MenuButton;
+export default NotificationButton;

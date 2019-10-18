@@ -16,9 +16,6 @@ import MyJobsPage from "./pages/MyJobs";
 import ProfileDetails from "./pages/ProfileDetails";
 import PrivateRoute from "./pages/PrivateRoute";
 
-import Notification from "./pages/Notification";
-import Notification2 from "./pages/Notification2";
-
 // import socket.io client
 import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:3001');
@@ -35,11 +32,7 @@ function App() {
         <Route path="/profile-photo" component={PhotoPage} />
         <Route path="/my-jobs" component={MyJobsPage} />
         <Route path="/sitter-search" component={ProfileListPage} />
-        <Route path="/profile-details" component={ProfileDetails} />
-
-        <Route path="/notification" component={Notification} />
-        <Route path="/notification2" component={Notification2} />
-        
+        <Route path="/profile-details" component={ProfileDetails} />        
       </BrowserRouter>
     </MuiThemeProvider>
   );

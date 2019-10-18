@@ -10,7 +10,6 @@ import Menu from '@material-ui/core/Menu';
 import Avatar from '@material-ui/core/Avatar';
 import { Link } from 'react-router-dom';
 
-import Notification2 from "./Notification2";
 import NotificationButton from "./NotificationButton";
 
 const useStyles = makeStyles(theme => ({
@@ -46,10 +45,6 @@ export default function NavigationBar() {
   };
 
   const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleToggle = event => {
     setAnchorEl(event.currentTarget);
   };
 
