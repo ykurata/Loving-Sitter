@@ -29,7 +29,32 @@ const photoPageStyle = theme => ({
   }
 });
 
+
+
+const initalState = {
+
+  status: "",
+};
+
 class MyJobsPage extends Component {
+
+  state = initalState;
+
+  accept = event  => {
+    console.log("in accept");
+    console.log(event);
+    console.log(event.target.value);
+  }
+
+
+  decline = event  => {
+    console.log("in decline");
+    console.log(event);
+    console.log(event.target.value);
+  }
+
+ 
+
   render() {
     const { classes } = this.props;
     return (
@@ -84,7 +109,7 @@ class MyJobsPage extends Component {
                         </Box>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={2}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             $200/hr
@@ -92,7 +117,7 @@ class MyJobsPage extends Component {
                         </CardContent>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={4}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             Status: Pending
@@ -162,7 +187,7 @@ class MyJobsPage extends Component {
                         </Box>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={2}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             $900/hr
@@ -170,7 +195,7 @@ class MyJobsPage extends Component {
                         </CardContent>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={4}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             Status: Pending
@@ -192,6 +217,8 @@ class MyJobsPage extends Component {
                           color="primary"
                           fullWidth
                           size="large"
+                          onClick={this.accept}
+                          value="accepted"
                         >
                           Accept
                         </Button>
@@ -203,6 +230,9 @@ class MyJobsPage extends Component {
                           color="secondary"
                           fullWidth
                           size="large"
+                          onClick={this.decline}
+                          value="declined"
+
                         >
                           Decline
                         </Button>
@@ -259,7 +289,7 @@ class MyJobsPage extends Component {
                         </Box>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={2}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             $900/hr
@@ -267,7 +297,7 @@ class MyJobsPage extends Component {
                         </CardContent>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={4}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             Status: Pending
@@ -345,7 +375,7 @@ class MyJobsPage extends Component {
                         </Box>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={2}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             $900/hr
@@ -353,7 +383,7 @@ class MyJobsPage extends Component {
                         </CardContent>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={4}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             Status: Pending
