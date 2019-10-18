@@ -150,11 +150,6 @@ class SignUpPage extends Component {
     }
   };
 
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
   snackbarClose = event => {
     this.setState({ snackbaropen: false });
   };
@@ -194,6 +189,7 @@ class SignUpPage extends Component {
                     <Grid item xs={12}>
                       <h1 className="center">Sign Up</h1>
                     </Grid>
+
                     {
                       (this.state.errors)
                       ? <Grid item xs={12} className="pb-0 pt-0" style={{ color: "red" }}>

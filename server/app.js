@@ -16,6 +16,16 @@ import fileUploadRouter from "./routes/file-upload";
 
 var app = express();
 
+// socket.io
+var server = require('http').Server(app); 
+var io = require('socket.io')(server);
+
+
+// When a client connects, show message in the console
+io.sockets.on('connection', function (socket) {
+  console.log('A client is connected!');
+});
+
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
@@ -35,6 +45,7 @@ app.use("/files", fileUploadRouter);
 
 app.use(cors());
 
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -52,3 +63,4 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+module.exports = server;

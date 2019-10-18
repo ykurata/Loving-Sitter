@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 
 import "../App.scss";
 
+
 class LandingPage extends Component {
   handleLogout = e => {
     e.preventDefault();

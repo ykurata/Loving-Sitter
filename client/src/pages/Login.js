@@ -13,7 +13,7 @@ const initalState = {
   emailError: "",
   password: "",
   passwordError: "",
-  errors : ""  
+  errors : "",
 };
 
 class LoginPage extends Component {
