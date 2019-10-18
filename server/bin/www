@@ -7,7 +7,7 @@ require("dotenv").config();
  * Module dependencies.
  */
 
-var app = require('../app').app;
+var app = require('../app');
 var http = require("http");
 
 /**
@@ -21,8 +21,14 @@ app.set("port", port);
  * Create HTTP server.
  */
 
-var server = require('../app').server;
+var server = http.createServer(app);
 
+/**
+ * Socket.io
+ */
+
+var io = app.io
+io.attach(server);
 
 /**
  * Listen on provided port, on all network interfaces.
