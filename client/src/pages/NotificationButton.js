@@ -27,7 +27,7 @@ class NotificationButton extends Component {
         <Button
           onClick={this.handleMenu}
         >
-          Notification
+          Notifications
         </Button>
         <Menu
           id="menu-appbar"
