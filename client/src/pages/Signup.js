@@ -195,7 +195,7 @@ class SignUpPage extends Component {
                       ? <Grid item xs={12} className="pb-0 pt-0" style={{ color: "red" }}>
                           <p className="mb-0 mt-0">{this.state.errors}</p>
                         </Grid>
-                      : <Grid></Grid>
+                      : null
                     }
 
                     <Grid item xs={12} className="pb-0 pt-0">
