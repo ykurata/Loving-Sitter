@@ -17,6 +17,7 @@ import ProfileDetails from "./pages/ProfileDetails";
 import PrivateRoute from "./pages/PrivateRoute";
 
 import Notification from "./pages/Notification";
+import Notification2 from "./pages/Notification2";
 
 // import socket.io client
 import openSocket from 'socket.io-client';
@@ -37,6 +38,7 @@ function App() {
         <Route path="/profile-details" component={ProfileDetails} />
 
         <Route path="/notification" component={Notification} />
+        <Route path="/notification2" component={Notification2} />
         
       </BrowserRouter>
     </MuiThemeProvider>

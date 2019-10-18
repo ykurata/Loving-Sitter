@@ -8,13 +8,14 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    overflow: 'hidden',
-    padding: theme.spacing(0, 3),
+    // overflow: 'hidden',
+    // padding: theme.spacing(0, 0),
   },
   paper: {
     maxWidth: 450,
-    margin: `${theme.spacing(3)}px auto`,
-    padding: theme.spacing(2),
+    margin: `${theme.spacing(1)}px auto`,
+    padding: theme.spacing(1),
+    boxShadow: 'none',
   },
   image: {
     width: 70,
@@ -34,7 +35,7 @@ export default function AutoGridNoWrap() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div>
       <Paper className={classes.paper}>
         <Grid container wrap="nowrap" spacing={2}>
           <Grid item>
@@ -56,7 +57,7 @@ export default function AutoGridNoWrap() {
             </ButtonBase>
           </Grid>
           <Grid item xs zeroMinWidth>
-            <Typography variant='subtitle1'>Yasuko has requested your service for 5 hours</Typography>
+            <Typography variant='subtitle1'>Yasuko kurata sdfswgs has requested your service for 5 hours</Typography>
             <Typography variant="caption" color="textSecondary">Dog Sitting</Typography>
             <Typography variant="subtitle1">25/10/2019</Typography>
           </Grid>
