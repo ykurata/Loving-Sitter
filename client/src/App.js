@@ -32,7 +32,7 @@ function App() {
         <Route path="/profile-photo" component={PhotoPage} />
         <Route path="/my-jobs" component={MyJobsPage} />
         <Route path="/sitter-search" component={ProfileListPage} />
-        <Route path="/profile-details" component={ProfileDetails} />        
+        <Route path="/profile-details" component={ProfileDetails} />
       </BrowserRouter>
     </MuiThemeProvider>
   );
