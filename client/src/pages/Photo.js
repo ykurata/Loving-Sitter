@@ -65,6 +65,7 @@ class PhotoPage extends Component {
   };
 
   render() {
+    console.log(this.state.file);
     const { classes } = this.props;
     return (
       <div>

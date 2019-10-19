@@ -67,6 +67,7 @@ module.exports.updateProfile = function(req, res, next) {
   });
 };
 
+// GET a specific profile
 module.exports.getProfile = async function(req, res, next) {
   if (mongoose.Types.ObjectId.isValid(req.params.id)) {
     Profile.findOne({ userId: req.params.id }, (err, profile) => {
@@ -81,6 +82,7 @@ module.exports.getProfile = async function(req, res, next) {
   }
 };
 
+// GET all profiles
 module.exports.getAllProfiles = async function(req, res, next) {
   Profile.find({}, (err, profiles) => {
     if (err) {
@@ -88,5 +90,13 @@ module.exports.getAllProfiles = async function(req, res, next) {
     } else {
       res.status(200).json({ profile: profiles });
     }
+  });
+};
+
+// Delete a profile 
+module.exports.deleteProfile = function(req, res, next) {
+  Profile.remove({ _id: req.params.id}, function(err, profile){
+    if (err) return next(err);
+    res.json({ message: "successfully deleted" });
   });
 };

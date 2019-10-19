@@ -61,7 +61,7 @@ export default function NavigationBar() {
   if (token) {
     buttons = <div>
                 <Button component={Link} to={"/profile"}>BECOME A SITTER</Button>
-                <Button>My Sitters</Button>
+                <Button component={Link} to={"/sitter-search"}>My Sitters</Button>
                 <Button>Messages</Button>
                 <IconButton aria-label="avatar" onClick={handleClick}>
                   <Avatar alt="Remy Sharp" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.bigAvatar}/>
