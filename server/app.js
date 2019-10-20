@@ -9,10 +9,11 @@ import cors from "cors";
 import dbConnection from "./db/mongoose";
 import indexRouter from "./routes/index";
 import profileRouter from "./routes/profile";
-import pingRouter from "./routes/ping";
+//import pingRouter from "./routes/ping";
 import photoRouter from "./routes/photo";
 import usersRouter from "./routes/users";
 import fileUploadRouter from "./routes/file-upload";
+import paymentRouter from "./routes/payment";
 
 var app = express();
 
@@ -28,10 +29,11 @@ require("./libs/passport")(passport);
 
 app.use("/", indexRouter);
 app.use("/profile", profileRouter);
-app.use("/ping", pingRouter);
+//app.use("/ping", pingRouter);
 app.use("/profile-photo", photoRouter);
 app.use("/users", usersRouter);
 app.use("/files", fileUploadRouter);
+app.use("/profile-payment", paymentRouter);
 
 app.use(cors());
 
