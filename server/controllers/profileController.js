@@ -2,11 +2,9 @@
 import Profile from "../models/Profile";
 import mongoose from "mongoose";
 
-import { body, validationResult } from "express-validator/check";
-import { sanitizeBody } from "express-validator/filter";
-
-// import input profile input validation
+// import profile input validation
 const validateProfileInput = require("../validator/profile-validator");
+
 
 // Handle profile create on POST.
 module.exports.createProfile = function(req, res, next) {
@@ -38,7 +36,7 @@ module.exports.createProfile = function(req, res, next) {
   });
 };
 
-//Handle profile update on POST.
+//Handle profile update on PUT.
 module.exports.updateProfile = function(req, res, next) {
   // Form validation
   const { errors, isValid } = validateProfileInput(req.body);

@@ -92,7 +92,6 @@ class ProfileDetails extends Component {
     render() {
         const { classes } = this.props;
         const { profile } = this.state;
-
         return (
             <div>
                 <Snackbar
