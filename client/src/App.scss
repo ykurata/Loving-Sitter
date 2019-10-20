@@ -113,9 +113,9 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: lightgrey;
+  background-color: #f8f6f6;
   height: 100%;
-  border: 1px solid red;
+  padding-top: 40px;
   padding-bottom: 10px;
 }
 
@@ -125,17 +125,14 @@ h1 {
 
 .infoArea {
   width: 80%;
-  border: 1px solid grey;
 }
 .menuArea {
-  border: 1px solid blue;
   width: 20%;
   float: left;
 }
 .settingsArea {
   float: right;
   background-color: white;
-  border: 1px solid green;
   width: 79%;
 }
 

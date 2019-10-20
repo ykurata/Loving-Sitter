@@ -21,7 +21,6 @@ var socket_io = require( "socket.io" );
 var io = socket_io();
 app.io = io;
 
-
 // When a client connects, show message in the console
 io.on('connection', function (socket) {
   console.log('A client is connected!');
