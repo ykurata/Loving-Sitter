@@ -96,7 +96,7 @@ class EditProfilePage extends Component {
     const { user } = this.state;
 
     axios
-      .post("/profile", user, { headers: { Authorization: `Bearer ${token}` } })
+      .post("/profile/create", user, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
         this.props.history.push("/");
         console.log(res.data);

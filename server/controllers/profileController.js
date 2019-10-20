@@ -92,11 +92,3 @@ module.exports.getAllProfiles = async function(req, res, next) {
     }
   });
 };
-
-// Delete a profile 
-module.exports.deleteProfile = function(req, res, next) {
-  Profile.remove({ _id: req.params.id}, function(err, profile){
-    if (err) return next(err);
-    res.json({ message: "successfully deleted" });
-  });
-};

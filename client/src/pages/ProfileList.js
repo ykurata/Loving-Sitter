@@ -69,7 +69,10 @@ class ProfileListPage extends Component {
   };
 
   componentDidMount() {
-    axios.get("/profile/get")
+    // Get token from local storage
+    const token = localStorage.getItem("jwtToken");
+
+    axios.get("/profile/get", { headers: { Authorization: `Bearer ${token}` }})
       .then(res => {
         this.setState({
           profiles: res.data.profile
