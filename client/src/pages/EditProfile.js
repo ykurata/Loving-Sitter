@@ -9,7 +9,6 @@ import SideNavigationBar from "./SideNavBar";
 
 import Button from "@material-ui/core/Button";
 
-// import SimpleSnackbar from "./snackbar";
 import { Snackbar, IconButton } from "@material-ui/core";
 
 const initalState = {
@@ -32,20 +31,6 @@ const initalState = {
 };
 
 class EditProfilePage extends Component {
-  wowState = {
-    firstName: "",
-    lastName: "",
-    gender: "",
-    birthDate: "",
-    phone: "",
-    address: "",
-    description: "",
-    disabled: true,
-    snackbaropen: true,
-    snackbarmsg: "test",
-    edit: "0",
-    formChanges: false
-  };
   state = initalState;
 
   handleFirstNameChange = event => {
@@ -71,7 +56,6 @@ class EditProfilePage extends Component {
     user.email = event.target.value;
     this.setState({ user });
   };
-
 
   handleDobChange = event => {
     let user = { ...this.state.user };
@@ -111,9 +95,10 @@ class EditProfilePage extends Component {
 
     const { user } = this.state;
 
-    axios.post("/profile", user, { headers: {"Authorization" : `Bearer ${token}`} })
+    axios
+      .post("/profile", user, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
-        this.props.history.push('/');
+        this.props.history.push("/");
         console.log(res.data);
       })
       .catch(err => {
@@ -122,7 +107,7 @@ class EditProfilePage extends Component {
         });
       });
     this.setState({ disabled: true });
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -174,25 +159,30 @@ class EditProfilePage extends Component {
                   <h1>Edit Profile</h1>
                 </Grid>
                 <Grid item xs={12}>
-                  <form noValidate autoComplete="off" method="POST" onSubmit={this.handleSubmit}>
+                  <form
+                    noValidate
+                    autoComplete="off"
+                    method="POST"
+                    onSubmit={this.handleSubmit}
+                  >
                     <Grid container spacing={3} className="pb-1">
                       <Grid item xs={1}></Grid>
                       <Grid item xs={9}>
-                        <Grid container spacing={3}>  
-                          <Grid item xs={5} className="text-right">
+                        <Grid container spacing={3}>
+                          <Grid item xs={3} className="text-right">
                             <p>FIRST NAME</p>
-                            {
-                              (this.state.errors)
-                              ? <div style={{ color: "red" }}>{this.state.errors.firstName}</div>
-                              : null
-                            }
+                            {this.state.errors ? (
+                              <div style={{ color: "red" }}>
+                                {this.state.errors.firstName}
+                              </div>
+                            ) : null}
                           </Grid>
-                          <Grid item xs={7}>
+                          <Grid item xs={9}>
                             <TextField
                               name="firstName"
                               id="standard-firstName"
                               placeholder="John"
-                              value={this.handleFirstName}
+                              value={this.state.firstName}
                               onChange={this.handleFirstNameChange}
                               margin="normal"
                               variant="outlined"
@@ -209,20 +199,20 @@ class EditProfilePage extends Component {
                       <Grid item xs={1}></Grid>
                       <Grid item xs={9}>
                         <Grid container spacing={3}>
-                          <Grid item xs={5} className="text-right">
+                          <Grid item xs={3} className="text-right">
                             <p>LAST NAME</p>
-                            {
-                              (this.state.errors)
-                              ? <div style={{ color: "red" }}>{this.state.errors.lastName}</div>
-                              : null
-                            }
+                            {this.state.errors ? (
+                              <div style={{ color: "red" }}>
+                                {this.state.errors.lastName}
+                              </div>
+                            ) : null}
                           </Grid>
-                          <Grid item xs={7}>
+                          <Grid item xs={9}>
                             <TextField
                               name="lastName"
                               id="standard-lastName"
                               placeholder="Doe"
-                              value={this.handleLastName}
+                              value={this.state.lastName}
                               onChange={this.handleLastNameChange}
                               margin="normal"
                               variant="outlined"
@@ -239,15 +229,15 @@ class EditProfilePage extends Component {
                       <Grid item xs={1}></Grid>
                       <Grid item xs={9}>
                         <Grid container spacing={3}>
-                          <Grid item xs={5} className="text-right">
+                          <Grid item xs={3} className="text-right">
                             <p>GENDER</p>
-                            {
-                              (this.state.errors)
-                              ? <div style={{ color: "red" }}>{this.state.errors.gender}</div>
-                              : null
-                            }
+                            {this.state.errors ? (
+                              <div style={{ color: "red" }}>
+                                {this.state.errors.gender}
+                              </div>
+                            ) : null}
                           </Grid>
-                          <Grid item xs={7}>
+                          <Grid item xs={9}>
                             <TextField
                               select
                               name="gender"
@@ -276,20 +266,20 @@ class EditProfilePage extends Component {
                       <Grid item xs={1}></Grid>
                       <Grid item xs={9}>
                         <Grid container spacing={3}>
-                          <Grid item xs={5} className="text-right">
+                          <Grid item xs={3} className="text-right">
                             <p>BIRTH DATE</p>
-                            {
-                              (this.state.errors)
-                              ? <div style={{ color: "red" }}>{this.state.errors.birthDate}</div>
-                              : null
-                            }
+                            {this.state.errors ? (
+                              <div style={{ color: "red" }}>
+                                {this.state.errors.birthDate}
+                              </div>
+                            ) : null}
                           </Grid>
-                          <Grid item xs={7}>
+                          <Grid item xs={9}>
                             <TextField
                               type="date"
                               name="birthDate"
                               id="standard-birthDate"
-                              value={this.handleDob}
+                              value={this.state.birthDate}
                               onChange={this.handleDobChange}
                               margin="normal"
                               variant="outlined"
@@ -306,20 +296,20 @@ class EditProfilePage extends Component {
                       <Grid item xs={1}></Grid>
                       <Grid item xs={9}>
                         <Grid container spacing={3}>
-                          <Grid item xs={5} className="text-right">
+                          <Grid item xs={3} className="text-right">
                             <p>EMAIL ADDRESS</p>
-                            {
-                              (this.state.errors)
-                              ? <div style={{ color: "red" }}>{this.state.errors.email}</div>
-                              : null
-                            }
+                            {this.state.errors ? (
+                              <div style={{ color: "red" }}>
+                                {this.state.errors.email}
+                              </div>
+                            ) : null}
                           </Grid>
-                          <Grid item xs={7}>
+                          <Grid item xs={9}>
                             <TextField
                               name="email"
                               placeholder="john-doe.s@gmail.com"
                               id="standard-email"
-                              value={this.handleEmail}
+                              value={this.state.email}
                               onChange={this.handleEmailChange}
                               margin="normal"
                               variant="outlined"
@@ -336,19 +326,19 @@ class EditProfilePage extends Component {
                       <Grid item xs={1}></Grid>
                       <Grid item xs={9}>
                         <Grid container spacing={3}>
-                          <Grid item xs={5} className="text-right">
+                          <Grid item xs={3} className="text-right">
                             <p>PHONE NUMBER</p>
-                            {
-                              (this.state.errors)
-                              ? <div style={{ color: "red" }}>{this.state.errors.phone}</div>
-                              : null
-                            }
+                            {this.state.errors ? (
+                              <div style={{ color: "red" }}>
+                                {this.state.errors.phone}
+                              </div>
+                            ) : null}
                           </Grid>
-                          <Grid item xs={7}>
+                          <Grid item xs={9}>
                             <TextField
                               name="phone"
                               id="standard-phone"
-                              value={this.handlePhone}
+                              value={this.state.phone}
                               onChange={this.handlePhoneChange}
                               margin="normal"
                               variant="outlined"
@@ -365,20 +355,20 @@ class EditProfilePage extends Component {
                       <Grid item xs={1}></Grid>
                       <Grid item xs={9}>
                         <Grid container spacing={3}>
-                          <Grid item xs={5} className="text-right">
+                          <Grid item xs={3} className="text-right">
                             <p>WHERE YOU LIVE</p>
-                            {
-                              (this.state.errors)
-                              ? <div style={{ color: "red" }}>{this.state.errors.address}</div>
-                              : null
-                            }
+                            {this.state.errors ? (
+                              <div style={{ color: "red" }}>
+                                {this.state.errors.address}
+                              </div>
+                            ) : null}
                           </Grid>
-                          <Grid item xs={7}>
+                          <Grid item xs={9}>
                             <TextField
                               name="address"
                               placeholder="Address"
                               id="standard-address"
-                              value={this.handleAddress}
+                              value={this.state.address}
                               onChange={this.handleAddressChange}
                               margin="normal"
                               variant="outlined"
@@ -394,20 +384,20 @@ class EditProfilePage extends Component {
                       <Grid item xs={1}></Grid>
                       <Grid item xs={9}>
                         <Grid container spacing={3}>
-                          <Grid item xs={5} className="text-right">
+                          <Grid item xs={3} className="text-right">
                             <p>DESCRIBE YOURSELF</p>
-                            {
-                              (this.state.errors)
-                              ? <div style={{ color: "red" }}>{this.state.errors.description}</div>
-                              : null
-                            }
+                            {this.state.errors ? (
+                              <div style={{ color: "red" }}>
+                                {this.state.errors.description}
+                              </div>
+                            ) : null}
                           </Grid>
-                          <Grid item xs={7}>
+                          <Grid item xs={9}>
                             <TextField
                               name="description"
                               placeholder="About you"
                               id="standard-description"
-                              value={this.handleDescription}
+                              value={this.state.description}
                               onChange={this.handleDescriptionChange}
                               margin="normal"
                               variant="outlined"
@@ -423,25 +413,26 @@ class EditProfilePage extends Component {
                       <Grid item xs={1}></Grid>
                       <Grid item xs={9}>
                         <Grid container spacing={3}>
-                          <Grid item xs={5} className="text-right">
+                          <Grid item xs={3} className="text-right">
                             <p>YOUR HOURLY RATE</p>
-                            {
-                              (this.state.errors)
-                              ? <div style={{ color: "red" }}>{this.state.errors.rate}</div>
-                              : null
-                            }
+                            {this.state.errors ? (
+                              <div style={{ color: "red" }}>
+                                {this.state.errors.rate}
+                              </div>
+                            ) : null}
                           </Grid>
-                          <Grid item xs={7}>
-                            <TextField 
-                            name="rate" 
-                            placeholder="Your hourly rate" 
-                            id="standard-rate" 
-                            value={this.handleRate} 
-                            onChange={this.handleRateChange} 
-                            margin="normal" 
-                            variant="outlined" 
-                            disabled={this.state.disabled ? "disabled" : ""} 
-                            fullWidth />
+                          <Grid item xs={9}>
+                            <TextField
+                              name="rate"
+                              placeholder="Your hourly rate"
+                              id="standard-rate"
+                              value={this.state.rate}
+                              onChange={this.handleRateChange}
+                              margin="normal"
+                              variant="outlined"
+                              disabled={this.state.disabled ? "disabled" : ""}
+                              fullWidth
+                            />
                           </Grid>
                         </Grid>
                       </Grid>
