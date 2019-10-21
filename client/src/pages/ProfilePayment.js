@@ -16,7 +16,7 @@ const paymentDetails = {
   }
 };
 
-var handleResult = function(result){
+/*var handleResult = function(result){
   const keyPublishable = "pk_test_AgD4J9rRiEMq0w6u2yhMbhIS0000UbX6jH";
         const stripe = Stripe(keyPublishable);
         const {error} = stripe.redirectToCheckout({
@@ -25,7 +25,7 @@ var handleResult = function(result){
           // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
           sessionId: result
         })
-}
+}*/
 
 class ProfilePayment extends Component {
 
@@ -40,14 +40,14 @@ class ProfilePayment extends Component {
     //Add Authorization later
     axios.post("/profile-payment")
       .then(res => {
-        /*const keyPublishable = "pk_test_AgD4J9rRiEMq0w6u2yhMbhIS0000UbX6jH";
-        const stripe = Stripe(keyPublishable);
+        const keyPublishable = "pk_test_AgD4J9rRiEMq0w6u2yhMbhIS0000UbX6jH";
+        const stripe = window.Stripe(keyPublishable);
         const {error} = stripe.redirectToCheckout({
           // Make the id field from the Checkout Session creation API response
           // available to this file, so you can provide it as parameter here
           // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
           sessionId: res.data.sessionId
-        })*/
+        })
         console.log(res.data);
       })
       .catch(err => {
