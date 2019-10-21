@@ -48,7 +48,7 @@ router.post("/", async function (req, res) {
 
     res.send({
         sessionId: session.id,
-        error: error
+        //error: error
     });
 }),
 

@@ -1,4 +1,4 @@
-/*const keyPublishable = "pk_test_AgD4J9rRiEMq0w6u2yhMbhIS0000UbX6jH";
+const keyPublishable = "pk_test_AgD4J9rRiEMq0w6u2yhMbhIS0000UbX6jH";
 //Make keySecret secret before deploying
 const keySecret = "sk_test_k5r0VkkM3ddLjMmst8aYC23900eTkN1l2U";
 
@@ -8,7 +8,27 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
-module.exports.getPayment = app.get("/checkout-session", async (req, res) => {
+const axios = require("axios");
+
+/*module.exports.startStripeSession = axios.post("/profile-payment", paymentDetails)
+.then(res => {
+  const keyPublishable = "pk_test_AgD4J9rRiEMq0w6u2yhMbhIS0000UbX6jH";
+  const stripe = Stripe(keyPublishable);
+  const {error} = stripe.redirectToCheckout({
+    // Make the id field from the Checkout Session creation API response
+    // available to this file, so you can provide it as parameter here
+    // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+    sessionId: res.data.sessionId
+  })
+  console.log(res.data);
+})
+.catch(err => {
+  this.setState({
+    errors: err.response.data // Error messages from server
+  });
+});*/
+
+/*module.exports.getPayment = app.get("/checkout-session", async (req, res) => {
     const { sessionId } = req.query;
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     res.send(session);
@@ -45,5 +65,4 @@ module.exports.createPayment = app.post("/create-checkout-session", async (req, 
     res.send({
         sessionId: session.id
     });
-});
-*/
+});*/
