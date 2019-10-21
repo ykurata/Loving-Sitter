@@ -15,13 +15,15 @@ router.post("/image-upload", authenticate, function(req, res) {
       });
     }
 
-    let user = await Profile.findById(req.user);
+    let user = await Profile.find({ userId: req.user });
     if (user) {
       user.photoUrl = req.file.location;
       await user.save();
+    } else {
+      return res.status(404).send({ error: "User profile not found" });
     }
 
-    return res.json({ imageUrl: req.file.location });
+    return res.status(200).json({ imageUrl: req.file.location });
   });
 });
 
