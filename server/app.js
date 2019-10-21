@@ -13,6 +13,7 @@ import pingRouter from "./routes/ping";
 import photoRouter from "./routes/photo";
 import usersRouter from "./routes/users";
 import fileUploadRouter from "./routes/file-upload";
+import conversationRouter from "./routes/conversation";
 
 var app = express();
 
@@ -42,6 +43,7 @@ app.use("/ping", pingRouter);
 app.use("/profile-photo", photoRouter);
 app.use("/users", usersRouter);
 app.use("/files", fileUploadRouter);
+app.use("/conversation", conversationRouter);
 
 app.use(cors());
 
