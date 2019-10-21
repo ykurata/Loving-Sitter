@@ -7,7 +7,7 @@ const upload = require("../services/image-upload");
 
 const singleUpload = upload.single("image");
 
-router.post("/image-upload", authenticate, function(req, res) {
+router.post("/image-upload", authenticate, function(req, res, next) {
   singleUpload(req, res, async function(err) {
     if (err) {
       return res.status(422).send({
@@ -19,7 +19,7 @@ router.post("/image-upload", authenticate, function(req, res) {
     if (user) {
       user.photoUrl = req.file.location;
       await user.save();
-    }
+    } 
 
     return res.json({ imageUrl: req.file.location });
   });
