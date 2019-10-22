@@ -13,7 +13,7 @@ const initalState = {
   emailError: "",
   password: "",
   passwordError: "",
-  errors : ""  
+  errors : "",
 };
 
 class LoginPage extends Component {
@@ -51,16 +51,12 @@ class LoginPage extends Component {
     if (isValid) {
       const { email, password } = this.state;
       
-      console.log("here");
       const data = {
         email: email,
         password: password
       }
-      console.log("wonderww");
-      console.log(data);
       axios.post('/users/login', data)
       .then(res => {
-          console.log("here2");
           const { token } = res.data;
           const decoded = jwt_decode(token);
           localStorage.setItem('jwtToken', token);
@@ -69,12 +65,10 @@ class LoginPage extends Component {
           this.props.history.push('/profile');
       })
       .catch(err => {
-        console.log("TEST");
         this.setState({
           errors: err.response.data.error  // Error messages from backend
           });
       });
-
     }
   };
   
@@ -97,7 +91,7 @@ class LoginPage extends Component {
                       ? <Grid item xs={12} className="pb-0 pt-0" style={{ color: "red" }}>
                           <p className="mb-0 mt-0">{this.state.errors}</p>
                         </Grid>
-                      : <Grid></Grid>
+                      : null
                     }
                     <Grid item xs={12} className="pb-0 pt-0">
                       <p className="mb-0 mt-0">EMAIL ADDRESS</p>
