@@ -36,7 +36,7 @@ const initalState = {
 class MyJobsPage extends Component {
   state = initalState;
 
-  jobResquestResponse = event => {
+  jobRequestResponse = event => {
     console.log("in accept");
     console.log(event);
     console.log(event.currentTarget.value);
@@ -212,7 +212,7 @@ class MyJobsPage extends Component {
                             color="primary"
                             fullWidth
                             size="large"
-                            onClick={this.jobResquestResponse}
+                            onClick={this.jobRequestResponse}
                             value="accepted"
                           >
                             Accept
@@ -229,7 +229,7 @@ class MyJobsPage extends Component {
                             color="secondary"
                             fullWidth
                             size="large"
-                            onClick={this.jobResquestResponse}
+                            onClick={this.jobRequestResponse}
                             value="declined"
                           >
                             Decline
