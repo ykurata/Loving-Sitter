@@ -13,16 +13,17 @@ import pingRouter from "./routes/ping";
 import photoRouter from "./routes/photo";
 import usersRouter from "./routes/users";
 import fileUploadRouter from "./routes/file-upload";
+import conversationRouter from "./routes/conversation";
 
 var app = express();
 
 // socket.io
-var server = require('http').Server(app); 
-var io = require('socket.io')(server);
-
+var socket_io = require( "socket.io" );
+var io = socket_io();
+app.io = io;
 
 // When a client connects, show message in the console
-io.sockets.on('connection', function (socket) {
+io.on('connection', function (socket) {
   console.log('A client is connected!');
 });
 
@@ -42,6 +43,7 @@ app.use("/ping", pingRouter);
 app.use("/profile-photo", photoRouter);
 app.use("/users", usersRouter);
 app.use("/files", fileUploadRouter);
+app.use("/conversation", conversationRouter);
 
 app.use(cors());
 
@@ -63,4 +65,3 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-module.exports = server;

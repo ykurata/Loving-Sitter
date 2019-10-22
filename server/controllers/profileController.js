@@ -38,8 +38,11 @@ module.exports.createProfile = function(req, res, next) {
   });
 };
 
+
+
 //Handle profile update on POST.
 module.exports.updateProfile = function(req, res, next) {
+
   // Form validation
   const { errors, isValid } = validateProfileInput(req.body);
 
