@@ -23,6 +23,9 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 
 import "date-fns";
+import axios from "axios";
+import { Link } from 'react-router-dom';
+
 
 
 const photoPageStyle = theme => ({
@@ -40,16 +43,15 @@ const photoPageStyle = theme => ({
     border: "1px solid rgba(0, 0, 0, 0.23)",
     borderRadius: "4px",
     height: "85%"
-  },
-
-
+  }
 });
 
 const initalState = {
   user: {
     location: "",
     selectedDate: ""
-  }
+  },
+  profiles: []
 };
 
 class ProfileListPage extends Component {
@@ -67,9 +69,22 @@ class ProfileListPage extends Component {
     this.setState({ user });
   };
 
+  componentDidMount() {
+    // Get token from local storage
+    const token = localStorage.getItem("jwtToken");
+
+    axios.get("/profile/get", { headers: { Authorization: `Bearer ${token}` }})
+      .then(res => {
+        this.setState({
+          profiles: res.data.profile
+        });
+      })
+      .catch(err => {
+        console.log("Error fetching and parsing data", err);
+      });
+  };
+
   render() {
-    // Note: Code below will be used for looping, will be used when calling from backend
-    // var numbers = [...Array(7).keys()];
     const { classes } = this.props;
     return (
       <div>
@@ -115,21 +130,18 @@ class ProfileListPage extends Component {
               </Grid>
               <Grid item xs={3}></Grid>
 
-              {/* Looping code, will be used later on starts with this -> {
-             numbers.map(el =>
-              */}
-              <Grid item xs={4} align="center">
+              {this.state.profiles.map((profile, key) => 
+                <Grid item xs={4} align="center" key={key} component={Link} to={`/profile-details/${profile.userId}`} style={{ textDecoration: 'none' }}>
                 <Card>
                   <CardActionArea className={classes.cardDivider}>
                   <CardContent>
-
                     <Grid container>
                     <Grid item xs={4}></Grid>
 
                       <Grid item xs={4}>
                         <Avatar
                           alt="Remy Sharp"
-                          src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
+                          src={profile.photoUrl}
                           className={classes.bigAvatar}
                         />
                       </Grid>
@@ -141,7 +153,7 @@ class ProfileListPage extends Component {
                         component="h2"
                         className="mb-0 center"
                       >
-                        Mc Barkly
+                        {profile.firstName} {profile.lastName}
                       </Typography>
 
                       <Typography
@@ -165,8 +177,9 @@ class ProfileListPage extends Component {
                         variant="body1"
                         className="center"
                         component="p"
+                        noWrap
                       >
-                        <b>Lizards are wow, Wowzers</b>
+                        <b>{profile.description}</b>
                       </Typography>
                     </CardContent>
                   </CardActionArea>
@@ -176,30 +189,21 @@ class ProfileListPage extends Component {
                         <RoomIcon color="secondary" />
                       </Grid>
                       <Grid item xs={8}>
-                        <p className="mt-0 mb-0">Location, ON </p>
+                        <p className="mt-0 mb-0">{profile.address}</p>
                       </Grid>
                       <Grid item xs={2}>
                         <b>
                           {" "}
-                          <p className="mt-0 mb-0">$200/hr </p>
+                          <p className="mt-0 mb-0">${profile.rate}/hr </p>
                         </b>
                       </Grid>
                       <Grid item xs={1}></Grid>
                     </Grid>
                   </CardActions>
                 </Card>
-              </Grid>
-
-              {/* End of looping and will end with -> )}  */}
-
-              {/* Starting from line below */}
-              <Grid item xs={4} className="center">
-                <h1>2</h1>
-              </Grid>
-              <Grid item xs={4} className="center">
-                <h1>3</h1>
-              </Grid>
-              {/* To line above can we removed once connected to DB and loop is working */}
+                </Grid>
+              )}
+        
             </Grid>
           </Grid>
           <Grid item xs={1}></Grid>

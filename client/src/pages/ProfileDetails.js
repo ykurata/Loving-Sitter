@@ -9,6 +9,7 @@ import Rating from "@material-ui/lab/Rating";
 
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import axios from "axios";
 
 // import SimpleSnackbar from "./snackbar";
 import { Snackbar, IconButton } from "@material-ui/core";
@@ -59,16 +60,8 @@ const detailsPageStyle = theme => ({
 });
 
 const initalState = {
-    firstName: "Norma",
-    lastName: "Byers",
-    gender: "",
-    birthDate: "",
-    phone: "",
-    address: "Your address",
-    description: "Lorem ipsum dolor sit amet adipiscing bibendum sem orci tempus aliquet gravida, orci amet iaculis aptent blandit quam accumsan donec in facilisis, cursus ante curabitur aliquet condimentum tincidunt facilisis non cubilia lorem et pretium aliquam phasellus ipsum metus quisque auctor tristique donec nibh, praesent congue ultricies aenean ornare ligula sagittis proin sed vestibulum purus tempus aenean neque aliquam curae vivamus purus egestas ligula tincidunt nullam. Dolor id fri",
-    rate: "$14/hr",
-    photo: "../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png",
     status: "Available",
+    profile: {}
 };
 
 class ProfileDetails extends Component {
@@ -77,16 +70,26 @@ class ProfileDetails extends Component {
 
     constructor(props) {
         super(props)
-        this.handleGet = this.handleGet.bind(this);
     }
+    
+    componentDidMount() {
+        // Get token from local storage
+        const token = localStorage.getItem("jwtToken");
 
-    handleGet = event => {
-        event.preventDefault();
-        console.log(this.state);
-    };
-
+        axios.get(`/profile/get/${this.props.match.params.id}`, { headers: { Authorization: `Bearer ${token}` } })
+        .then(res => {
+            this.setState({
+                profile: res.data.profile
+            });
+        })
+        .catch(err => {
+            console.log("Error fetching and parsing data", err);
+        });
+    }
+    
     render() {
         const { classes } = this.props;
+        const { profile } = this.state;
         return (
             <div>
                 <Snackbar
@@ -115,18 +118,17 @@ class ProfileDetails extends Component {
                         <Grid container spacing={4} align="center">
                             <Box width={1} boxShadow={2}>
                                 <Grid item >
-                                    {/*Replace with picture later, add background image*/}
-                                    <Avatar alt="Your Profile Picture" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.bigAvatar} />
+                                    <Avatar alt="Your Profile Picture" src={profile.photoUrl} className={classes.bigAvatar} />
                                 </Grid>
                                 <Grid item>
-                                    <Typography variant="h4">{this.state.firstName} {this.state.lastName}</Typography>
+                                    <Typography variant="h4">{profile.firstName} {profile.lastName}</Typography>
                                 </Grid>
                                 <Grid item className={classes.marginBottom} >
                                     <Typography variant="subtitle2">Loving pet sitter</Typography>
                                 </Grid>
 
                                 <Grid item className={classes.marginBottom} >
-                                    <Typography variant="subtitle2">{this.state.address}</Typography>
+                                    <Typography variant="subtitle2">{profile.address}</Typography>
                                 </Grid>
                                 <Grid
                                     item
@@ -142,7 +144,7 @@ class ProfileDetails extends Component {
                                     align="left"
                                     className={classes.marginBottom}
                                 >
-                                    <Typography className={classes.marginHorizontal} variant="body1">{this.state.description}</Typography>
+                                    <Typography className={classes.marginHorizontal} variant="body1">{profile.description}</Typography>
                                 </Grid>
                                 <Grid
                                     item
@@ -150,7 +152,7 @@ class ProfileDetails extends Component {
                                     align="left"
                                     className={classes.marginBottom}
                                 >
-                                    <Avatar alt="Your Pets" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.roundedBigAvatar} style={{ borderRadius: 10 }} />
+                                    <Avatar alt="Your Pets" src={profile.photoUrl} className={classes.roundedBigAvatar} style={{ borderRadius: 10 }} />
                                 </Grid>
                             </Box>
                         </Grid>
@@ -163,7 +165,7 @@ class ProfileDetails extends Component {
                                     <h2>{this.state.status}</h2>
                                 </Box>
                                 <Grid item>
-                                    <h2>{this.state.rate}</h2>
+                                    <h2>${profile.rate}/hr</h2>
                                 </Grid>
                                 <Grid item>
                                     <Rating value={5} readOnly />
