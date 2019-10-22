@@ -9,22 +9,30 @@ import PhotoPage from "./pages/Photo";
 import "./App.scss";
 import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/Signup";
+import ProfileListPage from "./pages/ProfileList";
 import EditProfilePage from "./pages/EditProfile";
 import ProfilePayment from "./pages/ProfilePayment";
+import MyJobsPage from "./pages/MyJobs";
 import ProfileDetails from "./pages/ProfileDetails";
 import PrivateRoute from "./pages/PrivateRoute";
+
+// import socket.io client
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://localhost:3001');
 
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
+        <PrivateRoute path='/profile' component={EditProfilePage} />
+        <PrivateRoute path="/profile-details/:id" component={ProfileDetails} />
+        <PrivateRoute path="/sitter-search" component={ProfileListPage} />
         <Route exact path="/" component={LandingPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={SignUpPage} />
-        <PrivateRoute path='/profile' component={EditProfilePage} />
         <Route path="/profile-payment" component={ProfilePayment} />
         <Route path="/profile-photo" component={PhotoPage} />
-        <Route path="/profile-details" component={ProfileDetails} />
+        <Route path="/my-jobs" component={MyJobsPage} />
       </BrowserRouter>
     </MuiThemeProvider>
   );

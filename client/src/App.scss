@@ -39,16 +39,29 @@ h1 {
   text-align: center;
 }
 
+// Legend for codes below: 
+// m = margin, p = padding
+// t = top, b = bottom, r = right, l = left
+// 0 = removal of (m/p) and 1/2/3... = addition of (m/p)
+
 .mb-0 {
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
 }
 
 .mt-0 {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 .pb-0 {
   padding-bottom: 0 !important;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+
+.pr-0 {
+  padding-right: 0 !important;
 }
 
 .pt-0 {
@@ -56,11 +69,27 @@ h1 {
 }
 
 .pb-1 {
-  padding-bottom: 1rem;
+  padding-bottom: 1rem !important;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
 }
 
 .mb-1 {
-  margin-bottom: 100rem;
+  margin-bottom: 1rem;
+}
+
+.mt-1 {
+  margin-top: 1rem !important;
+}
+
+.pr-2 {
+  padding-right: 2rem !important;
+}
+
+.pr-1 {
+  padding-right: 1rem !important;
 }
 
 .MuiFormControl-marginNormal {
@@ -84,9 +113,9 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: lightgrey;
+  background-color: #f8f6f6;
   height: 100%;
-  border: 1px solid red;
+  padding-top: 40px;
   padding-bottom: 10px;
 }
 
@@ -96,17 +125,14 @@ h1 {
 
 .infoArea {
   width: 80%;
-  border: 1px solid grey;
 }
 .menuArea {
-  border: 1px solid blue;
   width: 20%;
   float: left;
 }
 .settingsArea {
   float: right;
   background-color: white;
-  border: 1px solid green;
   width: 79%;
 }
 
@@ -122,6 +148,10 @@ h1 {
 .submit-button:disabled {
   color: rgba(255, 255, 255, 0.3) !important;
   background-color: #00000065 !important;
+}
+
+.MuiInput-underline:before{
+  border-bottom: none !important;
 }
 
 .invisible {

@@ -6,13 +6,14 @@ import Grid from "@material-ui/core/Grid";
 import "../App.scss";
 import Button from "@material-ui/core/Button";
 
+import { withRouter } from 'react-router-dom';
 
 const initalState = {
   email: "",
   emailError: "",
   password: "",
   passwordError: "",
-  errors : ""  
+  errors : "",
 };
 
 class LoginPage extends Component {
@@ -49,23 +50,23 @@ class LoginPage extends Component {
     
     if (isValid) {
       const { email, password } = this.state;
-
+      
       const data = {
         email: email,
         password: password
       }
-
       axios.post('/users/login', data)
       .then(res => {
           const { token } = res.data;
           const decoded = jwt_decode(token);
           localStorage.setItem('jwtToken', token);
           localStorage.setItem('name', decoded.name);
-          this.props.history.push('/');
+          console.log("successfully logged in ");
+          this.props.history.push('/profile');
       })
       .catch(err => {
-          this.setState({
-            errors: err.response.data.error  // Error messages from backend
+        this.setState({
+          errors: err.response.data.error  // Error messages from backend
           });
       });
     }
@@ -90,7 +91,7 @@ class LoginPage extends Component {
                       ? <Grid item xs={12} className="pb-0 pt-0" style={{ color: "red" }}>
                           <p className="mb-0 mt-0">{this.state.errors}</p>
                         </Grid>
-                      : <Grid></Grid>
+                      : null
                     }
                     <Grid item xs={12} className="pb-0 pt-0">
                       <p className="mb-0 mt-0">EMAIL ADDRESS</p>
@@ -157,4 +158,4 @@ class LoginPage extends Component {
     );
   }
 }
-export default LoginPage;
+export default withRouter(LoginPage);
