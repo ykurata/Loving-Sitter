@@ -120,8 +120,7 @@ class ProfileDetails extends Component {
                         <Grid container spacing={4} align="center">
                             <Box width={1} boxShadow={2}>
                                 <Grid item >
-                                    {/*Replace with picture later, add background image*/}
-                                    <Avatar alt="Your Profile Picture" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.bigAvatar} />
+                                    <Avatar alt="Your Profile Picture" src={profile.photoUrl} className={classes.bigAvatar} />
                                 </Grid>
                                 <Grid item>
                                     <Typography variant="h4">{profile.firstName} {profile.lastName}</Typography>
@@ -155,7 +154,7 @@ class ProfileDetails extends Component {
                                     align="left"
                                     className={classes.marginBottom}
                                 >
-                                    <Avatar alt="Your Pets" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.roundedBigAvatar} style={{ borderRadius: 10 }} />
+                                    <Avatar alt="Your Pets" src={profile.photoUrl} className={classes.roundedBigAvatar} style={{ borderRadius: 10 }} />
                                 </Grid>
                             </Box>
                         </Grid>

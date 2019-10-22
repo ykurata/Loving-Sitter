@@ -85,7 +85,6 @@ class ProfileListPage extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.profiles);
     return (
       <div>
         <NavigationBar></NavigationBar>
@@ -138,11 +137,10 @@ class ProfileListPage extends Component {
                     <Grid container>
                     <Grid item xs={4}></Grid>
 
-                     {/*Replace with picture later*/}
                       <Grid item xs={4}>
                         <Avatar
                           alt="Remy Sharp"
-                          src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
+                          src={profile.photoUrl}
                           className={classes.bigAvatar}
                         />
                       </Grid>
