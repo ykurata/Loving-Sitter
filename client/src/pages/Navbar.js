@@ -10,6 +10,8 @@ import Menu from '@material-ui/core/Menu';
 import Avatar from '@material-ui/core/Avatar';
 import { Link } from 'react-router-dom';
 
+import NotificationButton from "./NotificationButton";
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
@@ -20,18 +22,15 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1
   },
-
   logInNavbar: {
     backgroundColor: "transparent",
     boxShadow: "none",
     position: "fixed"
   },
-
   loggedInNavbar: {
     backgroundColor: "transparent",
     boxShadow: "none",
     position: "static"
-
   }
 }));
 
@@ -40,7 +39,7 @@ export default function NavigationBar() {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
+ 
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -49,11 +48,11 @@ export default function NavigationBar() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleLogout = e => {
-    e.preventDefault();
+  const handleLogout = event => {
+    event.preventDefault();
     localStorage.clear();
     window.location.href = "/";
-  }
+  };
 
   const token = localStorage.getItem('jwtToken');
   let buttons;
@@ -62,6 +61,7 @@ export default function NavigationBar() {
     buttons = <div>
                 <Button component={Link} to={"/profile"}>BECOME A SITTER</Button>
                 <Button component={Link} to={"/sitter-search"}>My Sitters</Button>
+                <NotificationButton></NotificationButton>
                 <Button>Messages</Button>
                 <IconButton aria-label="avatar" onClick={handleClick}>
                   <Avatar alt="Remy Sharp" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.bigAvatar}/>
