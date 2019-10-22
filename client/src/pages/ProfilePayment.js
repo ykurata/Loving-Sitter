@@ -8,24 +8,14 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 
 const paymentDetails = {
-  pDetails: {
-    amount: 1,
+  //pDetails: {
+    name: "Pay Sitter",
+    amount: 1500,
     quantity: 1,
     currency: "cad",
     payment_method_type: "card",
-  }
+  //}
 };
-
-/*var handleResult = function(result){
-  const keyPublishable = "pk_test_AgD4J9rRiEMq0w6u2yhMbhIS0000UbX6jH";
-        const stripe = Stripe(keyPublishable);
-        const {error} = stripe.redirectToCheckout({
-          // Make the id field from the Checkout Session creation API response
-          // available to this file, so you can provide it as parameter here
-          // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-          sessionId: result
-        })
-}*/
 
 class ProfilePayment extends Component {
 
@@ -37,15 +27,12 @@ class ProfilePayment extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    //Add Authorization later
-    axios.post("/profile-payment")
+    
+    axios.post("/profile-payment", paymentDetails)
       .then(res => {
         const keyPublishable = "pk_test_AgD4J9rRiEMq0w6u2yhMbhIS0000UbX6jH";
         const stripe = window.Stripe(keyPublishable);
         const {error} = stripe.redirectToCheckout({
-          // Make the id field from the Checkout Session creation API response
-          // available to this file, so you can provide it as parameter here
-          // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
           sessionId: res.data.sessionId
         })
         console.log(res.data);

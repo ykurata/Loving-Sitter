@@ -6,17 +6,13 @@ var express = require("express");
 var router = express.Router();
 const authenticate = require("./utils/auth");
 const stripe = require("stripe")(keySecret);
-//const callStripe = Stripe(keyPublishable);
 
 const payment = require("../services/payment");
-
-//router.post("/payment", payment.createPayment);
-
+//Add Authorization later
 router.post("/", async function (req, res) {
     //const domainURL = process.env.DOMAIN;
-    const domainURL = "http://localhost:3001"
+    const domainURL = "http://localhost:3000"
 
-    const quantity = 1;//req.body;
     // Create new Checkout Session for the order
     // Other optional params include:
     // [billing_address_collection] - to display billing address details on the page
@@ -25,14 +21,14 @@ router.post("/", async function (req, res) {
     // [customer_email] - lets you prefill the email input in the form
     // For full details see https://stripe.com/docs/api/checkout/sessions/create
     const session = await stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
+        payment_method_types: [req.body.payment_method_type],
         line_items: [
             {
-                name: "Pasha photo",
-                images: ["https://picsum.photos/300/300?random=4"],
-                quantity: quantity,
-                currency: "cad",
-                amount: 2000//process.env.BASE_PRICE // Keep the amount on the server to prevent customers from manipulating on client
+                name: req.body.name,
+                //images: ["https://picsum.photos/300/300?random=4"],
+                quantity: req.body.quantity,
+                currency: req.body.currency,
+                amount: req.body.amount//process.env.BASE_PRICE // Keep the amount on the server to prevent customers from manipulating on client
             }
         ],
         // ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
@@ -42,13 +38,8 @@ router.post("/", async function (req, res) {
         cancel_url: `${domainURL}/profile`
     });
 
-    /*const {error} = await stripe.redirectToCheckout({
-        sessionId: session.id
-    })*/
-
     res.send({
         sessionId: session.id,
-        //error: error
     });
 }),
 
