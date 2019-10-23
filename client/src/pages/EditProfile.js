@@ -4,6 +4,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import NavigationBar from "./Navbar";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+import validator from "validator";
 
 import SideNavigationBar from "./SideNavBar";
 
@@ -11,101 +13,94 @@ import Button from "@material-ui/core/Button";
 
 import { Snackbar, IconButton } from "@material-ui/core";
 
-const initalState = {
-  user: {
-    firstName: "",
-    lastName: "",
-    gender: "",
-    birthDate: "",
-    phone: "",
-    address: "",
-    description: "",
-    rate: "",
-    errors: {}
-  },
-  disabled: false,
-  snackbaropen: true,
-  snackbarmsg: "test",
-  edit: "0",
-  formChanges: false
-};
-
 class EditProfilePage extends Component {
-  state = initalState;
-
-  handleFirstNameChange = event => {
-    let user = { ...this.state.user };
-    user.firstName = event.target.value;
-    this.setState({ user });
+  state = {
+    user: {
+      userId: "",
+      firstName: "",
+      lastName: "",
+      gender: "",
+      birthDate: "",
+      email: "",
+      phone: "",
+      address: "",
+      description: "",
+      rate: ""
+    },
+    disabled: true,
+    snackbaropen: false,
+    snackbarmsg: "Profile Saved",
+    formChanges: false
   };
 
-  handleLastNameChange = event => {
-    let user = { ...this.state.user };
-    user.lastName = event.target.value;
-    this.setState({ user });
-  };
+  componentWillMount() {
+    this.prefillProfile();
+  }
 
-  handleGenderChange = event => {
-    let user = { ...this.state.user };
-    user.gender = event.target.value;
-    this.setState({ user });
-  };
+  prefillProfile() {
+    const token = localStorage.getItem("jwtToken");
+    const id = jwt_decode(token).id;
+    axios
+      .get(`profile/get/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => {
+        if (res.data.profile) {
+          this.setState({ user: res.data.profile });
+        }
+      })
+      .catch(err => {
+        console.log({ err });
+      });
+  }
 
-  handleEmailChange = event => {
-    let user = { ...this.state.user };
-    user.email = event.target.value;
-    this.setState({ user });
-  };
+  createProfile() {
+    const token = localStorage.getItem("jwtToken");
+    axios
+      .post("profile/create", this.state.user, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => {
+        this.setState({ user: res.data });
+        this.setState({ snackbaropen: true });
+      })
+      .catch(err => {
+        console.log({ err });
+      });
+  }
 
-  handleDobChange = event => {
-    let user = { ...this.state.user };
-    user.birthDate = event.target.value;
-    this.setState({ user });
-  };
+  updateProfile() {
+    const token = localStorage.getItem("jwtToken");
+    const id = this.state.user.userId;
 
-  handlePhoneChange = event => {
-    let user = { ...this.state.user };
-    user.phone = event.target.value;
-    this.setState({ user });
-  };
+    axios
+      .put(`profile/update/${id}`, this.state.user, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => {
+        this.setState({ user: res.data });
+        this.setState({ snackbaropen: true });
+      })
+      .catch(err => {
+        console.log({ err });
+      });
+  }
 
-  handleAddressChange = event => {
+  handleInputChange = event => {
+    const field = event.target.name;
     let user = { ...this.state.user };
-    user.address = event.target.value;
-    this.setState({ user });
-  };
-
-  handleDescriptionChange = event => {
-    let user = { ...this.state.user };
-    user.description = event.target.value;
-    this.setState({ user });
-  };
-
-  handleRateChange = event => {
-    let user = { ...this.state.user };
-    user.rate = event.target.value;
+    user[field] = event.target.value;
     this.setState({ user });
   };
 
   handleSubmit = event => {
     event.preventDefault();
 
-    // Get token from local storage
-    const token = localStorage.getItem("jwtToken");
-
-    const { user } = this.state;
-
-    axios
-      .post("/profile", user, { headers: { Authorization: `Bearer ${token}` } })
-      .then(res => {
-        this.props.history.push("/");
-        console.log(res.data);
-      })
-      .catch(err => {
-        this.setState({
-          errors: err.response.data // Error messages from server
-        });
-      });
+    if (this.state.user.userId) {
+      this.updateProfile();
+    } else {
+      this.createProfile();
+    }
     this.setState({ disabled: true });
   };
 
@@ -131,8 +126,8 @@ class EditProfilePage extends Component {
       <div>
         <Snackbar
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
+            vertical: "top",
+            horizontal: "center"
           }}
           open={this.state.snackbaropen}
           autoHideDuration={3000}
@@ -182,11 +177,11 @@ class EditProfilePage extends Component {
                               name="firstName"
                               id="standard-firstName"
                               placeholder="John"
-                              value={this.state.firstName}
-                              onChange={this.handleFirstNameChange}
+                              value={this.state.user.firstName}
+                              onChange={this.handleInputChange}
                               margin="normal"
                               variant="outlined"
-                              disabled={this.state.disabled ? "disabled" : ""}
+                              disabled={this.state.disabled}
                               fullWidth
                             />
                           </Grid>
@@ -212,11 +207,11 @@ class EditProfilePage extends Component {
                               name="lastName"
                               id="standard-lastName"
                               placeholder="Doe"
-                              value={this.state.lastName}
-                              onChange={this.handleLastNameChange}
+                              value={this.state.user.lastName}
+                              onChange={this.handleInputChange}
                               margin="normal"
                               variant="outlined"
-                              disabled={this.state.disabled ? "disabled" : ""}
+                              disabled={this.state.disabled}
                               fullWidth
                             />
                           </Grid>
@@ -244,10 +239,10 @@ class EditProfilePage extends Component {
                               id="standard-gender"
                               label="gender"
                               value={this.state.user.gender}
-                              onChange={this.handleGenderChange}
+                              onChange={this.handleInputChange}
                               margin="normal"
                               variant="outlined"
-                              disabled={this.state.disabled ? "disabled" : ""}
+                              disabled={this.state.disabled}
                               fullWidth
                             >
                               <MenuItem value="">
@@ -279,11 +274,11 @@ class EditProfilePage extends Component {
                               type="date"
                               name="birthDate"
                               id="standard-birthDate"
-                              value={this.state.birthDate}
-                              onChange={this.handleDobChange}
+                              value={this.state.user.birthDate}
+                              onChange={this.handleInputChange}
                               margin="normal"
                               variant="outlined"
-                              disabled={this.state.disabled ? "disabled" : ""}
+                              disabled={this.state.disabled}
                               fullWidth
                             />
                           </Grid>
@@ -309,11 +304,11 @@ class EditProfilePage extends Component {
                               name="email"
                               placeholder="john-doe.s@gmail.com"
                               id="standard-email"
-                              value={this.state.email}
-                              onChange={this.handleEmailChange}
+                              value={this.state.user.email}
+                              onChange={this.handleInputChange}
                               margin="normal"
                               variant="outlined"
-                              disabled={this.state.disabled ? "disabled" : ""}
+                              disabled={this.state.disabled}
                               fullWidth
                             />
                           </Grid>
@@ -338,11 +333,11 @@ class EditProfilePage extends Component {
                             <TextField
                               name="phone"
                               id="standard-phone"
-                              value={this.state.phone}
-                              onChange={this.handlePhoneChange}
+                              value={this.state.user.phone}
+                              onChange={this.handleInputChange}
                               margin="normal"
                               variant="outlined"
-                              disabled={this.state.disabled ? "disabled" : ""}
+                              disabled={this.state.disabled}
                               fullWidth
                             />
                           </Grid>
@@ -368,11 +363,11 @@ class EditProfilePage extends Component {
                               name="address"
                               placeholder="Address"
                               id="standard-address"
-                              value={this.state.address}
-                              onChange={this.handleAddressChange}
+                              value={this.state.user.address}
+                              onChange={this.handleInputChange}
                               margin="normal"
                               variant="outlined"
-                              disabled={this.state.disabled ? "disabled" : ""}
+                              disabled={this.state.disabled}
                               fullWidth
                             />
                           </Grid>
@@ -397,11 +392,11 @@ class EditProfilePage extends Component {
                               name="description"
                               placeholder="About you"
                               id="standard-description"
-                              value={this.state.description}
-                              onChange={this.handleDescriptionChange}
+                              value={this.state.user.description}
+                              onChange={this.handleInputChange}
                               margin="normal"
                               variant="outlined"
-                              disabled={this.state.disabled ? "disabled" : ""}
+                              disabled={this.state.disabled}
                               fullWidth
                             />
                           </Grid>
@@ -426,11 +421,11 @@ class EditProfilePage extends Component {
                               name="rate"
                               placeholder="Your hourly rate"
                               id="standard-rate"
-                              value={this.state.rate}
-                              onChange={this.handleRateChange}
+                              value={this.state.user.rate}
+                              onChange={this.handleInputChange}
                               margin="normal"
                               variant="outlined"
-                              disabled={this.state.disabled ? "disabled" : ""}
+                              disabled={this.state.disabled}
                               fullWidth
                             />
                           </Grid>
@@ -447,7 +442,7 @@ class EditProfilePage extends Component {
                           variant="contained"
                           className="submit-button"
                           onClick={this.handleSubmit}
-                          disabled={this.state.disabled ? "disabled" : ""}
+                          disabled={this.state.disabled}
                         >
                           Save
                         </Button>
@@ -459,13 +454,13 @@ class EditProfilePage extends Component {
                           variant="contained"
                           className="submit-button"
                           onClick={this.enableEdit}
-                          disabled={this.state.disabled ? "" : "disabled"}
+                          disabled={!this.state.disabled}
                         >
                           Edit
                         </Button>
                       </Grid>
 
-                      {this.state.edit === "1" ? (
+                      {!this.state.disabled ? (
                         <Grid item xs={2}>
                           <Button
                             variant="outlined"
