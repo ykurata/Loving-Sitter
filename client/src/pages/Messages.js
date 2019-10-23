@@ -49,6 +49,7 @@ const messagesPageStyle = theme => ({
 
   messagesArea: {
     height: "70vh",
+    overflow: "auto",
     border: "1px solid red"
   },
 
@@ -79,14 +80,17 @@ const messagesPageStyle = theme => ({
   sentMessages: {
     textAlign: "right",
     paddingRight:"10px",
-    paddingTop: "10px"
   },
   sentMessageLength: {
-    textAlign: "right",
+    padding: "6px"
+  },
+
+  test: {
     backgroundColor: "white",
     boxShadow: "0px 0px 4px 0px lightgrey",
     borderRadius: "10px",
     padding: "12px"
+
   }
 });
 
@@ -182,6 +186,7 @@ class MessagesPage extends Component {
       body: this.state.message
     }
     axios.post(`/conversation/${this.state.conversationId}/message`, newMessage, { headers: { Authorization: `Bearer ${this.state.token}` }} )
+    
       .then(res => {
         console.log(res.data);
       })
@@ -198,23 +203,20 @@ class MessagesPage extends Component {
 
   render() {
     const { classes } = this.props;
-    const ids = this.state.recipientIds.map((id) => {
-      return id
-    })
-    console.log(ids);
-
-    const message = this.state.messages.map((message, i) => <p key={i}><span className={classes.sentMessageLength}>{message}</span></p> );
-
+    // const message = this.state.messages.map((message, i) => <p key={i}><span className={classes.sentMessageLength}>{message}</span></p> );
+    // const message = this.state.messages.map((message, i) => <p key={i}> <span className={classes.sentMessageLength}>{message}</span></p>);
+    const message = this.state.messages.map((message, i) => <p key={i} className={classes.sentMessageLength}><span className={classes.test}>{message}</span></p>);
+    
     const converId = this.state.conversations.map((con, i) => 
-    <Button 
-      color="primary" 
-      variant="contained" 
-      key={i} 
-      id={con._id} 
-      onClick={this.getConversationId}
-    >
-      {con.recipientId.name}
-    </Button>);
+        <Button 
+          color="primary" 
+          variant="contained" 
+          key={i} 
+          id={con._id} 
+          onClick={this.getConversationId}
+        >
+          {con.recipientId.name}
+        </Button>);
 
 
     return (
@@ -268,7 +270,6 @@ class MessagesPage extends Component {
             </Grid>
             <Grid container className={classes.messagesArea}>
               <Grid item xs={12}>
-                {/* <h1>Test</h1> */}
                 <div className={classes.sentMessages}>
                 {message}
                 </div>
