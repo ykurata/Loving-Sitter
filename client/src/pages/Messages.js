@@ -9,15 +9,17 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Card from "@material-ui/core/Card";
 import TextField from "@material-ui/core/TextField";
 import Button from '@material-ui/core/Button';
 import axios from "axios";
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
 // import socket.io client
 import openSocket from 'socket.io-client';
+
+import IconButton from '@material-ui/core/IconButton';
 
 const messagesPageStyle = theme => ({
   list: {
@@ -39,8 +41,14 @@ const messagesPageStyle = theme => ({
   },
 
   title: {
-    border: "0.5px solid #e6e6e6",
+    borderTop: "0.5px solid #e6e6e6",
+    borderBottom: "0.5px solid #e6e6e6",
     textAlign: "center"
+  },
+  addIcon: {
+    height: "100%",
+    verticalAlign: "middle",
+
   },
   border: {
     border: "0.5px solid #e6e6e6",
@@ -198,6 +206,10 @@ class MessagesPage extends Component {
     this.setState({ message: "" });  
   }
 
+  test(){
+    console.log("test");
+  };
+
 
 
 
@@ -225,14 +237,24 @@ class MessagesPage extends Component {
         <Grid container>
           <Grid item xs={3}>
             <Grid container>
-              <Grid item xs={12} className={classes.title}>
+              <Grid item xs={11} className={classes.title}>
                 <h3>Inbox Messages</h3>
+              </Grid>
+              <Grid item xs={1} className={classes.title}>
+              {/* <div className={classes.title}>
+
+                <div className={classes.addIcon}> */}
+              <IconButton size="small" className={classes.addIcon}>
+              <AddBoxIcon />
+              </IconButton>
+              {/* </div>
+              </div> */}
               </Grid>
               <Grid item xs={12}>
                 <Card className={classes.cardStyle}>
                 {converId}
                   <List className={classes.list}>
-                    <ListItem alignItems="flex-start">
+                    <ListItem alignItems="flex-start" button>
                       <ListItemAvatar>
                         <Avatar
                           alt="Remy Sharp"
@@ -246,6 +268,7 @@ class MessagesPage extends Component {
                             I'll be in your neighborhood doing errands this…
                           </React.Fragment>
                         }
+                        // onClick={this.test}
                       />
                     </ListItem>
                     <Divider />
