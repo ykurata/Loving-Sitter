@@ -9,20 +9,26 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Card from "@material-ui/core/Card";
 import TextField from "@material-ui/core/TextField";
+import Button from '@material-ui/core/Button';
 
 const messagesPageStyle = theme => ({
-  root: {
-    width: "100%",
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper
+  // root: {
+  //   width: "100%",
+  //   maxWidth: 360,
+  //   backgroundColor: theme.palette.background.paper
+  // },
+
+  list: {
+    maxHeight: "81vh",
+    overflow: "auto"
+
   },
 
   cardStyle: {
-    height: "82vh"
+    height: "81vh"
   },
 
   bigAvatar: {
@@ -48,12 +54,27 @@ const messagesPageStyle = theme => ({
   },
 
   messagingArea: {
-    height: "12vh",
+    // height: "11vh",
     border: "1px solid #e6e6e6"
   },
 
   textField: {
-    width: "70%"
+    width: "100%",
+    paddingLeft: "10px"
+
+  },
+
+  input1: {
+    height: "8vh"
+  },
+
+  buttonContainer: {
+    height: "100%",
+  },
+
+  sendButton: {
+    top: "30%",
+    backgroundColor: "#f04040"
   }
 });
 
@@ -71,10 +92,169 @@ class MessagesPage extends Component {
               </Grid>
               <Grid item xs={12}>
                 <Card className={classes.cardStyle}>
-                  <List className={classes.root}>
+                  <List className={classes.list}>
                     <ListItem alignItems="flex-start">
                       <ListItemAvatar>
-                        {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" /> */}
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Mc Barkly"
+                        secondary={
+                          <React.Fragment>
+                            I'll be in your neighborhood doing errands this…
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Mc Barkly"
+                        secondary={
+                          <React.Fragment>
+                            I'll be in your neighborhood doing errands this…
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Mc Barkly"
+                        secondary={
+                          <React.Fragment>
+                            I'll be in your neighborhood doing errands this…
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Mc Barkly"
+                        secondary={
+                          <React.Fragment>
+                            I'll be in your neighborhood doing errands this…
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Mc Barkly"
+                        secondary={
+                          <React.Fragment>
+                            I'll be in your neighborhood doing errands this…
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Mc Barkly"
+                        secondary={
+                          <React.Fragment>
+                            I'll be in your neighborhood doing errands this…
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Mc Barkly"
+                        secondary={
+                          <React.Fragment>
+                            I'll be in your neighborhood doing errands this…
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Mc Barkly"
+                        secondary={
+                          <React.Fragment>
+                            I'll be in your neighborhood doing errands this…
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Mc Barkly"
+                        secondary={
+                          <React.Fragment>
+                            I'll be in your neighborhood doing errands this…
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Mc Barkly"
+                        secondary={
+                          <React.Fragment>
+                            I'll be in your neighborhood doing errands this…
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
                         <Avatar
                           alt="Remy Sharp"
                           src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
@@ -92,6 +272,7 @@ class MessagesPage extends Component {
                     <Divider />
                   </List>
                 </Card>
+                
               </Grid>
             </Grid>
           </Grid>
@@ -115,15 +296,28 @@ class MessagesPage extends Component {
             </Grid>
 
             <Grid container className={classes.messagingArea}>
-              <Grid item xs={12}>
+              <Grid item xs={8}>
                 <TextField
                   id="standard-bare"
                   className={classes.textField}
                   placeholder="Reply to Mc Barkly"
                   margin="normal"
-                  inputProps={{ "aria-label": "bare" }}
+                  // inputProps={{ "aria-label": "bare" }}
+                  inputProps={{ "aria-label": "bare", className: classes.input1 }}
                 />
               </Grid>
+              <Grid item xs={1}></Grid>
+
+              <Grid item xs={2}>
+                <div className={classes.buttonContainer}>
+                <Button variant="contained" color="primary" fullWidth className={classes.sendButton}>
+        Send
+      </Button>
+                </div>
+              <Grid item xs={1}></Grid>
+
+              
+</Grid>
             </Grid>
           </Grid>
         </Grid>
