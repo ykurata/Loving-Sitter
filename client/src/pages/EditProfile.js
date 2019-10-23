@@ -101,6 +101,7 @@ class EditProfilePage extends Component {
     } else {
       this.createProfile();
     }
+    
     this.setState({ disabled: true });
   };
 

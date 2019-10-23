@@ -2,15 +2,8 @@
 import Profile from "../models/Profile";
 import mongoose from "mongoose";
 
-import { body, validationResult } from "express-validator/check";
-import { sanitizeBody } from "express-validator/filter";
-
-// import input profile input validation
-const validateProfileInput = require("../validator/profile-validator");
-
-module.exports.saveProfile = function(req, res, next) {
-  const userId = req.params.id;
-};
+// import profile input validation
+const validateProfileInput = require("../validator/profile-validator")
 
 // Handle profile create on POST.
 module.exports.createProfile = function(req, res, next) {
@@ -34,7 +27,6 @@ module.exports.createProfile = function(req, res, next) {
   });
 };
 
-//Handle profile update on POST.
 module.exports.updateProfile = function(req, res, next) {
   // Form validation
   console.log("saving");
@@ -58,6 +50,7 @@ module.exports.updateProfile = function(req, res, next) {
   });
 };
 
+// GET a specific profile
 module.exports.getProfile = async function(req, res, next) {
   if (mongoose.Types.ObjectId.isValid(req.params.id)) {
     Profile.findOne({ userId: req.params.id }, (err, profile) => {
@@ -72,6 +65,7 @@ module.exports.getProfile = async function(req, res, next) {
   }
 };
 
+// GET all profiles
 module.exports.getAllProfiles = async function(req, res, next) {
   Profile.find({}, (err, profiles) => {
     if (err) {

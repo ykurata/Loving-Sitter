@@ -60,7 +60,7 @@ export default function NavigationBar() {
   if (token) {
     buttons = <div>
                 <Button component={Link} to={"/profile"}>BECOME A SITTER</Button>
-                <Button>My Sitters</Button>
+                <Button component={Link} to={"/sitter-search"}>My Sitters</Button>
                 <NotificationButton></NotificationButton>
                 <Button>Messages</Button>
                 <IconButton aria-label="avatar" onClick={handleClick}>

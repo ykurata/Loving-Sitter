@@ -29,7 +29,21 @@ const photoPageStyle = theme => ({
   }
 });
 
+const initalState = {
+  status: ""
+};
+
 class MyJobsPage extends Component {
+  state = initalState;
+
+  jobRequestResponse = event => {
+    console.log("in accept");
+    console.log(event);
+    console.log(event.currentTarget.value);
+    this.setState({ status: event.currentTarget.value });
+    console.log(this.state);
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -84,7 +98,7 @@ class MyJobsPage extends Component {
                         </Box>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={2}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             $200/hr
@@ -92,7 +106,7 @@ class MyJobsPage extends Component {
                         </CardContent>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={4}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             Status: Pending
@@ -162,7 +176,7 @@ class MyJobsPage extends Component {
                         </Box>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={2}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             $900/hr
@@ -170,10 +184,14 @@ class MyJobsPage extends Component {
                         </CardContent>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={4}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
-                            Status: Pending
+                            {this.state.status === ""
+                              ? "Status: Pending"
+                              : this.state.status === "accepted"
+                              ? "Status: Accepted"
+                              : "Status: Declined"}
                           </Typography>
                         </CardContent>
                       </Grid>
@@ -186,26 +204,48 @@ class MyJobsPage extends Component {
                         </CardContent>
                       </Grid>
                       <Grid item xs={1} className="pt-0"></Grid>
+
                       <Grid item xs={3} className="pt-0">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          fullWidth
-                          size="large"
-                        >
-                          Accept
-                        </Button>
+                        {this.state.status === "" ? (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                            size="large"
+                            onClick={this.jobRequestResponse}
+                            value="accepted"
+                          >
+                            Accept
+                          </Button>
+                        ) : (
+                          ""
+                        )}
                       </Grid>
 
                       <Grid item xs={3} className="pt-0 pr-2">
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          fullWidth
-                          size="large"
-                        >
-                          Decline
-                        </Button>
+                        {this.state.status === "" ? (
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            fullWidth
+                            size="large"
+                            onClick={this.jobRequestResponse}
+                            value="declined"
+                          >
+                            Decline
+                          </Button>
+                        ) : this.state.status === "accepted" ? (
+                          <Button
+                            variant="contained"
+                            className={classes.contactBtn}
+                            fullWidth
+                            size="large"
+                          >
+                            Contact User
+                          </Button>
+                        ) : (
+                          ""
+                        )}
                       </Grid>
                     </Grid>
                   </Grid>
@@ -259,7 +299,7 @@ class MyJobsPage extends Component {
                         </Box>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={2}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             $900/hr
@@ -267,7 +307,7 @@ class MyJobsPage extends Component {
                         </CardContent>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={4}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             Status: Pending
@@ -345,7 +385,7 @@ class MyJobsPage extends Component {
                         </Box>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={2}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             $900/hr
@@ -353,7 +393,7 @@ class MyJobsPage extends Component {
                         </CardContent>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={4}>
                         <CardContent className="pb-0">
                           <Typography component="h5" variant="h5">
                             Status: Pending
