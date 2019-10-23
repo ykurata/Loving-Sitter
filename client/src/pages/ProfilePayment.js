@@ -7,8 +7,6 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 
-import CurrencyTextField from "@unicef/material-ui-currency-textfield";
-
 import axios from "axios";
 
 const paymentDetails = {

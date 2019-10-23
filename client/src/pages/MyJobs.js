@@ -117,13 +117,23 @@ class MyJobsPage extends Component {
                         </CardContent>
                       </Grid>
 
-                      <Grid item xs={12} className="pt-0">
+                      <Grid item xs={6} className="pt-0">
                         <CardContent className="pt-0">
                           <Typography component="h5" variant="h5">
                             Location: 1600 Amphitheatre Pkwy, Mountain View, CA
                             94043, United States
                           </Typography>
                         </CardContent>
+                      </Grid>
+                      <Grid item xs={3} className="pt-0 pr-2">
+                        <Button
+                          variant="contained"
+                          className={classes.payBtn}
+                          fullWidth
+                          size="large"
+                        >
+                          Pay Now
+                        </Button>
                       </Grid>
                     </Grid>
                   </Grid>

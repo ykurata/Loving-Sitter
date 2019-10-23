@@ -34,8 +34,6 @@ function App() {
         <Route path="/profile-payment" component={ProfilePayment} />
         <Route path="/profile-photo" component={PhotoPage} />
         <Route path="/my-jobs" component={MyJobsPage} />
-        <Route path="/sitter-search" component={ProfileListPage} />
-        <Route path="/profile-details" component={ProfileDetails} />
         <Route path="/messages" component={MessagesPage} />
       </BrowserRouter>
     </MuiThemeProvider>
