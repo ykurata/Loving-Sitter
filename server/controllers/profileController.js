@@ -3,8 +3,7 @@ import Profile from "../models/Profile";
 import mongoose from "mongoose";
 
 // import profile input validation
-const validateProfileInput = require("../validator/profile-validator");
-
+const validateProfileInput = require("../validator/profile-validator")
 
 // Handle profile create on POST.
 module.exports.createProfile = function(req, res, next) {
@@ -16,31 +15,21 @@ module.exports.createProfile = function(req, res, next) {
     return res.status(400).json(errors);
   }
 
-  const profile = new Profile({
-    userId: req.user,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    gender: req.body.gender,
-    email: req.body.email,
-    birthDate: req.body.birthDate,
-    phone: req.body.phone,
-    address: req.body.address,
-    description: req.body.description,
-    rate: req.body.rate
-  });
+  // creating a profile
+  const user = req.body;
+  user.userId = req.user;
+  const profile = new Profile(user);
 
   profile.save(function(err, profile) {
     if (err) return next(err);
-    console.log("USER SAVED!");
-    res.json(profile);
+    console.log("Profile created!");
+    res.status(200).json(profile);
   });
 };
 
-
-//Handle profile update on PUT.
 module.exports.updateProfile = function(req, res, next) {
-
   // Form validation
+  console.log("saving");
   const { errors, isValid } = validateProfileInput(req.body);
 
   // Check validation
@@ -48,21 +37,15 @@ module.exports.updateProfile = function(req, res, next) {
     return res.status(400).json(errors);
   }
 
-  Profile.findById(req.params.id, function(err, profile) {
+  Profile.findOne({ userId: req.params.id }, function(err, profile) {
     if (err) return next(err);
-    (profile.firstName = req.body.firstName),
-      (profile.lastName = req.body.lastName),
-      (profile.gender = req.body.gender),
-      (profile.email = req.body.email),
-      (profile.birthDate = req.body.birthDate),
-      (profile.phone = req.body.phone),
-      (profile.address = req.body.address),
-      (profile.description = req.body.description),
-      (profile.rate = req.body.rate);
-
+    const keys = Object.keys(req.body);
+    for (const key of keys) {
+      profile[key] = req.body[key];
+    }
     profile.save(function(err, profile) {
       if (err) return next(err);
-      res.json(profile);
+      res.status(200).json(profile);
     });
   });
 };
@@ -74,7 +57,7 @@ module.exports.getProfile = async function(req, res, next) {
       if (err) {
         res.status(404).json({ error: "Profile not found" });
       } else {
-        res.status(200).json({ profile: profile });
+        res.status(200).json({ profile });
       }
     });
   } else {
