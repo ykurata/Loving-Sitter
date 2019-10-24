@@ -73,7 +73,7 @@ class ProfileListPage extends Component {
     // Get token from local storage
     const token = localStorage.getItem("jwtToken");
 
-    axios.get("/profile/get", { headers: { Authorization: `Bearer ${token}` }})
+    axios.get("/profile/get", { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
         this.setState({
           profiles: res.data.profile
@@ -129,81 +129,157 @@ class ProfileListPage extends Component {
                 />
               </Grid>
               <Grid item xs={3}></Grid>
+                  {/*Checks if the location search bar is empty, if not, inputs based on address*/}
+              {this.state.user.location.length > 0 ? this.state.profiles.map((profile, key) =>
+                profile.address.toLowerCase().includes(this.state.user.location.toLowerCase()) &&
+                  <Grid item xs={4} align="center" key={key} component={Link} to={`/profile-details/${profile.userId}`} style={{ textDecoration: 'none' }}>
+                    <Card>
+                      <CardActionArea className={classes.cardDivider}>
+                        <CardContent>
+                          <Grid container>
+                            <Grid item xs={4}></Grid>
 
-              {this.state.profiles.map((profile, key) => 
-                <Grid item xs={4} align="center" key={key} component={Link} to={`/profile-details/${profile.userId}`} style={{ textDecoration: 'none' }}>
-                <Card>
-                  <CardActionArea className={classes.cardDivider}>
-                  <CardContent>
-                    <Grid container>
-                    <Grid item xs={4}></Grid>
+                            <Grid item xs={4}>
+                              <Avatar
+                                alt="Remy Sharp"
+                                src={profile.photoUrl}
+                                className={classes.bigAvatar}
+                              />
+                            </Grid>
+                            <Grid item xs={4}></Grid>
+                          </Grid>
+                          <Typography
+                            gutterBottom
+                            variant="h5"
+                            component="h2"
+                            className="mb-0 center"
+                          >
+                            {profile.firstName} {profile.lastName}
+                          </Typography>
 
-                      <Grid item xs={4}>
-                        <Avatar
-                          alt="Remy Sharp"
-                          src={profile.photoUrl}
-                          className={classes.bigAvatar}
-                        />
-                      </Grid>
-                      <Grid item xs={4}></Grid>
-                    </Grid>
-                      <Typography
-                        gutterBottom
-                        variant="h5"
-                        component="h2"
-                        className="mb-0 center"
-                      >
-                        {profile.firstName} {profile.lastName}
+                          <Typography
+                            variant="body1"
+                            color="textSecondary"
+                            className="center"
+                            component="p"
+                          >
+                            Loving Pet
                       </Typography>
 
-                      <Typography
-                        variant="body1"
-                        color="textSecondary"
-                        className="center"
-                        component="p"
-                      >
-                        Loving Pet
-                      </Typography>
+                          <Grid container spacing={3}>
+                            <Grid item xs={12} className="center">
+                              <Box component="fieldset" borderColor="transparent">
+                                <Rating value={5} readOnly />
+                              </Box>
+                            </Grid>
+                          </Grid>
 
-                      <Grid container spacing={3}>
-                        <Grid item xs={12} className="center">
-                          <Box component="fieldset" borderColor="transparent">
-                            <Rating value={5} readOnly />
-                          </Box>
+                          <Typography
+                            variant="body1"
+                            className="center"
+                            component="p"
+                            noWrap
+                          >
+                            <b>{profile.description}</b>
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                      <CardActions>
+                        <Grid container spacing={3}>
+                          <Grid item xs={1}>
+                            <RoomIcon color="secondary" />
+                          </Grid>
+                          <Grid item xs={8}>
+                            <p className="mt-0 mb-0">{profile.address}</p>
+                          </Grid>
+                          <Grid item xs={2}>
+                            <b>
+                              {" "}
+                              <p className="mt-0 mb-0">${profile.rate}/hr </p>
+                            </b>
+                          </Grid>
+                          <Grid item xs={1}></Grid>
                         </Grid>
-                      </Grid>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+              )
+                :
+                this.state.profiles.map((profile, key) =>
+                  <Grid item xs={4} align="center" key={key} component={Link} to={`/profile-details/${profile.userId}`} style={{ textDecoration: 'none' }}>
+                    <Card>
+                      <CardActionArea className={classes.cardDivider}>
+                        <CardContent>
+                          <Grid container>
+                            <Grid item xs={4}></Grid>
 
-                      <Typography
-                        variant="body1"
-                        className="center"
-                        component="p"
-                        noWrap
-                      >
-                        <b>{profile.description}</b>
+                            <Grid item xs={4}>
+                              <Avatar
+                                alt="Remy Sharp"
+                                src={profile.photoUrl}
+                                className={classes.bigAvatar}
+                              />
+                            </Grid>
+                            <Grid item xs={4}></Grid>
+                          </Grid>
+                          <Typography
+                            gutterBottom
+                            variant="h5"
+                            component="h2"
+                            className="mb-0 center"
+                          >
+                            {profile.firstName} {profile.lastName}
+                          </Typography>
+
+                          <Typography
+                            variant="body1"
+                            color="textSecondary"
+                            className="center"
+                            component="p"
+                          >
+                            Loving Pet
                       </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                  <CardActions>
-                    <Grid container spacing={3}>
-                      <Grid item xs={1}>
-                        <RoomIcon color="secondary" />
-                      </Grid>
-                      <Grid item xs={8}>
-                        <p className="mt-0 mb-0">{profile.address}</p>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <b>
-                          {" "}
-                          <p className="mt-0 mb-0">${profile.rate}/hr </p>
-                        </b>
-                      </Grid>
-                      <Grid item xs={1}></Grid>
-                    </Grid>
-                  </CardActions>
-                </Card>
-                </Grid>
-              )}
-        
+
+                          <Grid container spacing={3}>
+                            <Grid item xs={12} className="center">
+                              <Box component="fieldset" borderColor="transparent">
+                                <Rating value={5} readOnly />
+                              </Box>
+                            </Grid>
+                          </Grid>
+
+                          <Typography
+                            variant="body1"
+                            className="center"
+                            component="p"
+                            noWrap
+                          >
+                            <b>{profile.description}</b>
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                      <CardActions>
+                        <Grid container spacing={3}>
+                          <Grid item xs={1}>
+                            <RoomIcon color="secondary" />
+                          </Grid>
+                          <Grid item xs={8}>
+                            <p className="mt-0 mb-0">{profile.address}</p>
+                          </Grid>
+                          <Grid item xs={2}>
+                            <b>
+                              {" "}
+                              <p className="mt-0 mb-0">${profile.rate}/hr </p>
+                            </b>
+                          </Grid>
+                          <Grid item xs={1}></Grid>
+                        </Grid>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                )
+              }
+
             </Grid>
           </Grid>
           <Grid item xs={1}></Grid>
