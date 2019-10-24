@@ -29,7 +29,7 @@ const photoPageStyle = theme => ({
   bigAvatar: {
     width: 100,
     height: 100,
-    marginBottom: 10
+    margin: "auto"
   },
 
   cardDivider: {
