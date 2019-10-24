@@ -123,6 +123,8 @@ class EditProfilePage extends Component {
   };
 
   render() {
+    console.log(this.state);
+    console.log("Above this");
     return (
       <div>
         <Snackbar

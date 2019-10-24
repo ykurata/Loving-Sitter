@@ -11,6 +11,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import axios from "axios";
+
 
 const photoPageStyle = theme => ({
   bigAvatar: {
@@ -30,11 +32,41 @@ const photoPageStyle = theme => ({
 });
 
 const initalState = {
-  status: ""
+  status: "",
+  profile: {}
 };
 
 class MyJobsPage extends Component {
   state = initalState;
+
+  componentDidMount() {
+   
+    const token = localStorage.getItem("jwtToken");
+
+    axios.get(`/user/getrequests`)
+    .then(res => {
+        this.setState({
+            profile: res.data.profile
+        });
+        console.log(token);
+        console.log("ABOVE");
+    })
+    .catch(err => {
+        console.log("Error fetching and parsing data", err);
+    });
+
+    axios.get(`/user/getrequested`)
+    .then(res => {
+        this.setState({
+            profile: res.data.profile
+        });
+        console.log(token);
+        console.log("ABOVE");
+    })
+    .catch(err => {
+        console.log("Error fetching and parsing data", err);
+    });
+}
 
   jobRequestResponse = event => {
     console.log("in accept");
