@@ -10,7 +10,6 @@ import Rating from "@material-ui/lab/Rating";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
-
 // import SimpleSnackbar from "./snackbar";
 import { Snackbar, IconButton } from "@material-ui/core";
 
@@ -61,7 +60,15 @@ const detailsPageStyle = theme => ({
 
 const initalState = {
     status: "Available",
-    profile: {}
+    profile: {},
+    user: {
+        userId: "",
+        requestedUserId:"",
+        startDate:"",
+        endDate:"",
+        status:"",
+        paid:""
+      },
 };
 
 class ProfileDetails extends Component {
@@ -80,6 +87,20 @@ class ProfileDetails extends Component {
         .then(res => {
             this.setState({
                 profile: res.data.profile
+            });
+        })
+        .catch(err => {
+            console.log("Error fetching and parsing data", err);
+        });
+    }
+
+    sendingRequest(){
+        const token = localStorage.getItem("jwtToken");
+
+        axios.post(`/user/sendrequest`, this.state.user, { headers: { Authorization: `Bearer ${token}` } })
+        .then(res => {
+            this.setState({
+                user: res.data
             });
         })
         .catch(err => {
@@ -193,7 +214,7 @@ class ProfileDetails extends Component {
                                     />
                                 </Grid>
                                 <Grid item>
-                                    <Button size="large" variant="contained" className={classes.requestBtn}>
+                                    <Button size="large" variant="contained" className={classes.requestBtn} onClick={this.sendingRequest}>
                                         Send Request
                                         </Button>
                                 </Grid>
