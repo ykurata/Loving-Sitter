@@ -20,6 +20,9 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import openSocket from 'socket.io-client';
 
 import IconButton from '@material-ui/core/IconButton';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
 
 const messagesPageStyle = theme => ({
   list: {
@@ -99,7 +102,20 @@ const messagesPageStyle = theme => ({
     borderRadius: "10px",
     padding: "12px"
 
-  }
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paper: {
+    maxHeight:'75vh',
+    overflow:'auto',
+    backgroundColor: theme.palette.background.paper,
+    border: 'none',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 });
 
 
@@ -115,10 +131,21 @@ class MessagesPage extends Component {
       conversationId: "",
       recipientIds: [],
       recipientProfiles: [],
+      open: false,
       token: localStorage.getItem("jwtToken"),
       userId: localStorage.getItem("userId")
     }
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
+
+  handleOpen() {
+    this.setState({ open: true });
+  };
+
+  handleClose(){
+    this.setState({ open: false });
+  };
 
   componentDidMount() {
     this.socket = openSocket('http://localhost:3001');
@@ -215,8 +242,6 @@ class MessagesPage extends Component {
 
   render() {
     const { classes } = this.props;
-    // const message = this.state.messages.map((message, i) => <p key={i}><span className={classes.sentMessageLength}>{message}</span></p> );
-    // const message = this.state.messages.map((message, i) => <p key={i}> <span className={classes.sentMessageLength}>{message}</span></p>);
     const message = this.state.messages.map((message, i) => <p key={i} className={classes.sentMessageLength}><span className={classes.test}>{message}</span></p>);
     
     const converId = this.state.conversations.map((con, i) => 
@@ -231,6 +256,7 @@ class MessagesPage extends Component {
         </Button>);
 
 
+
     return (
       <div>
         <NavigationBar></NavigationBar>
@@ -241,14 +267,28 @@ class MessagesPage extends Component {
                 <h3>Inbox Messages</h3>
               </Grid>
               <Grid item xs={1} className={classes.title}>
-              {/* <div className={classes.title}>
-
-                <div className={classes.addIcon}> */}
               <IconButton size="small" className={classes.addIcon}>
-              <AddBoxIcon />
+              <AddBoxIcon onClick={this.handleOpen}/>
               </IconButton>
-              {/* </div>
-              </div> */}
+              <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={this.state.open}
+        onClose={this.handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={this.state.open}>
+          <div className={classes.paper}>
+            <h2 id="transition-modal-title">Dog Sitters</h2>
+            <p id="transition-modal-description">react-transition-group animates me.</p>
+          </div>
+        </Fade>
+      </Modal>
               </Grid>
               <Grid item xs={12}>
                 <Card className={classes.cardStyle}>
