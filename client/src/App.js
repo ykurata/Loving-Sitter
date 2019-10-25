@@ -25,16 +25,16 @@ function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
+        <PrivateRoute path='/profile' component={EditProfilePage} />
+        <PrivateRoute path="/profile-details/:id" component={ProfileDetails} />
+        <PrivateRoute path="/sitter-search" component={ProfileListPage} />
+        <PrivateRoute path="/messages" component={MessagesPage} />
         <Route exact path="/" component={LandingPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={SignUpPage} />
-        <PrivateRoute path='/profile' component={EditProfilePage} />
         <Route path="/profile-payment" component={ProfilePayment} />
         <Route path="/profile-photo" component={PhotoPage} />
         <Route path="/my-jobs" component={MyJobsPage} />
-        <Route path="/sitter-search" component={ProfileListPage} />
-        <Route path="/profile-details" component={ProfileDetails} />
-        <Route path="/messages" component={MessagesPage} />
       </BrowserRouter>
     </MuiThemeProvider>
   );

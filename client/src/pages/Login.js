@@ -6,14 +6,14 @@ import Grid from "@material-ui/core/Grid";
 import "../App.scss";
 import Button from "@material-ui/core/Button";
 
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 
 const initalState = {
   email: "",
   emailError: "",
   password: "",
   passwordError: "",
-  errors : "",
+  errors: ""
 };
 
 class LoginPage extends Component {
@@ -34,7 +34,7 @@ class LoginPage extends Component {
     if (!test === true) {
       emailError = "Invalid email";
     }
-    
+
     if (emailError) {
       this.setState({ emailError });
       return false;
@@ -47,31 +47,31 @@ class LoginPage extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const isValid = this.validate();
-    
+
     if (isValid) {
       const { email, password } = this.state;
-      
+
       const data = {
         email: email,
         password: password
-      }
-      axios.post('/users/login', data)
-      .then(res => {
+      };
+      axios
+        .post("/users/login", data)
+        .then(res => {
           const { token } = res.data;
           const decoded = jwt_decode(token);
-          localStorage.setItem('jwtToken', token);
-          localStorage.setItem('name', decoded.name);
+          localStorage.setItem("jwtToken", token);
+          localStorage.setItem("userId", decoded.id);
           console.log("successfully logged in ");
-          this.props.history.push('/profile');
-      })
-      .catch(err => {
-        this.setState({
-          errors: err.response.data.error  // Error messages from backend
+          this.props.history.push("/profile");
+        })
+        .catch(err => {
+          this.setState({
+            errors: err.response.data.error // Error messages from backend
           });
-      });
+        });
     }
   };
-  
 
   render() {
     return (
@@ -86,13 +86,16 @@ class LoginPage extends Component {
                     <Grid item xs={12}>
                       <h1 className="center">LogIn</h1>
                     </Grid>
-                    {
-                      (this.state.errors)
-                      ? <Grid item xs={12} className="pb-0 pt-0" style={{ color: "red" }}>
-                          <p className="mb-0 mt-0">{this.state.errors}</p>
-                        </Grid>
-                      : null
-                    }
+                    {this.state.errors ? (
+                      <Grid
+                        item
+                        xs={12}
+                        className="pb-0 pt-0"
+                        style={{ color: "red" }}
+                      >
+                        <p className="mb-0 mt-0">{this.state.errors}</p>
+                      </Grid>
+                    ) : null}
                     <Grid item xs={12} className="pb-0 pt-0">
                       <p className="mb-0 mt-0">EMAIL ADDRESS</p>
                     </Grid>
