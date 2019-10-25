@@ -1,17 +1,13 @@
-const keyPublishable = "pk_test_AgD4J9rRiEMq0w6u2yhMbhIS0000UbX6jH";
 //Make keySecret secret before deploying
-const keySecret = "sk_test_k5r0VkkM3ddLjMmst8aYC23900eTkN1l2U";
+const keySecret = process.env.STRIPE_SECRET;
 
 var express = require("express");
 var router = express.Router();
-const authenticate = require("./utils/auth");
+//const authenticate = require("./utils/auth");
 const stripe = require("stripe")(keySecret);
-
-const payment = require("../services/payment");
 //Add Authorization later
 router.post("/", async function (req, res) {
-    //const domainURL = process.env.DOMAIN;
-    const domainURL = "http://localhost:3000"
+    const domainURL = process.env.DOMAIN;
 
     // Create new Checkout Session for the order
     // Other optional params include:
@@ -28,14 +24,11 @@ router.post("/", async function (req, res) {
                 //images: ["https://picsum.photos/300/300?random=4"],
                 quantity: req.body.quantity,
                 currency: req.body.currency,
-                amount: req.body.amount//process.env.BASE_PRICE // Keep the amount on the server to prevent customers from manipulating on client
+                amount: req.body.amount + req.body.decimal // Keep the amount on the server to prevent customers from manipulating on client
             }
         ],
-        // ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
-        //success_url: `${domainURL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-        //cancel_url: `${domainURL}/canceled.html`
-        success_url: `${domainURL}/profile`,
-        cancel_url: `${domainURL}/profile`
+        success_url: `${domainURL}/my-jobs`,
+        cancel_url: `${domainURL}/profile-payment`
     });
 
     res.send({

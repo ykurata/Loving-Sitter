@@ -7,6 +7,8 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 
+import { Snackbar, IconButton } from "@material-ui/core";
+
 import axios from "axios";
 
 const paymentDetails = {
@@ -16,6 +18,9 @@ const paymentDetails = {
   quantity: 1,
   currency: "cad",
   payment_method_type: "card",
+  disabled: false,
+  snackbarmsg: "",
+  snackbaropen: false,
 };
 
 class ProfilePayment extends Component {
@@ -39,28 +44,75 @@ class ProfilePayment extends Component {
     this.setState({ decimal });
   };
 
+  checkValidPay() {
+    var check = true;
+    if (this.state.decimal.length < 2 || this.state.decimal.length > 2) {
+      this.setState({ decimal: "00" });
+      console.log("Cents field must have 2 digits");
+      this.setState({ snackbarmsg: "Cents field must have 2 digits", snackbaropen: true });
+      check = false;
+    }
+    if (this.state.amount.length < 1) {
+      console.log("Please enter an amount in the dollars box")
+      this.setState({ snackbarmsg: "Please enter an amount in the dollars box", snackbaropen: true });
+      check = false;
+    }
+    return check;
+  }
+
+  snackbarClose = event => {
+    this.setState({ snackbaropen: false });
+  };
+
   handleSubmit = event => {
     event.preventDefault();
 
-    axios.post("/profile-payment", this.state)
-      .then(res => {
-        const keyPublishable = "pk_test_AgD4J9rRiEMq0w6u2yhMbhIS0000UbX6jH";
-        const stripe = window.Stripe(keyPublishable);
-        const { error } = stripe.redirectToCheckout({
-          sessionId: res.data.sessionId
+    const valid = this.checkValidPay();
+
+    // Integrate payment to individual people
+    if (valid) {
+      axios.post("/profile-payment", this.state)
+        .then(res => {
+          const keyPublishable = "pk_test_AgD4J9rRiEMq0w6u2yhMbhIS0000UbX6jH";
+          const stripe = window.Stripe(keyPublishable);
+          const { error } = stripe.redirectToCheckout({
+            sessionId: res.data.sessionId
+          })
+          console.log(res.data);
+          console.log(error);
         })
-        console.log(res.data);
-      })
-      .catch(err => {
-        this.setState({
-          errors: err.response.data // Error messages from server
+        .catch(err => {
+          console.log(err);
+          this.setState({
+            errors: err // Error messages from server
+          });
         });
-      });
+    } else {
+
+    }
   }
 
   render() {
     return (
       <div>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "center"
+          }}
+          open={this.state.snackbaropen}
+          autoHideDuration={3000}
+          onClose={this.snackbarClose}
+          message={<span id="message-id">{this.state.snackbarmsg}</span>}
+          action={[
+            <IconButton
+              key="close"
+              arial-label="Close"
+              color="inherit"
+              onClick={this.snackbarClose}
+            ></IconButton>
+          ]}
+        />
         <NavigationBar></NavigationBar>
         <div className="pageArea">
           <div className="infoArea">
@@ -85,7 +137,7 @@ class ProfilePayment extends Component {
                       margin="normal"
                       variant="outlined"
                       required
-                      disabled={this.state.disabled ? "disabled" : ""}
+                      disabled={this.state.disabled ? true : false}
                     />
                     <TextField
                       name="decimal-amount"
@@ -100,7 +152,7 @@ class ProfilePayment extends Component {
                       margin="normal"
                       variant="outlined"
                       required
-                      disabled={this.state.disabled ? "disabled" : ""}
+                      disabled={this.state.disabled ? true : false}
                     />
                   </Grid>
                   <Grid item>

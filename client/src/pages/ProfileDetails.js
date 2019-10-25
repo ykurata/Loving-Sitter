@@ -74,10 +74,6 @@ const initalState = {
 class ProfileDetails extends Component {
 
     state = initalState;
-
-    constructor(props) {
-        super(props)
-    }
     
     componentDidMount() {
         // Get token from local storage
