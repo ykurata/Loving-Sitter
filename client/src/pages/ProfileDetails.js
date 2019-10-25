@@ -112,7 +112,9 @@ class ProfileDetails extends Component {
                 />
                 <NavigationBar></NavigationBar>
                 <Grid container spacing={5}>
-                    <Grid item xs={12}></Grid>
+                    <Grid item xs={12}>
+                        <a href="../sitter-search">Back to sitter</a>
+                    </Grid>
                     <Grid item xs={1}></Grid>
                     <Grid item xs={7}>
                         <Grid container spacing={4} align="center">
