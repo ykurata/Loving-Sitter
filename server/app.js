@@ -9,7 +9,7 @@ import cors from "cors";
 import dbConnection from "./db/mongoose";
 import indexRouter from "./routes/index";
 import profileRouter from "./routes/profile";
-//import pingRouter from "./routes/ping";
+import pingRouter from "./routes/ping";
 import photoRouter from "./routes/photo";
 import usersRouter from "./routes/users";
 import fileUploadRouter from "./routes/file-upload";
