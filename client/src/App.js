@@ -28,6 +28,7 @@ function App() {
         <PrivateRoute path='/profile' component={EditProfilePage} />
         <PrivateRoute path="/profile-details/:id" component={ProfileDetails} />
         <PrivateRoute path="/sitter-search" component={ProfileListPage} />
+        <PrivateRoute path="/messages" component={MessagesPage} />
         <Route exact path="/" component={LandingPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={SignUpPage} />

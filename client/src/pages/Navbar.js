@@ -4,11 +4,11 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import Avatar from '@material-ui/core/Avatar';
-import { Link } from 'react-router-dom';
+import IconButton from "@material-ui/core/IconButton";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import Avatar from "@material-ui/core/Avatar";
+import { Link } from "react-router-dom";
 
 import NotificationButton from "./NotificationButton";
 
@@ -39,7 +39,7 @@ export default function NavigationBar() {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
- 
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -54,57 +54,100 @@ export default function NavigationBar() {
     window.location.href = "/";
   };
 
-  const token = localStorage.getItem('jwtToken');
+  const token = localStorage.getItem("jwtToken");
   let buttons;
 
   if (token) {
-    buttons = <div>
-                <Button component={Link} to={"/profile"}>BECOME A SITTER</Button>
-                <Button component={Link} to={"/sitter-search"}>My Sitters</Button>
-                <NotificationButton></NotificationButton>
-                <Button>Messages</Button>
-                <IconButton aria-label="avatar" onClick={handleClick}>
-                  <Avatar alt="Remy Sharp" src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")} className={classes.bigAvatar}/>
-                </IconButton>
-                <Menu
-                      id="menu-appbar"
-                      anchorEl={anchorEl}
-                      anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                      }}
-                      keepMounted
-                      transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                      }}
-                      open={open}
-                      onClose={handleClose}
-                    >
-                      <MenuItem><a href="./profile">Profile</a></MenuItem>
-                      <MenuItem><a href="./my-jobs">My Jobs</a></MenuItem>
-                      <MenuItem onClick={handleClose}>My account</MenuItem>
-                      <MenuItem onClick={handleLogout}>Log Out</MenuItem>
-                </Menu>
-              </div> 
+    buttons = (
+      <div>
+        <Button component={Link} to={"/profile"}>
+          BECOME A SITTER
+        </Button>
+        <Button component={Link} to={"/sitter-search"}>
+          My Sitters
+        </Button>
+        <NotificationButton></NotificationButton>
+        <Button component={Link} to={"/messages"}>
+          Messages
+        </Button>
+        <IconButton aria-label="avatar" onClick={handleClick}>
+          <Avatar
+            alt="Remy Sharp"
+            src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
+            className={classes.bigAvatar}
+          />
+        </IconButton>
+        <Menu
+          id="menu-appbar"
+          anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right"
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          open={open}
+          onClose={handleClose}
+        >
+          <MenuItem component={Link} to={"/profile"}>
+            Profile
+          </MenuItem>
+          <MenuItem component={Link} to={"/my-jobs"}>
+            My Jobs
+          </MenuItem>
+          <MenuItem onClick={handleClose}>My account</MenuItem>
+          <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+        </Menu>
+      </div>
+    );
   } else {
-    buttons = <div>
-                <Button className={classes.menuButton} color="inherit" component={Link} to={"/profile"}>BECOME A SITTER</Button>
-                <Button className={classes.menuButton} variant="outlined" color="secondary" component={Link} to={"/login"}>Log In</Button>
-                <Button variant="contained" color="secondary" component={Link} to={"/signup"}>Sign Up</Button>
-              </div>
+    buttons = (
+      <div>
+        <Button
+          className={classes.menuButton}
+          color="inherit"
+          component={Link}
+          to={"/profile"}
+        >
+          BECOME A SITTER
+        </Button>
+        <Button
+          className={classes.menuButton}
+          variant="outlined"
+          color="secondary"
+          component={Link}
+          to={"/login"}
+        >
+          Log In
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          component={Link}
+          to={"/signup"}
+        >
+          Sign Up
+        </Button>
+      </div>
+    );
   }
 
   return (
     <div className={classes.root}>
-      <AppBar className={ token ? classes.loggedInNavbar : classes.logInNavbar}>
+      <AppBar className={token ? classes.loggedInNavbar : classes.logInNavbar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            <img src={require("../images/loving-sitter-logo.png")} alt="logo of app"/>
+            <img
+              src={require("../images/loving-sitter-logo.png")}
+              alt="logo of app"
+            />
           </Typography>
-          { buttons }
+          {buttons}
         </Toolbar>
       </AppBar>
     </div>
   );
-};
+}
