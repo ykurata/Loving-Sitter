@@ -27,9 +27,20 @@ class EditProfilePage extends Component {
       description: "",
       rate: ""
     },
+    errors: {
+      firstName: "",
+      lastName: "",
+      gender: "",
+      birthDate: "",
+      email: "",
+      phone: "",
+      address: "",
+      description: "",
+      rate: ""
+    },
     disabled: true,
     snackbaropen: false,
-    snackbarmsg: "Profile Saved",
+    snackbarmsg: "",
     formChanges: false
   };
 
@@ -56,34 +67,116 @@ class EditProfilePage extends Component {
 
   createProfile() {
     const token = localStorage.getItem("jwtToken");
-    axios
-      .post("profile/create", this.state.user, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      .then(res => {
-        this.setState({ user: res.data });
-        this.setState({ snackbaropen: true });
-      })
-      .catch(err => {
-        console.log({ err });
-      });
+    const valid = this.checkValid();
+
+    if (valid) {
+      axios
+        .post("profile/create", this.state.user, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        .then(res => {
+          this.setState({ user: res.data });
+          this.setState({ snackbaropen: true });
+        })
+        .catch(err => {
+          console.log({ err });
+        });
+    } else {
+      this.setState({ snackbarmsg: "You have errors with your profile details" });
+      this.setState({ snackbaropen: true });
+    }
+  }
+
+  checkValid() {
+    var valid = true;
+    var checkErrors = {
+      firstName: "",
+      lastName: "",
+      gender: "",
+      birthDate: "",
+      email: "",
+      phone: "",
+      address: "",
+      description: "",
+      rate: ""
+    }
+    if (this.state.user.firstName.length < 1) {
+      valid = false;
+      checkErrors.firstName = "First name is invalid"
+    } else { checkErrors.firstName = "" }
+
+    if (this.state.user.lastName.length < 1) {
+      valid = false;
+      checkErrors.lastName = "Last name is invalid"
+    } else { checkErrors.lastName = "" }
+
+    if (this.state.user.gender.length < 1) {
+      valid = false;
+      checkErrors.gender = "Gender is invalid"
+    } else { checkErrors.gender = "" }
+
+    if (this.state.user.birthDate.length < 1) {
+      valid = false;
+      checkErrors.birthDate = "Birth Date is invalid"
+    } else { checkErrors.birthDate = "" }
+
+    if (this.state.user.email.length < 1) {
+      valid = false;
+      checkErrors.email = "Email is invalid"
+    } else { checkErrors.email = "" }
+
+    if (this.state.user.phone.length < 10) {
+      valid = false;
+      checkErrors.phone = "Phone Number is invalid"
+    } else { checkErrors.phone = "" }
+
+    if (this.state.user.address.length < 1) {
+      valid = false;
+      checkErrors.address = "Address is invalid"
+    } else { checkErrors.address = "" }
+
+    if (this.state.user.description.length < 1) {
+      valid = false;
+      checkErrors.description = "Description is invalid"
+    } else { checkErrors.description = "" }
+
+    if (this.state.user.rate.length < 1) {
+      valid = false;
+      checkErrors.rate = "Rate is invalid"
+    } else { checkErrors.rate = "" }
+
+    this.setState({
+      errors: checkErrors
+    })
+    return valid;
   }
 
   updateProfile() {
     const token = localStorage.getItem("jwtToken");
     const id = this.state.user.userId;
 
-    axios
-      .put(`profile/update/${id}`, this.state.user, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      .then(res => {
-        this.setState({ user: res.data });
-        this.setState({ snackbaropen: true });
-      })
-      .catch(err => {
-        console.log({ err });
-      });
+    const valid = this.checkValid();
+
+    if (valid) {
+      axios
+        .put(`profile/update/${id}`, this.state.user, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        .then(res => {
+          this.setState({ user: res.data });
+          this.setState({ snackbarmsg: "Profile Saved" });
+          this.setState({ snackbaropen: true });
+        })
+        .catch(err => {
+          this.setState({ snackbarmsg: "Your details do not meet the necessary criteria." });
+          this.setState({ snackbaropen: true });
+          console.log({ err });
+        });
+    }
+    else {
+      this.setState({ snackbarmsg: "You have errors with your profile details" });
+      this.setState({ snackbaropen: true });
+    }
   }
 
   handleInputChange = event => {
@@ -101,7 +194,7 @@ class EditProfilePage extends Component {
     } else {
       this.createProfile();
     }
-    
+
     this.setState({ disabled: true });
   };
 
@@ -423,6 +516,7 @@ class EditProfilePage extends Component {
                               name="rate"
                               placeholder="Your hourly rate"
                               id="standard-rate"
+                              type="number"
                               value={this.state.user.rate}
                               onChange={this.handleInputChange}
                               margin="normal"
@@ -475,8 +569,8 @@ class EditProfilePage extends Component {
                           </Button>
                         </Grid>
                       ) : (
-                        <Grid item xs={2}></Grid>
-                      )}
+                          <Grid item xs={2}></Grid>
+                        )}
                       <Grid item xs={2}></Grid>
                     </Grid>
                   </form>

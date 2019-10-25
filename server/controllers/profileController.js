@@ -29,7 +29,7 @@ module.exports.createProfile = function(req, res, next) {
 
 module.exports.updateProfile = function(req, res, next) {
   // Form validation
-  console.log("saving");
+  console.log("Saving Profile");
   const { errors, isValid } = validateProfileInput(req.body);
 
   // Check validation
