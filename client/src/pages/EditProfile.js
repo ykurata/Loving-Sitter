@@ -515,6 +515,7 @@ class EditProfilePage extends Component {
                               name="rate"
                               placeholder="Your hourly rate"
                               id="standard-rate"
+                              type="number"
                               value={this.state.user.rate}
                               onChange={this.handleInputChange}
                               margin="normal"
