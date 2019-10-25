@@ -11,8 +11,13 @@ import { withStyles } from "@material-ui/core/styles";
 import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import axios from "axios";
+
 
 const photoPageStyle = theme => ({
+  root: {
+    backgroundColor: '#f8f6f6'
+  },
   bigAvatar: {
     width: 100,
     height: 100,
@@ -30,11 +35,41 @@ const photoPageStyle = theme => ({
 });
 
 const initalState = {
-  status: ""
+  status: "",
+  profile: {}
 };
 
 class MyJobsPage extends Component {
   state = initalState;
+
+  componentDidMount() {
+   
+    const token = localStorage.getItem("jwtToken");
+
+    axios.get(`/user/getrequests`)
+    .then(res => {
+        this.setState({
+            profile: res.data.profile
+        });
+        console.log(token);
+        console.log("ABOVE");
+    })
+    .catch(err => {
+        console.log("Error fetching and parsing data", err);
+    });
+
+    axios.get(`/user/getrequested`)
+    .then(res => {
+        this.setState({
+            profile: res.data.profile
+        });
+        console.log(token);
+        console.log("ABOVE");
+    })
+    .catch(err => {
+        console.log("Error fetching and parsing data", err);
+    });
+}
 
   jobRequestResponse = event => {
     console.log("in accept");
@@ -49,7 +84,7 @@ class MyJobsPage extends Component {
     return (
       <div>
         <NavigationBar></NavigationBar>
-        <Grid container>
+        <Grid container className={classes.root}>
           <Grid item xs={12} className="center">
             <h1>My Job Requests</h1>
           </Grid>
@@ -114,13 +149,23 @@ class MyJobsPage extends Component {
                         </CardContent>
                       </Grid>
 
-                      <Grid item xs={12} className="pt-0">
+                      <Grid item xs={6} className="pt-0">
                         <CardContent className="pt-0">
                           <Typography component="h5" variant="h5">
                             Location: 1600 Amphitheatre Pkwy, Mountain View, CA
                             94043, United States
                           </Typography>
                         </CardContent>
+                      </Grid>
+                      <Grid item xs={3} className="pt-0 pr-2">
+                        <Button
+                          variant="contained"
+                          className={classes.payBtn}
+                          fullWidth
+                          size="large"
+                        >
+                          Pay Now
+                        </Button>
                       </Grid>
                     </Grid>
                   </Grid>

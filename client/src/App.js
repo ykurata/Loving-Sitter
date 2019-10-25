@@ -18,6 +18,7 @@ import PrivateRoute from "./pages/PrivateRoute";
 
 // import socket.io client
 import openSocket from 'socket.io-client';
+import MessagesPage from "./pages/Messages";
 const socket = openSocket('http://localhost:3001');
 
 function App() {
@@ -27,12 +28,14 @@ function App() {
         <PrivateRoute path='/profile' component={EditProfilePage} />
         <PrivateRoute path="/profile-details/:id" component={ProfileDetails} />
         <PrivateRoute path="/sitter-search" component={ProfileListPage} />
+        <PrivateRoute path="/messages" component={MessagesPage} />
         <Route exact path="/" component={LandingPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={SignUpPage} />
         <Route path="/profile-payment" component={ProfilePayment} />
         <Route path="/profile-photo" component={PhotoPage} />
         <Route path="/my-jobs" component={MyJobsPage} />
+        <Route path="/messages" component={MessagesPage} />
       </BrowserRouter>
     </MuiThemeProvider>
   );
