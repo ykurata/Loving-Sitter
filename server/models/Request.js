@@ -21,8 +21,8 @@ const RequestSchema = mongoose.Schema(
       type: Date,
       required: true
     },
-    status: {
-      type: String
+    accepted: {
+      type: Boolean
     },
     paid: {
       type: Boolean,
