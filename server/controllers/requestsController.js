@@ -6,7 +6,7 @@ module.exports.createRequest = async function(req, res, next) {
     requestedUserId: req.body.requestedUserId,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
-    status: req.body.status,
+    accepted: req.body.accepted,
     paid: req.body.paid
   };
 
@@ -22,14 +22,14 @@ module.exports.createRequest = async function(req, res, next) {
     requestedUserId: "Requested user ID",
     startDate: "Start date",
     endDate: "End date",
-    status: "Status",
+    accepted: "Acceptance status",
     paid: "Paid status"
   };
 
   const keys = Object.keys(request);
 
   for (const key of keys) {
-    if (!request[key]) {
+    if (request[key] === "" || request[key] === null) {
       return res.status(400).json({ error: `${errDict[key]} is required` });
     }
   }
