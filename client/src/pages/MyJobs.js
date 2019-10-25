@@ -65,12 +65,12 @@ class MyJobsPage extends Component {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => {
+      console.log(res);
+      console.log("tttttt");
         this.setState({
-            requested: res.request.responseText
+            requested: res.data.requests
         });
         console.log(this.state.requested);
-        console.log("test");
-        console.log(this.state);
     })
     .catch(err => {
         console.log("Error fetching and parsing data", err);
