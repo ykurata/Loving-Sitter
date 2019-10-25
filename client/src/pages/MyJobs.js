@@ -13,6 +13,9 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 
 const photoPageStyle = theme => ({
+  root: {
+    backgroundColor: '#f8f6f6'
+  },
   bigAvatar: {
     width: 100,
     height: 100,
@@ -49,7 +52,7 @@ class MyJobsPage extends Component {
     return (
       <div>
         <NavigationBar></NavigationBar>
-        <Grid container>
+        <Grid container className={classes.root}>
           <Grid item xs={12} className="center">
             <h1>My Job Requests</h1>
           </Grid>
