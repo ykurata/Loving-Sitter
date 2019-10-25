@@ -16,7 +16,6 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 
-// import socket.io client
 import openSocket from "socket.io-client";
 
 import IconButton from "@material-ui/core/IconButton";
@@ -59,7 +58,6 @@ const messagesPageStyle = theme => ({
   messagesArea: {
     height: "70vh",
     overflow: "auto",
-    border: "1px solid red"
   },
 
   messagingArea: {
@@ -126,7 +124,6 @@ class MessagesPage extends Component {
       recipientProfiles: [],
       open: false,
       token: localStorage.getItem("jwtToken"),
-      userId: localStorage.getItem("userId")
     };
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -253,19 +250,7 @@ class MessagesPage extends Component {
       <p key={i} className={classes.sentMessageLength}>
         <span className={classes.test}>{message}</span>
       </p>
-    ));
-
-    const converId = this.state.conversations.map((con, i) => (
-      <Button
-        color="primary"
-        variant="contained"
-        key={i}
-        id={con._id}
-        onClick={this.getConversationId}
-      >
-        {con.recipientId.name}
-      </Button>
-    ));
+    )); 
 
     return (
       <div>
@@ -304,7 +289,6 @@ class MessagesPage extends Component {
               </Grid>
               <Grid item xs={12}>
                 <Card className={classes.cardStyle}>
-                  {converId}
                   <List className={classes.list}>
                     <ListItem alignItems="flex-start" button>
                       <ListItemAvatar>
