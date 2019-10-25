@@ -74,13 +74,20 @@ const detailsPageStyle = theme => ({
   }
 });
 
-const initalState = {
-  status: "Available",
-  profile: {}
-};
-
 class ProfileDetails extends Component {
-  state = initalState;
+  state = {
+    status: "Available",
+    profile: {},
+    request: {
+      requestedUserId: this.props.match.params.id,
+      startDate: "",
+      endDate: "",
+      accepted: false,
+      paid: false
+    },
+    snackbaropen: false,
+    snackbarmsg: ""
+  };
 
   componentDidMount() {
     // Get token from local storage
@@ -91,6 +98,7 @@ class ProfileDetails extends Component {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(res => {
+        console.log(res);
         this.setState({
           profile: res.data.profile
         });
@@ -99,6 +107,34 @@ class ProfileDetails extends Component {
         console.log("Error fetching and parsing data", err);
       });
   }
+
+  handleInputChange = event => {
+    const field = event.target.name;
+    let request = { ...this.state.request };
+    request[field] = event.target.value;
+    this.setState({ request });
+  };
+
+  sendRequest = () => {
+    const token = localStorage.getItem("jwtToken");
+    const request = this.state.request;
+    axios
+      .post("/users/sendrequest", request, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => {
+        this.setState({ snackbarmsg: "Request was sent" });
+        this.setState({ snackbaropen: true });
+      })
+      .catch(err => {
+        this.setState({ snackbarmsg: `${err.response.data.error}` });
+        this.setState({ snackbaropen: true });
+        console.log({ err });
+      });
+  };
+  snackbarClose = event => {
+    this.setState({ snackbaropen: false });
+  };
 
   render() {
     const { classes } = this.props;
@@ -208,7 +244,9 @@ class ProfileDetails extends Component {
                   <TextField
                     id="drop-in"
                     label="Drop In"
+                    name="startDate"
                     type="datetime-local"
+                    onChange={this.handleInputChange}
                     defaultValue="2019-05-24T10:30"
                     InputLabelProps={{
                       shrink: true
@@ -219,7 +257,9 @@ class ProfileDetails extends Component {
                   <TextField
                     id="drop-out"
                     label="Drop Out"
+                    name="endDate"
                     type="datetime-local"
+                    onChange={this.handleInputChange}
                     defaultValue="2019-05-24T10:30"
                     InputLabelProps={{
                       shrink: true
@@ -230,6 +270,7 @@ class ProfileDetails extends Component {
                   <Button
                     size="large"
                     variant="contained"
+                    onClick={this.sendRequest}
                     className={classes.requestBtn}
                   >
                     Send Request
