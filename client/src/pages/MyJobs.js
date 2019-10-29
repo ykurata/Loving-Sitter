@@ -72,6 +72,7 @@ class MyJobsPage extends Component {
         });
         console.log(this.state.requested);
     })
+    
     .catch(err => {
         console.log("Error fetching and parsing data", err);
     });
