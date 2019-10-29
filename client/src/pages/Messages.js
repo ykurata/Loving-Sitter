@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import axios from "axios";
+import openSocket from "socket.io-client";
+
 import "../App.scss";
 import NavigationBar from "./Navbar";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
@@ -12,12 +14,9 @@ import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
 import Card from "@material-ui/core/Card";
 import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-
-import openSocket from "socket.io-client";
-
 import IconButton from "@material-ui/core/IconButton";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -120,8 +119,6 @@ class MessagesPage extends Component {
       message: "",
       messages: [],
       conversationId: "",
-      recipientIds: [],
-      recipientProfiles: [],
       open: false,
       token: localStorage.getItem("jwtToken"),
     };
@@ -137,98 +134,54 @@ class MessagesPage extends Component {
     this.setState({ open: false });
   }
 
+  // Handle message change
+  messageChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
   componentDidMount() {
     this.socket = openSocket("http://localhost:3001");
     this.socket.on("message", msg => {
       this.setState({ messages: [...this.state.messages, msg] });
     });
     this.getConversations();
-    this.getRecipientProfiles();
   }
 
-  // GET a list of conversations
+  // GET a list of conversations and recipient profiles
   getConversations() {
-    axios
-      .get("/conversation/list/", {
-        headers: { Authorization: `Bearer ${this.state.token}` }
-      })
+    axios.get('/conversation/list/', { headers: { Authorization: `Bearer ${this.state.token}` }})
       .then(res => {
         this.setState({
-          conversations: res.data // Get all conversation
-        });
-        // save recipient Ids to get their profiles
-        res.data.map(con => {
-          this.setState({
-            recipientIds: [...this.state.recipientIds, con.recipientId._id]
-          });
+          conversations: res.data    // Get all conversation
         });
       })
       .catch(err => {
         console.log("Error fetching and parsing data", err);
-      });
-  }
+      }); 
+  };
 
-  // GET a list of recipient profiles
-  getRecipientProfiles() {
-    let axiosArray = this.state.recipientIds.map(id =>
-      axios.get(`/profile/get/${id}`, {
-        headers: { Authorization: `Bearer ${this.state.token}` }
-      })
-    );
 
-    axios
-      .all(axiosArray)
+  // Get a conversation Id to start sending messages
+  getConversationId = e => {
+    this.setState({ conversationId: e.target.id });
+    axios.get(`/conversation/${this.state.conversationId}`, { headers: { Authorization: `Bearer ${this.state.token}` }} )
       .then(res => {
-        res.data.map(profile => {
-          this.setState({
-            recipientProfiles: [...this.state.recipientProfiles, profile]
-          });
-        });
+        res.data.map(item => this.setState({ messages: [...this.state.messages, item.body] }))
       })
       .catch(err => {
         console.log(err);
-      });
-  }
-
-  // Handle message change
-  messageChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+      }); 
   };
 
-  // Handle create a new conversation
-  createConversation = e => {
-    const newConversation = {
-      recipientId: e.target.id
-    };
-    axios
-      .post("/conversation", newConversation, {
-        headers: { Authorization: `Bearer ${this.state.token}` }
-      })
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch(err => {
-        console.log(err.response.data);
-      });
-  };
 
-  // Handle get a conversation Id to start sending messages
-  getConversationId = e => {
-    this.setState({ conversationId: e.target.id });
-  };
-
-  // Handle create a new message
+  // Create a new message
   createMessage = e => {
     e.preventDefault();
     const newMessage = {
       conversationId: this.state.conversationId,
       body: this.state.message
-    };
-    axios
-      .post(`/conversation/${this.state.conversationId}/message`, newMessage, {
-        headers: { Authorization: `Bearer ${this.state.token}` }
-      })
-
+    }
+    axios.post(`/conversation/${this.state.conversationId}/message`, newMessage, { headers: { Authorization: `Bearer ${this.state.token}` }} )
       .then(res => {
         console.log(res.data);
       })
@@ -237,11 +190,7 @@ class MessagesPage extends Component {
       });
 
     this.socket.emit("message", this.state.message);
-    this.setState({ message: "" });
-  };
-
-  test() {
-    console.log("test");
+    this.setState({ message: "" });  
   }
 
   render() {
@@ -251,6 +200,8 @@ class MessagesPage extends Component {
         <span className={classes.test}>{message}</span>
       </p>
     )); 
+
+    console.log(this.state.conversationId);
 
     return (
       <div>
@@ -290,24 +241,26 @@ class MessagesPage extends Component {
               <Grid item xs={12}>
                 <Card className={classes.cardStyle}>
                   <List className={classes.list}>
-                    <ListItem alignItems="flex-start" button>
+
+                    {this.state.conversations.map(item => (
+                      <ListItem alignItems="flex-start" button key={item._id} id={item._id} onClick={this.getConversationId}>
                       <ListItemAvatar>
                         <Avatar
                           alt="Remy Sharp"
-                          src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
+                          src={item.recipient_info[0].photoUrl}
                         />
                       </ListItemAvatar>
                       <ListItemText
-                        primary="Mc Barkly"
-                        secondary={
-                          <React.Fragment>
-                            I'll be in your neighborhood doing errands this…
-                          </React.Fragment>
-                        }
-                        // onClick={this.test}
+                        primary={<Typography type="body2">{item.recipient_info[0].firstName} {item.recipient_info[0].lastName}</Typography>}
+                        // secondary={
+                        //   <React.Fragment>
+                        //     I'll be in your neighborhood doing errands this…
+                        //   </React.Fragment>
+                        // }
                       />
+                      <Divider />
                     </ListItem>
-                    <Divider />
+                    ))}
                   </List>
                 </Card>
               </Grid>

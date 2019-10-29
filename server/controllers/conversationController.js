@@ -19,17 +19,21 @@ module.exports.createConversation = function(req, res, next) {
 };
 
 
-// GET all conversations
+// GET list of conversations and recipient profile
 module.exports.getConversations = function(req, res, next) {
-    Conversation.find({})
-        .populate("senderId")
-        .exec(function(err, conversations){
-            if (err) return next(err);
-            if (!conversations) {
-                return res.status(400).json({ message: "There is no conversations" });
+    Conversation.aggregate([
+        {
+            $lookup: {
+                from: "profiles",
+                localField: "recipientId",
+                foreignField: "userId",
+                as: "recipient_info"
             }
-            res.json(conversations);
-        });
+        }
+    ], function(err, conversations) {
+        if (err) return next(err);
+        res.json(conversations);
+    });
 };
 
 

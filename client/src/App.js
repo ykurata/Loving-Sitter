@@ -15,11 +15,7 @@ import ProfilePayment from "./pages/ProfilePayment";
 import MyJobsPage from "./pages/MyJobs";
 import ProfileDetails from "./pages/ProfileDetails";
 import PrivateRoute from "./pages/PrivateRoute";
-
-// import socket.io client
-import openSocket from 'socket.io-client';
 import MessagesPage from "./pages/Messages";
-const socket = openSocket('http://localhost:3001');
 
 function App() {
   return (
