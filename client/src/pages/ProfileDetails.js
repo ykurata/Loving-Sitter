@@ -105,10 +105,6 @@ class ProfileDetails extends Component {
         this.setState({
           profile: res.data.profile,
         });
-        // console.log(this.state.profile);
-        // console.log("inbetween");
-        // console.log(this.state.request);
-//         
       })
       .catch(err => {
         console.log("Error fetching and parsing data", err);
@@ -128,8 +124,6 @@ class ProfileDetails extends Component {
   sendRequest = () => {
     const token = localStorage.getItem("jwtToken");
     const request = this.state.request;
-    console.log(request);
-    console.log("ABOVE ME SSSS");
 
     axios
       .post("/users/sendrequest", request, {
