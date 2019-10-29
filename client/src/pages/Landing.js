@@ -3,19 +3,31 @@ import NavigationBar from "./Navbar";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
 
 import "../App.scss";
-const landingPageStyle = theme => ({
-  sendButton: {
-    top: "100%",
-    backgroundColor: "#f04040"
-  }
-});
 
 class LandingPage extends Component {
+state = {
+  location: "",
+  dropIn: "",
+  dropOff: ""
+};
+
+changeLocation = event => {
+  console.log(event.target.value);
+  this.setState({ location: event.target.value });
+};
+
+handleDropInChange = event => {
+  console.log(event.target.value);
+  this.setState({ dropIn: event.target.value });
+};
+
+handleDropOffChange = event => {
+  console.log(event.target.value);
+  this.setState({ dropOff: event.target.value });
+};
   render() {
-    const { classes } = this.props;
     return (
       <div>
         <NavigationBar></NavigationBar>
@@ -39,6 +51,8 @@ class LandingPage extends Component {
                     placeholder="Anywhere"
                     margin="normal"
                     variant="outlined"
+                    value={this.state.location}
+                    onChange={this.changeLocation}
                     fullWidth
                   />
                 </Grid>
@@ -54,11 +68,10 @@ class LandingPage extends Component {
                     type="date"
                     name="birthDate"
                     id="standard-birthDate"
-                    // value={this.state.user.birthDate}
-                    // onChange={this.handleInputChange}
+                    value={this.state.dropIn}
+                    onChange={this.handleDropInChange}
                     margin="normal"
                     variant="outlined"
-                    // disabled={this.state.disabled}
                     fullWidth
                   />
                 </Grid>
@@ -67,11 +80,10 @@ class LandingPage extends Component {
                     type="date"
                     name="birthDate"
                     id="standard-birthDate"
-                    // value={this.state.user.birthDate}
-                    // onChange={this.handleInputChange}
+                    value={this.state.dropOff}
+                    onChange={this.handleDropOffChange}
                     margin="normal"
                     variant="outlined"
-                    // disabled={this.state.disabled}
                     fullWidth
                   />
                 </Grid>
@@ -80,10 +92,9 @@ class LandingPage extends Component {
                 <Grid item xs={8}>
                   <Button
                     variant="contained"
-                    color="primary"
                     type="submit"
                     fullWidth
-                    className={classes.sendButton}
+                    className="mt-1 submit-button"
                     // onClick={this.createMessage}
                   >
                     FIND MY DOG SITTER
@@ -101,4 +112,4 @@ class LandingPage extends Component {
   }
 }
 
-export default withStyles(landingPageStyle)(LandingPage);
+export default LandingPage;
