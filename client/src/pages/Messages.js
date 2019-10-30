@@ -201,8 +201,6 @@ class MessagesPage extends Component {
       </p>
     )); 
 
-    console.log(this.state.conversationId);
-
     return (
       <div>
         <NavigationBar></NavigationBar>
@@ -239,30 +237,30 @@ class MessagesPage extends Component {
                 </Modal>
               </Grid>
               <Grid item xs={12}>
-                <Card className={classes.cardStyle}>
-                  <List className={classes.list}>
+                
+                <List className={classes.list}>
 
-                    {this.state.conversations.map(item => (
-                      <ListItem alignItems="flex-start" button key={item._id} id={item._id} onClick={this.getConversationId}>
-                      <ListItemAvatar>
-                        <Avatar
-                          alt="Remy Sharp"
-                          src={item.recipient_info[0].photoUrl}
-                        />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={<Typography type="body2">{item.recipient_info[0].firstName} {item.recipient_info[0].lastName}</Typography>}
-                        // secondary={
-                        //   <React.Fragment>
-                        //     I'll be in your neighborhood doing errands this…
-                        //   </React.Fragment>
-                        // }
+                  {this.state.conversations.map(item => (
+                    <ListItem alignItems="flex-start" button key={item._id} id={item._id} onClick={this.getConversationId}>
+                    <ListItemAvatar>
+                      <Avatar
+                        alt="Remy Sharp"
+                        src={item.recipient_info[0].photoUrl}
                       />
-                      <Divider />
-                    </ListItem>
-                    ))}
-                  </List>
-                </Card>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={<Typography type="body2">{item.recipient_info[0].firstName} {item.recipient_info[0].lastName}</Typography>}
+                      // secondary={
+                      //   <React.Fragment>
+                      //     I'll be in your neighborhood doing errands this…
+                      //   </React.Fragment>
+                      // }
+                    />
+                    {/* <Divider /> */}
+                  </ListItem>
+                  ))}
+                </List>
+                
               </Grid>
             </Grid>
           </Grid>
