@@ -36,7 +36,7 @@ const photoPageStyle = theme => ({
 
 const initalState = {
   status: "",
-  profile: {}
+  profile: []
 };
 
 class MyJobsPage extends Component {
@@ -46,7 +46,7 @@ class MyJobsPage extends Component {
    
     const token = localStorage.getItem("jwtToken");
 
-    axios.get(`/user/getrequests`)
+    axios.get("/users/getrequests", { headers: { Authorization: `Bearer ${token}` } })
     .then(res => {
         this.setState({
             profile: res.data.profile
@@ -58,7 +58,7 @@ class MyJobsPage extends Component {
         console.log("Error fetching and parsing data", err);
     });
 
-    axios.get(`/user/getrequested`)
+    axios.get("/users/getrequested", { headers: { Authorization: `Bearer ${token}` } })
     .then(res => {
         this.setState({
             profile: res.data.profile
