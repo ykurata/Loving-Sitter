@@ -245,11 +245,11 @@ class MessagesPage extends Component {
                     <ListItemAvatar>
                       <Avatar
                         alt="Remy Sharp"
-                        src={item.recipient_info[0].photoUrl}
+                        src={item.members_info[1].photoUrl}
                       />
                     </ListItemAvatar>
                     <ListItemText
-                      primary={<Typography type="body2">{item.recipient_info[0].firstName} {item.recipient_info[0].lastName}</Typography>}
+                      primary={<Typography type="body2">{item.members_info[1].firstName} {item.members_info[1].lastName}</Typography>}
                       // secondary={
                       //   <React.Fragment>
                       //     I'll be in your neighborhood doing errands this…

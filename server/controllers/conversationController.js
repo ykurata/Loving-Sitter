@@ -1,41 +1,60 @@
 import Conversation from "../models/Conversation";
 import Message from "../models/Message";
+import Profile from "../models/Profile";
 
 
 // POST a conversation (new conversation)
 module.exports.createConversation = function(req, res, next) {
-    const conversation = new Conversation({
-        senderId : req.user,
-        recipientId : req.body.recipientId
-    });
-    if (!conversation.recipientId) {
-        return res.status(400).json({ message: "Please select recipient"});
-    } else {
-        conversation.save(function(err, conversation){
-            if (err) return next(err);
-            res.json(conversation);
+    Profile.findOne({ userId: req.body.recipientId }, function(err, recipient) {
+        if (err) return next(err);
+        const conversation = new Conversation({
+            members: [req.user, recipient.userId]
         });
-    }
+
+        if (!conversation.members) {
+            return res.status(400).json({ message: "Please select recipient"});
+        } else {
+            conversation.save(function(err, conversation) {
+                if (err) return next(err);
+                res.json(conversation);
+            });
+        }
+    });
+
 };
 
 
-// GET list of conversations and recipient profile
+// GET list of conversations and participants profile
 module.exports.getConversations = function(req, res, next) {
     Conversation.aggregate([
+        { 
+            $unwind: "$members" 
+        },
         {
             $lookup: {
                 from: "profiles",
-                localField: "recipientId",
+                localField: "members",
                 foreignField: "userId",
-                as: "recipient_info"
+                as: "members_info"
+            }
+        },
+        {
+            $unwind: "$members_info"
+        },
+        {
+            $group: {
+                _id: "$_id",
+                members: { $push: "$members"},
+                members_info: { $push: "$members_info"}
             }
         }
+
     ], function(err, conversations) {
         if (err) return next(err);
         res.json(conversations);
     });
 };
-
+   
 
 // POST /conversation/:conversation_id/message (new message)
 module.exports.createMessage = function(req, res, next) {
@@ -58,12 +77,19 @@ module.exports.createMessage = function(req, res, next) {
 // GET /conversation/:conversation_id (body list of messages sent already)
 module.exports.getMessages = function(req, res, next) {
     Message.find({conversationId: req.params.conversation_id})
-        .populate('conversationId') 
-        .populate("userId")
+        .populate("userId", "name")
         .exec(function(err, courses){
             if(err) return next(err);
             res.json(courses);
         });
 };
 
+
+// DELETE /conversation/:conversation_id 
+module.exports.deleteConversation = function(req, res, next) {
+    Conversation.remove({ _id: req.params.conversation_id}, function(err, conversation){
+        if (err) return next(err);
+        res.json({ message: "successfully deleted" });
+    });
+  }
 
