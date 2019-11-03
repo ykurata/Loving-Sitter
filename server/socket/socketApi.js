@@ -8,7 +8,7 @@ socketApi.io = io;
 
 io.on('connection', function(socket){
     console.log('A user connected');
-
+    
     socket.on("message", function(msg){
       Profile.find({ userId: msg.recipientId }, function(err, profile) {
         if (err) {
@@ -19,8 +19,9 @@ io.on('connection', function(socket){
           conversationId : msg.conversationId,
           userId: profile.userId,
           body: msg.body
-        });
-
+        });  
+        
+        io.emit('msg', newMessage);
         newMessage.save().then(() => {
           Message.find({ conversationId: msg.conversationId })
             .sort('createdAt')
@@ -36,6 +37,10 @@ io.on('connection', function(socket){
         });
       });
     });  
+
+    socket.on('disconnect', function(){
+      console.log('user disconnected');
+    });
 });
 
 module.exports = socketApi;

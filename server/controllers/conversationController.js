@@ -1,7 +1,6 @@
 import Conversation from "../models/Conversation";
 import Message from "../models/Message";
 import Profile from "../models/Profile";
-import dbConnection from "./../db/mongoose";
 const ObjectId = require("mongodb").ObjectID;
 
 
