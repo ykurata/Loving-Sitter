@@ -201,6 +201,8 @@ class MessagesPage extends Component {
       </p>
     )); 
 
+    console.log(this.state.conversationId);
+
     return (
       <div>
         <NavigationBar></NavigationBar>
@@ -250,11 +252,6 @@ class MessagesPage extends Component {
                     </ListItemAvatar>
                     <ListItemText
                       primary={<Typography type="body2">{item.members_info[1].firstName} {item.members_info[1].lastName}</Typography>}
-                      // secondary={
-                      //   <React.Fragment>
-                      //     I'll be in your neighborhood doing errands this…
-                      //   </React.Fragment>
-                      // }
                     />
                     {/* <Divider /> */}
                   </ListItem>

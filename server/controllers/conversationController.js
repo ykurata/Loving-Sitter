@@ -1,6 +1,8 @@
 import Conversation from "../models/Conversation";
 import Message from "../models/Message";
 import Profile from "../models/Profile";
+import dbConnection from "./../db/mongoose";
+const ObjectId = require("mongodb").ObjectID;
 
 
 // POST a conversation (new conversation)
@@ -8,7 +10,7 @@ module.exports.createConversation = function(req, res, next) {
     Profile.findOne({ userId: req.body.recipientId }, function(err, recipient) {
         if (err) return next(err);
         const conversation = new Conversation({
-            members: [req.user, recipient.userId]
+            members: [ObjectId(req.user), ObjectId(recipient.userId)]
         });
 
         if (!conversation.members) {
@@ -20,13 +22,15 @@ module.exports.createConversation = function(req, res, next) {
             });
         }
     });
-
 };
 
 
 // GET list of conversations and participants profile
 module.exports.getConversations = function(req, res, next) {
     Conversation.aggregate([
+        {
+            $match: { members: ObjectId(req.user) }
+        },
         { 
             $unwind: "$members" 
         },
@@ -48,13 +52,12 @@ module.exports.getConversations = function(req, res, next) {
                 members_info: { $push: "$members_info"}
             }
         }
-
     ], function(err, conversations) {
         if (err) return next(err);
         res.json(conversations);
     });
 };
-   
+
 
 // POST /conversation/:conversation_id/message (new message)
 module.exports.createMessage = function(req, res, next) {
