@@ -1,43 +1,18 @@
-var socket_io = require('socket.io');
-var io = socket_io();
-var socketApi = {};
-var Profile = require('../models/Profile');
-var Message = require('../models/Message');
+const socket_io = require('socket.io');
+const io = socket_io();
+const socketApi = {};
+const Profile = require('../models/Profile');
+const Message = require('../models/Message');
 
 socketApi.io = io;
 
 io.on('connection', function(socket){
     console.log('A user connected');
-    
-    socket.on("message", function(msg){
-      Profile.find({ userId: msg.recipientId }, function(err, profile) {
-        if (err) {
-          console.log(err);
-        }
 
-        const newMessage = new Message({
-          conversationId : msg.conversationId,
-          userId: profile.userId,
-          body: msg.body
-        });  
-        
-        io.emit('msg', newMessage);
-        newMessage.save().then(() => {
-          Message.find({ conversationId: msg.conversationId })
-            .sort('createdAt')
-            .limit(100)
-            .populate('userId', 'name')
-            .exec(function(err, messages){
-              if (err) {
-                console.log(err);
-              }
-              console.log(messages);
-              return io.emit('message', messages);
-            });
-        });
-      });
-    });  
-
+    socket.on("new message", function(msg) {
+      io.emit("new message", msg);
+    });
+      
     socket.on('disconnect', function(){
       console.log('user disconnected');
     });

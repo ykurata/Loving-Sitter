@@ -87,11 +87,21 @@ const messagesPageStyle = theme => ({
     paddingRight: "10px"
   },
   sentMessageLength: {
-    padding: "6px"
+    padding: "6px",
   },
-
+  sentMessageLengthLeft: {
+    padding: "6px",
+    textAlign: "left",
+  },
   test: {
     backgroundColor: "white",
+    boxShadow: "0px 0px 4px 0px lightgrey",
+    borderRadius: "10px",
+    padding: "12px"
+  },
+  testLeft: {
+    backgroundColor: "#3385ff",
+    color: "white",
     boxShadow: "0px 0px 4px 0px lightgrey",
     borderRadius: "10px",
     padding: "12px"
@@ -121,6 +131,7 @@ class MessagesPage extends Component {
       conversationId: "",
       open: false,
       token: localStorage.getItem("jwtToken"),
+      userId: localStorage.getItem("userId"),
     };
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -141,7 +152,7 @@ class MessagesPage extends Component {
 
   componentDidMount() {
     this.socket = openSocket("http://localhost:3001");
-    this.socket.on("message", msg => {
+    this.socket.on("new message", msg => {
       this.setState({ messages: [...this.state.messages, msg] });
     });
     this.getConversations();
@@ -160,26 +171,32 @@ class MessagesPage extends Component {
       }); 
   };
 
-
   // Get a conversation Id to start sending messages
   getConversationId = e => {
     this.setState({ conversationId: e.target.id });
+    
     axios.get(`/conversation/${this.state.conversationId}`, { headers: { Authorization: `Bearer ${this.state.token}` }} )
       .then(res => {
-        res.data.map(item => this.setState({ messages: [...this.state.messages, item.body] }))
+        let msgs = res.data.map(item => ({ 
+          id: item._id,
+          body: item.body,
+          userId: item.userId
+        }));
+        this.setState({ messages: msgs });
+        console.log(this.state.messages);
       })
       .catch(err => {
         console.log(err);
       }); 
   };
 
-
   // Create a new message
   createMessage = e => {
     e.preventDefault();
     const newMessage = {
       conversationId: this.state.conversationId,
-      body: this.state.message
+      body: this.state.message,
+      userId: this.state.userId
     }
     axios.post(`/conversation/${this.state.conversationId}/message`, newMessage, { headers: { Authorization: `Bearer ${this.state.token}` }} )
       .then(res => {
@@ -188,21 +205,23 @@ class MessagesPage extends Component {
       .catch(err => {
         console.log(err.response.data);
       });
-
-    this.socket.emit("message", this.state.message);
-    this.setState({ message: "" });  
+    this.socket.emit("new message", newMessage);
+    this.setState({ message: "" });   
   }
 
   render() {
     const { classes } = this.props;
     const message = this.state.messages.map((message, i) => (
-      <p key={i} className={classes.sentMessageLength}>
-        <span className={classes.test}>{message}</span>
-      </p>
-    )); 
-
-    console.log(this.state.conversationId);
-
+      message.userId._id === this.state.userId ? (
+        <p key={i} className={classes.sentMessageLength}>
+        <span className={classes.test}>{message.body}</span>
+        </p>
+      ) : 
+        <p key={i} className={classes.sentMessageLengthLeft}>
+        <span className={classes.testLeft}>{message.body}</span>
+        </p>
+    ));
+    
     return (
       <div>
         <NavigationBar></NavigationBar>
@@ -243,7 +262,7 @@ class MessagesPage extends Component {
                 <List className={classes.list}>
 
                   {this.state.conversations.map(item => (
-                    <ListItem alignItems="flex-start" button key={item._id} id={item._id} onClick={this.getConversationId}>
+                    <ListItem alignItems="flex-start" button key={item._id} id={item._id} onClick={this.getConversationId} >
                     <ListItemAvatar>
                       <Avatar
                         alt="Remy Sharp"

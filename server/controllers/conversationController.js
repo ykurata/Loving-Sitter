@@ -62,7 +62,7 @@ module.exports.getConversations = function(req, res, next) {
 module.exports.createMessage = function(req, res, next) {
     const message = new Message({
         conversationId: req.body.conversationId,
-        userId: req.user,
+        userId : req.user,
         body: req.body.body
     });
     if (message.conversationId && message.body) {
