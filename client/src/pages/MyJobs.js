@@ -49,32 +49,33 @@ class MyJobsPage extends Component {
 
     const token = localStorage.getItem("jwtToken");
 
-    axios.get("/users/getrequests", { headers: { Authorization: `Bearer ${token}` } })
+    /*axios.get("/users/getRequests", { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
         this.setState({
           sentRequests: res.data.requests
         })
+        let profiles = []
         //console.log(res.data.requests);
         this.state.sentRequests.map((request) =>
           axios.get(`/profile/get/${request.requestedUserId}`, {
             headers: { Authorization: `Bearer ${token}` }
           })
             .then(res => {
-              this.setState({
-                sentProfile: res.data.profile
-              });
-              //console.log(this.state.sentProfile)
+              profiles.push(res.data.profile)
             })
             .catch(err => {
               console.log("Error fetching profile and parsing data", err);
             })
         )
+        this.setState({
+          sentProfile: profiles
+        });
       })
       .catch(err => {
         console.log("Error fetching sent requests and parsing data", err);
-      })
+      })*/
 
-    axios.get("/users/getrequested", { headers: { Authorization: `Bearer ${token}` } })
+    /*axios.get("/users/getRequested", { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
         this.setState({
           recievedRequests: res.data.requests
@@ -88,22 +89,44 @@ class MyJobsPage extends Component {
             .then(res => {
               profiles.push(res.data.profile)
               //Try assigning each profile a specific key
-              /*this.setState({
-                recievedProfile: res.data.profile
-              });*/
               console.log(profiles)
             })
+            .then(res => {
+              this.setState({
+                recievedProfile: profiles
+              });
+            }
+            )
             .catch(err => {
               console.log("Error fetching profile and parsing data", err);
             })
         )
-        this.setState({
-          recievedProfile: profiles
-        });
-        
       })
       .catch(err => {
         console.log("Error fetching sent requests and parsing data", err);
+      })
+  }*/
+
+  /*axios.get("/users/getRequestsWithProfile", { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => {
+        this.setState({
+          sentRequests: res.data.requests
+        })
+        console.log(res.data.requests);
+      })
+      .catch(err => {
+        console.log("Error fetching user sent requests and parsing data", err);
+      })*/
+
+  axios.get("/users/getRequestedWithProfile", { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => {
+        this.setState({
+          recievedRequests: res.data.requests
+        })
+        console.log(res.data.requests);
+      })
+      .catch(err => {
+        console.log("Error fetching requests for user and parsing data", err);
       })
   }
 
@@ -263,8 +286,8 @@ class MyJobsPage extends Component {
                           <Grid item xs={3}>
                             <CardContent className="pb-0">
                               <Typography component="h5" variant="h5">
-                                {this.state.recievedProfile.firstName} {this.state.recievedProfile.lastName}
-                          </Typography>
+                                {request.profile_info.firstName} {request.profile_info.lastName}
+                              </Typography>
                             </CardContent>
                           </Grid>
                           <Grid item xs={3}>
