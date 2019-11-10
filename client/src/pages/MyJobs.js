@@ -40,14 +40,12 @@ const initalState = {
   //Need to fix status per request
   status: "",
   sentRequests: [],
-  sentProfile: [],
   recievedRequests: [],
-  recievedProfile: [],
 };
 
 class MyJobsPage extends Component {
   state = initalState;
-
+  
   componentDidMount() {
 
     const token = localStorage.getItem("jwtToken");
