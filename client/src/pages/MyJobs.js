@@ -13,6 +13,8 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 
+import Moment from 'react-moment';
+
 
 const photoPageStyle = theme => ({
   root: {
@@ -35,6 +37,7 @@ const photoPageStyle = theme => ({
 });
 
 const initalState = {
+  //Need to fix status per request
   status: "",
   sentRequests: [],
   sentProfile: [],
@@ -49,65 +52,8 @@ class MyJobsPage extends Component {
 
     const token = localStorage.getItem("jwtToken");
 
-    /*axios.get("/users/getRequests", { headers: { Authorization: `Bearer ${token}` } })
-      .then(res => {
-        this.setState({
-          sentRequests: res.data.requests
-        })
-        let profiles = []
-        //console.log(res.data.requests);
-        this.state.sentRequests.map((request) =>
-          axios.get(`/profile/get/${request.requestedUserId}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          })
-            .then(res => {
-              profiles.push(res.data.profile)
-            })
-            .catch(err => {
-              console.log("Error fetching profile and parsing data", err);
-            })
-        )
-        this.setState({
-          sentProfile: profiles
-        });
-      })
-      .catch(err => {
-        console.log("Error fetching sent requests and parsing data", err);
-      })*/
-
-    /*axios.get("/users/getRequested", { headers: { Authorization: `Bearer ${token}` } })
-      .then(res => {
-        this.setState({
-          recievedRequests: res.data.requests
-        })
-        console.log(res.data.requests);
-        let profiles = []
-        this.state.recievedRequests.map((request, key) =>
-          axios.get(`/profile/get/${request.userId}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          })
-            .then(res => {
-              profiles.push(res.data.profile)
-              //Try assigning each profile a specific key
-              console.log(profiles)
-            })
-            .then(res => {
-              this.setState({
-                recievedProfile: profiles
-              });
-            }
-            )
-            .catch(err => {
-              console.log("Error fetching profile and parsing data", err);
-            })
-        )
-      })
-      .catch(err => {
-        console.log("Error fetching sent requests and parsing data", err);
-      })
-  }*/
-
-  /*axios.get("/users/getRequestsWithProfile", { headers: { Authorization: `Bearer ${token}` } })
+    //Deal with status later
+    axios.get("/users/getRequestsWithProfile", { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
         this.setState({
           sentRequests: res.data.requests
@@ -116,9 +62,9 @@ class MyJobsPage extends Component {
       })
       .catch(err => {
         console.log("Error fetching user sent requests and parsing data", err);
-      })*/
+      })
 
-  axios.get("/users/getRequestedWithProfile", { headers: { Authorization: `Bearer ${token}` } })
+    axios.get("/users/getRequestedWithProfile", { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
         this.setState({
           recievedRequests: res.data.requests
@@ -180,7 +126,7 @@ class MyJobsPage extends Component {
                             <Grid item xs={3}>
                               <CardContent className="pb-0">
                                 <Typography component="h5" variant="h5">
-                                  {this.state.sentProfile.firstName} {this.state.sentProfile.lastName}
+                                  {request.profileInfo.firstName} {request.profileInfo.lastName}
                                 </Typography>
                               </CardContent>
                             </Grid>
@@ -197,7 +143,7 @@ class MyJobsPage extends Component {
                             <Grid item xs={2}>
                               <CardContent className="pb-0">
                                 <Typography component="h5" variant="h5">
-                                  ${this.state.sentProfile.rate}/hr
+                                  ${request.profileInfo.rate}/hr
                           </Typography>
                               </CardContent>
                             </Grid>
@@ -215,7 +161,7 @@ class MyJobsPage extends Component {
                               <Grid item xs={3} className="pt-0">
                                 <CardContent className="pt-0">
                                   <Typography component="h5" variant="h5">
-                                    {this.state.sentProfile.address}
+                                    {request.profileInfo.address}
                                   </Typography>
                                 </CardContent>
                               </Grid>
@@ -223,7 +169,9 @@ class MyJobsPage extends Component {
                               <Grid item xs={4} className="pt-0">
                                 <CardContent className="pt-0">
                                   <Typography component="h5" variant="h5">
-                                    1/1/2018 to 1/1/2019
+                                    <Moment format="MM/DD - h:mA">{request.startDate}</Moment>
+                                    <br></br>
+                                    <Moment format="MM/DD - h:mA">{request.endDate}</Moment>
                                   </Typography>
                                 </CardContent>
                               </Grid>
@@ -286,7 +234,7 @@ class MyJobsPage extends Component {
                           <Grid item xs={3}>
                             <CardContent className="pb-0">
                               <Typography component="h5" variant="h5">
-                                {request.profile_info.firstName} {request.profile_info.lastName}
+                                {request.profileInfo.firstName} {request.profileInfo.lastName}
                               </Typography>
                             </CardContent>
                           </Grid>
@@ -303,7 +251,7 @@ class MyJobsPage extends Component {
                           <Grid item xs={2}>
                             <CardContent className="pb-0">
                               <Typography component="h5" variant="h5">
-                                $900/hr
+                                ${request.profileInfo.rate}/hr
                           </Typography>
                             </CardContent>
                           </Grid>
@@ -320,56 +268,70 @@ class MyJobsPage extends Component {
                             </CardContent>
                           </Grid>
 
-                          <Grid item xs={5} className="pt-0">
-                            <CardContent className="pt-0">
-                              <Typography component="h5" variant="h5">
-                                Date: 1/1/2018 To 1/1/2019
-                          </Typography>
-                            </CardContent>
-                          </Grid>
-                          <Grid item xs={1} className="pt-0"></Grid>
+                          <Grid container align="column">
 
-                          <Grid item xs={3} className="pt-0">
-                            {this.state.status === "" ? (
-                              <Button
-                                variant="contained"
-                                color="primary"
-                                fullWidth
-                                size="large"
-                                onClick={this.jobRequestResponse}
-                                value="accepted"
-                              >
-                                Accept
-                          </Button>
-                            ) : (
-                                ""
-                              )}
-                          </Grid>
+                            <Grid item xs={3} className="pt-0">
+                              <CardContent className="pt-0">
+                                <Typography component="h5" variant="h5">
+                                  {request.profileInfo.address}
+                                </Typography>
+                              </CardContent>
+                            </Grid>
 
-                          <Grid item xs={3} className="pt-0 pr-2">
-                            {this.state.status === "" ? (
-                              <Button
-                                variant="contained"
-                                color="secondary"
-                                fullWidth
-                                size="large"
-                                onClick={this.jobRequestResponse}
-                                value="declined"
-                              >
-                                Decline
+                            <Grid item xs={4} className="pt-0">
+                              <CardContent className="pt-0">
+                                <Typography component="h5" variant="h5">
+                                  <Moment format="MM/DD - h:mA">{request.startDate}</Moment>
+                                  <br></br>
+                                  <Moment format="MM/DD - h:mA">{request.endDate}</Moment>
+                                </Typography>
+                              </CardContent>
+                            </Grid>
+
+                            {/*Fix status to buttons later*/}
+
+                            <Grid item xs={2} className="pt-0">
+                              {this.state.status === "" ? (
+                                <Button
+                                  variant="contained"
+                                  color="primary"
+                                  fullWidth
+                                  size="large"
+                                  onClick={this.jobRequestResponse}
+                                  value="accepted"
+                                >
+                                  Accept
                           </Button>
-                            ) : this.state.status === "accepted" ? (
-                              <Button
-                                variant="contained"
-                                className={classes.contactBtn}
-                                fullWidth
-                                size="large"
-                              >
-                                Contact User
-                          </Button>
-                            ) : (
+                              ) : (
                                   ""
                                 )}
+                            </Grid>
+
+                            <Grid item xs={2} className="pt-0 pr-2">
+                              {this.state.status === "" ? (
+                                <Button
+                                  variant="contained"
+                                  color="secondary"
+                                  fullWidth
+                                  size="large"
+                                  onClick={this.jobRequestResponse}
+                                  value="declined"
+                                >
+                                  Decline
+                          </Button>
+                              ) : this.state.status === "accepted" ? (
+                                <Button
+                                  variant="contained"
+                                  className={classes.contactBtn}
+                                  fullWidth
+                                  size="large"
+                                >
+                                  Contact User
+                          </Button>
+                              ) : (
+                                    ""
+                                  )}
+                            </Grid>
                           </Grid>
                         </Grid>
                       </Grid>
@@ -379,183 +341,6 @@ class MyJobsPage extends Component {
               </Grid>
             )}
           </Grid>
-
-          <Grid item xs={2}></Grid>
-
-          {/* Loop code will end here. All code underneath is unnecessary and is only used for templating and testing */}
-
-          {/* Contact User button view */}
-
-          <Grid item xs={2}></Grid>
-
-          <Grid item xs={8}>
-            <Card className="mt-1">
-              <div>
-                <Grid container spacing={3}>
-                  <Grid
-                    item
-                    xs={2}
-                    container
-                    spacing={0}
-                    align="center"
-                    justify="center"
-                    direction="column"
-                  >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={require("../images/1a350ede83e5c0c4b87586c0d4bad0f66b86da37.png")}
-                      className={classes.bigAvatar}
-                    />
-                  </Grid>
-
-                  <Grid item xs={10}>
-                    <Grid container spacing={3}>
-                      <Grid item xs={3}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            FName LName
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Box
-                          component="fieldset"
-                          borderColor="transparent"
-                          className="mt-1 pt-0"
-                        >
-                          <Rating value={5} readOnly />
-                        </Box>
-                      </Grid>
-
-                      <Grid item xs={2}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            $900/hr
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-
-                      <Grid item xs={4}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            Status: Pending
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-
-                      <Grid item xs={5} className="pt-0">
-                        <CardContent className="pt-0">
-                          <Typography component="h5" variant="h5">
-                            Date: 1/1/2018 To 1/1/2019
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-                      <Grid item xs={1} className="pt-0"></Grid>
-                      <Grid item xs={3} className="pt-0"></Grid>
-
-                      <Grid item xs={3} className="pt-0 pr-2">
-                        <Button
-                          variant="contained"
-                          className={classes.contactBtn}
-                          fullWidth
-                          size="large"
-                        >
-                          Contact User
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </div>
-            </Card>
-          </Grid>
-          <Grid item xs={2}></Grid>
-
-          {/* Pay user button view */}
-          <Grid item xs={2}></Grid>
-
-          <Grid item xs={8}>
-            <Card className={"mt-1 mb-1"}>
-              <div>
-                <Grid container spacing={3}>
-                  <Grid
-                    item
-                    xs={2}
-                    container
-                    spacing={0}
-                    align="center"
-                    justify="center"
-                    direction="column"
-                  >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={require("../images/1a350ede83e5c0c4b87586c0d4bad0f66b86da37.png")}
-                      className={classes.bigAvatar}
-                    />
-                  </Grid>
-
-                  <Grid item xs={10}>
-                    <Grid container spacing={3}>
-                      <Grid item xs={3}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            FName LName
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Box
-                          component="fieldset"
-                          borderColor="transparent"
-                          className="mt-1 pt-0"
-                        >
-                          <Rating value={5} readOnly />
-                        </Box>
-                      </Grid>
-
-                      <Grid item xs={2}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            $900/hr
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-
-                      <Grid item xs={4}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            Status: Pending
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-
-                      <Grid item xs={5} className="pt-0">
-                        <CardContent className="pt-0">
-                          <Typography component="h5" variant="h5">
-                            Date: 1/1/2018 To 1/1/2019
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-                      <Grid item xs={1} className="pt-0"></Grid>
-                      <Grid item xs={3} className="pt-0"></Grid>
-
-                      <Grid item xs={3} className="pt-0 pr-2">
-                        <Button
-                          variant="contained"
-                          className={classes.payBtn}
-                          fullWidth
-                          size="large"
-                        >
-                          Pay Now
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </div>
-            </Card>
-          </Grid>
-          <Grid item xs={2}></Grid>
         </Grid>
       </div>
     );

@@ -101,7 +101,7 @@ router.post("/sendRequest", authenticate, requestsController.createRequest);
 router.post("/updateRequest", authenticate, requestsController.updateRequest);
 router.get("/getRequests", authenticate, requestsController.getRequests);
 router.get("/getRequested", authenticate, requestsController.getRequested);
+router.get("/getRequestsWithProfile", authenticate, requestsController.getRequestsWithProfile);
 router.get("/getRequestedWithProfile", authenticate, requestsController.getRequestedWithProfile);
-//router.get("/getRequestsWithProfile", authenticate, requestsController.getRequestsWithProfile);
 
 module.exports = router;

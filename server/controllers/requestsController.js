@@ -72,7 +72,8 @@ module.exports.getRequests = async function (req, res, next) {
 };
 
 // get the requests that others sent to you with profiles
-module.exports.getRequestsWithProfiles = async function (req, res, next) {
+module.exports.getRequestsWithProfile = async function (req, res, next) {
+  
   Request.aggregate([
     {
       $match: { userId: ObjectId(req.user) }
@@ -82,11 +83,11 @@ module.exports.getRequestsWithProfiles = async function (req, res, next) {
         from: "profiles",
         localField: "requestedUserId",
         foreignField: "userId",
-        as: "profile_info"
+        as: "profileInfo"
       }
     },
     {
-      $unwind: "$profile_info"
+      $unwind: "$profileInfo"
     },
   ], function (err, requests) {
     if (err) return next(err);
@@ -104,61 +105,26 @@ module.exports.getRequested = async function (req, res, next) {
   }
 };
 
-// get the requests that you sent to others with profiles
+// get the requests that you sent to others with profile
 module.exports.getRequestedWithProfile = async function (req, res, next) {
-  /*let requests = await Request.find({ userId: req.user });
-  let profile = await Profile.find({ requestedUserId: req.user});*/
 
-  //Right now, it is currently working as if it's getRequestsWithProfile
-  console.log(req.user)
   Request.aggregate([
     {
-      $match: { userId: ObjectId(req.user) }
+      $match: { requestedUserId: ObjectId(req.user) }
     },
-    /*{
-      $unwind: "$userId"
-    },*/
     {
       $lookup: {
         from: "profiles",
         localField: "requestedUserId",
         foreignField: "userId",
-        as: "profile_info"
+        as: "profileInfo"
       }
     },
     {
-      $unwind: "$profile_info"
+      $unwind: "$profileInfo"
     },
-    /*{
-      $group: {
-        _id: "$_id",
-        userId: { $push: "$userId"},
-        profile_info: {$push: "$profile_info"}
-      }
-    }*/
   ], function (err, requests) {
     if (err) return next(err);
     res.status(200).json({ requests: requests });
   })
-
-  /*let a = await Request.aggregate([{
-    $lookup: {
-      from: "Profile",
-      localField: "userId",
-      foreignField: "requestedUserId",
-      as: "profile"
-    }
-  }])
-
-  if (!a) {
-    res.status(404).json({ error: "An error has occurred" });
-  } else {
-    res.status(200).json({ requests: a });
-  }*/
-
-  /*if (!requests) {
-    res.status(404).json({ error: "No requests were found" });
-  } else {
-    //res.status(200).json({ requests: requests });
-  }*/
 };
