@@ -24,7 +24,7 @@ module.exports.createConversation = function(req, res, next) {
 };
 
 
-// GET list of conversations and participants profile
+// GET list of conversations and both user and recipient's profiles
 module.exports.getConversations = function(req, res, next) {
     Conversation.aggregate([
         {

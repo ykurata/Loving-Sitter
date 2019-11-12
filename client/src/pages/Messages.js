@@ -11,8 +11,6 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
-import Card from "@material-ui/core/Card";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -163,7 +161,7 @@ class MessagesPage extends Component {
     axios.get('/conversation/list/', { headers: { Authorization: `Bearer ${this.state.token}` }})
       .then(res => {
         this.setState({
-          conversations: res.data    // Get all conversation
+          conversations: res.data    // Get all conversations
         });
       })
       .catch(err => {
@@ -174,7 +172,7 @@ class MessagesPage extends Component {
   // Get a conversation Id to start sending messages
   getConversationId = e => {
     this.setState({ conversationId: e.target.id });
-    
+    console.log(this.state.conversationId)
     axios.get(`/conversation/${this.state.conversationId}`, { headers: { Authorization: `Bearer ${this.state.token}` }} )
       .then(res => {
         let msgs = res.data.map(item => ({ 
@@ -183,7 +181,6 @@ class MessagesPage extends Component {
           userId: item.userId
         }));
         this.setState({ messages: msgs });
-        console.log(this.state.messages);
       })
       .catch(err => {
         console.log(err);
@@ -212,11 +209,15 @@ class MessagesPage extends Component {
   render() {
     const { classes } = this.props;
     const message = this.state.messages.map((message, i) => (
-      message.userId._id === this.state.userId ? (
+      message.userId._id === this.state.userId ? 
         <p key={i} className={classes.sentMessageLength}>
         <span className={classes.test}>{message.body}</span>
         </p>
-      ) : 
+      : !message.userId._id ?
+        <p key={i} className={classes.sentMessageLength}>
+        <span className={classes.test}>{message.body}</span>
+        </p>
+      : 
         <p key={i} className={classes.sentMessageLengthLeft}>
         <span className={classes.testLeft}>{message.body}</span>
         </p>
@@ -260,20 +261,31 @@ class MessagesPage extends Component {
               <Grid item xs={12}>
                 
                 <List className={classes.list}>
-
+                  
                   {this.state.conversations.map(item => (
+                    item.members_info[0].userId === this.state.userId ?
                     <ListItem alignItems="flex-start" button key={item._id} id={item._id} onClick={this.getConversationId} >
-                    <ListItemAvatar>
-                      <Avatar
-                        alt="Remy Sharp"
-                        src={item.members_info[1].photoUrl}
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={item.members_info[1].photoUrl}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={<Typography type="body2">{item.members_info[1].firstName} {item.members_info[1].lastName}</Typography>}
                       />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={<Typography type="body2">{item.members_info[1].firstName} {item.members_info[1].lastName}</Typography>}
-                    />
-                    {/* <Divider /> */}
-                  </ListItem>
+                    </ListItem>
+                  : <ListItem alignItems="flex-start" button key={item._id} id={item._id} onClick={this.getConversationId} >
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={item.members_info[0].photoUrl}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={<Typography type="body2">{item.members_info[0].firstName} {item.members_info[0].lastName}</Typography>}
+                      />
+                    </ListItem>
                   ))}
                 </List>
                 
@@ -282,17 +294,16 @@ class MessagesPage extends Component {
           </Grid>
           <Grid item xs={9}>
             <Grid container className={classes.border}>
-              <Grid item xs={1}>
-                <Avatar
-                  alt="Remy Sharp"
-                  src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
-                  className={classes.bigAvatar}
-                />
+                <Grid item xs={1}>
+                  <Avatar
+                    alt="Remy Sharp"
+                    className={classes.bigAvatar}
+                  />
+                </Grid>
+                <Grid item xs={11}>
+                  <h3>Name</h3>
+                </Grid>
               </Grid>
-              <Grid item xs={11}>
-                <h3>NAME</h3>
-              </Grid>
-            </Grid>
             <Grid container className={classes.messagesArea}>
               <Grid item xs={12}>
                 <div className={classes.sentMessages}>{message}</div>
