@@ -19,6 +19,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const messagesPageStyle = theme => ({
   list: {
@@ -35,7 +36,8 @@ const messagesPageStyle = theme => ({
     height: 50,
     marginBottom: "5px",
     marginTop: "5px",
-    marginLeft: "10px"
+    marginLeft: "10px",
+    marginRight: "10px"
   },
 
   title: {
@@ -91,14 +93,14 @@ const messagesPageStyle = theme => ({
     padding: "6px",
     textAlign: "left",
   },
-  test: {
+  msg: {
     backgroundColor: "#3385ff",
     color: "white",
     boxShadow: "0px 0px 4px 0px lightgrey",
     borderRadius: "10px",
     padding: "12px"
   },
-  testLeft: {
+  msgLeft: {
     backgroundColor: "white",
     boxShadow: "0px 0px 4px 0px lightgrey",
     borderRadius: "10px",
@@ -178,8 +180,9 @@ class MessagesPage extends Component {
     this.setState({ firstName: e.target.getAttribute("firstName") });
     this.setState({ lastName: e.target.getAttribute("lastName") });
     this.setState({ photoUrl: e.target.getAttribute("photoUrl") });
+    console.log(this.state.conversationId);
     
-    axios.get(`/conversation/${this.state.conversationId}`, { headers: { Authorization: `Bearer ${this.state.token}` }} )
+    axios.get(`/conversation/${e.target.id}`, { headers: { Authorization: `Bearer ${this.state.token}` }} )
       .then(res => {
         let msgs = res.data.map(item => ({ 
           id: item._id,
@@ -217,15 +220,15 @@ class MessagesPage extends Component {
     const message = this.state.messages.map((message, i) => (
       message.userId._id === this.state.userId ? 
         <p key={i} className={classes.sentMessageLength}>
-        <span className={classes.test}>{message.body}</span>
+        <span className={classes.msg}>{message.body}</span>
         </p>
       : !message.userId._id ?
         <p key={i} className={classes.sentMessageLength}>
-        <span className={classes.test}>{message.body}</span>
+        <span className={classes.msg}>{message.body}</span>
         </p>
       : 
         <p key={i} className={classes.sentMessageLengthLeft}>
-        <span className={classes.testLeft}>{message.body}</span>
+        <span className={classes.msgLeft}>{message.body}</span>
         </p>
     ));
     
@@ -280,35 +283,38 @@ class MessagesPage extends Component {
                       photoUrl={item.members_info[1].photoUrl}
                       onClick={this.getConversationId} 
                     >
-                      <ListItemAvatar>
+                      <ListItemAvatar style={{margin: 0}}>
                         <Avatar
-                          alt="Remy Sharp"
+                          className={classes.bigAvatar}
+                          alt="Remy Sharp" 
                           src={item.members_info[1].photoUrl}
                         />
                       </ListItemAvatar>
-                      <ListItemText
-                        primary={<Typography type="body2">{item.members_info[1].firstName} {item.members_info[1].lastName}</Typography>}
-                      />
+                      <ListItemText style={{marginTop: "10px"}}>
+                        <Typography variant="h6">{item.members_info[1].firstName} {item.members_info[1].lastName}</Typography>
+                      </ListItemText>
                     </ListItem>
-                  : <ListItem 
-                    alignItems="flex-start" 
-                    button 
-                    key={item._id} 
-                    id={item._id} 
-                    firstName={item.members_info[0].firstName} 
-                    lastName={item.members_info[0].lastName}
-                    photoUrl={item.members_info[0].photoUrl}
-                    onClick={this.getConversationId} 
-                  >
-                      <ListItemAvatar>
+
+                  : <ListItem
+                      alignItems="flex-start" 
+                      button 
+                      key={item._id} 
+                      id={item._id} 
+                      firstName={item.members_info[0].firstName} 
+                      lastName={item.members_info[0].lastName}
+                      photoUrl={item.members_info[0].photoUrl}
+                      onClick={this.getConversationId}
+                    > 
+                      <ListItemAvatar style={{margin: 0}}>
                         <Avatar
+                          className={classes.bigAvatar}
                           alt="Remy Sharp" 
                           src={item.members_info[0].photoUrl}
                         />
                       </ListItemAvatar>
-                      <ListItemText
-                        primary={<Typography type="body2">{item.members_info[0].firstName} {item.members_info[0].lastName}</Typography>}
-                      />
+                      <ListItemText style={{marginTop: "10px"}}>
+                        <Typography variant="h6">{item.members_info[0].firstName} {item.members_info[0].lastName}</Typography>
+                      </ListItemText>
                     </ListItem>
                   ))}
                 </List>
@@ -318,13 +324,32 @@ class MessagesPage extends Component {
           </Grid>
           <Grid item xs={9}>
             <Grid container className={classes.border}>
-                <Grid item xs={1}>
-                  <Avatar
-                    alt="Remy Sharp"
-                    className={classes.bigAvatar}
-                    src={this.state.photoUrl}
-                  />
-                </Grid>
+                { this.state.photoUrl ? 
+                    <Grid item xs={1}>
+                      <Avatar
+                      alt="Remy Sharp"
+                      className={classes.bigAvatar}
+                      src={this.state.photoUrl}
+                      />
+                     </Grid>    
+                  : this.state.photoUrl === null ?
+                    <Grid item xs={1}>
+                      <Avatar
+                      alt="Remy Sharp"
+                      className={classes.bigAvatar}
+                      >
+                        <AccountCircleIcon />
+                      </Avatar>  
+                    </Grid>
+                  : 
+                    <Grid item xs={1}>
+                      <Avatar
+                      alt="Remy Sharp"
+                      className={classes.bigAvatar}
+                      style={{ backgroundColor: "white"}}
+                      />
+                    </Grid>
+                }
                 <Grid item xs={11}>
                   <h3>{this.state.firstName} {this.state.lastName}</h3>
                 </Grid>
