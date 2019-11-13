@@ -79,6 +79,7 @@ module.exports.createMessage = function(req, res, next) {
 // GET /conversation/:conversation_id (body list of messages sent already)
 module.exports.getMessages = function(req, res, next) {
     Message.find({conversationId: req.params.conversation_id})
+        .populate("conversationId", "members")
         .populate("userId", "name")
         .exec(function(err, courses){
             if(err) return next(err);

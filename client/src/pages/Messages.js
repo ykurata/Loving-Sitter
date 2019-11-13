@@ -92,14 +92,14 @@ const messagesPageStyle = theme => ({
     textAlign: "left",
   },
   test: {
-    backgroundColor: "white",
+    backgroundColor: "#3385ff",
+    color: "white",
     boxShadow: "0px 0px 4px 0px lightgrey",
     borderRadius: "10px",
     padding: "12px"
   },
   testLeft: {
-    backgroundColor: "#3385ff",
-    color: "white",
+    backgroundColor: "white",
     boxShadow: "0px 0px 4px 0px lightgrey",
     borderRadius: "10px",
     padding: "12px"
@@ -127,6 +127,9 @@ class MessagesPage extends Component {
       message: "",
       messages: [],
       conversationId: "",
+      firstName: "",
+      lastName: "",
+      photoUrl: "",
       open: false,
       token: localStorage.getItem("jwtToken"),
       userId: localStorage.getItem("userId"),
@@ -172,7 +175,10 @@ class MessagesPage extends Component {
   // Get a conversation Id to start sending messages
   getConversationId = e => {
     this.setState({ conversationId: e.target.id });
-    console.log(this.state.conversationId)
+    this.setState({ firstName: e.target.getAttribute("firstName") });
+    this.setState({ lastName: e.target.getAttribute("lastName") });
+    this.setState({ photoUrl: e.target.getAttribute("photoUrl") });
+    
     axios.get(`/conversation/${this.state.conversationId}`, { headers: { Authorization: `Bearer ${this.state.token}` }} )
       .then(res => {
         let msgs = res.data.map(item => ({ 
@@ -264,7 +270,16 @@ class MessagesPage extends Component {
                   
                   {this.state.conversations.map(item => (
                     item.members_info[0].userId === this.state.userId ?
-                    <ListItem alignItems="flex-start" button key={item._id} id={item._id} onClick={this.getConversationId} >
+                    <ListItem 
+                      alignItems="flex-start" 
+                      button 
+                      key={item._id} 
+                      id={item._id} 
+                      firstName={item.members_info[1].firstName} 
+                      lastName={item.members_info[1].lastName}
+                      photoUrl={item.members_info[1].photoUrl}
+                      onClick={this.getConversationId} 
+                    >
                       <ListItemAvatar>
                         <Avatar
                           alt="Remy Sharp"
@@ -275,10 +290,19 @@ class MessagesPage extends Component {
                         primary={<Typography type="body2">{item.members_info[1].firstName} {item.members_info[1].lastName}</Typography>}
                       />
                     </ListItem>
-                  : <ListItem alignItems="flex-start" button key={item._id} id={item._id} onClick={this.getConversationId} >
+                  : <ListItem 
+                    alignItems="flex-start" 
+                    button 
+                    key={item._id} 
+                    id={item._id} 
+                    firstName={item.members_info[0].firstName} 
+                    lastName={item.members_info[0].lastName}
+                    photoUrl={item.members_info[0].photoUrl}
+                    onClick={this.getConversationId} 
+                  >
                       <ListItemAvatar>
                         <Avatar
-                          alt="Remy Sharp"
+                          alt="Remy Sharp" 
                           src={item.members_info[0].photoUrl}
                         />
                       </ListItemAvatar>
@@ -298,10 +322,11 @@ class MessagesPage extends Component {
                   <Avatar
                     alt="Remy Sharp"
                     className={classes.bigAvatar}
+                    src={this.state.photoUrl}
                   />
                 </Grid>
                 <Grid item xs={11}>
-                  <h3>Name</h3>
+                  <h3>{this.state.firstName} {this.state.lastName}</h3>
                 </Grid>
               </Grid>
             <Grid container className={classes.messagesArea}>
