@@ -84,7 +84,8 @@ const messagesPageStyle = theme => ({
 
   sentMessages: {
     textAlign: "right",
-    paddingRight: "10px"
+    paddingRight: "10px",
+    paddingLeft: "10px"
   },
   sentMessageLength: {
     padding: "6px",
@@ -180,8 +181,7 @@ class MessagesPage extends Component {
     this.setState({ firstName: e.target.getAttribute("firstName") });
     this.setState({ lastName: e.target.getAttribute("lastName") });
     this.setState({ photoUrl: e.target.getAttribute("photoUrl") });
-    console.log(this.state.conversationId);
-    
+
     axios.get(`/conversation/${e.target.id}`, { headers: { Authorization: `Bearer ${this.state.token}` }} )
       .then(res => {
         let msgs = res.data.map(item => ({ 
@@ -270,7 +270,6 @@ class MessagesPage extends Component {
               <Grid item xs={12}>
                 
                 <List className={classes.list}>
-                  
                   {this.state.conversations.map(item => (
                     item.members_info[0].userId === this.state.userId ?
                     <ListItem 
@@ -283,16 +282,12 @@ class MessagesPage extends Component {
                       photoUrl={item.members_info[1].photoUrl}
                       onClick={this.getConversationId} 
                     >
-                      <ListItemAvatar style={{margin: 0}}>
-                        <Avatar
-                          className={classes.bigAvatar}
-                          alt="Remy Sharp" 
-                          src={item.members_info[1].photoUrl}
-                        />
-                      </ListItemAvatar>
-                      <ListItemText style={{marginTop: "10px"}}>
-                        <Typography variant="h6">{item.members_info[1].firstName} {item.members_info[1].lastName}</Typography>
-                      </ListItemText>
+                      <Avatar
+                        className={classes.bigAvatar}
+                        alt="Remy Sharp" 
+                        src={item.members_info[1].photoUrl}
+                      />
+                      <Typography style={{marginTop: "10px" }} variant="h6">{item.members_info[1].firstName} {item.members_info[1].lastName}</Typography>
                     </ListItem>
 
                   : <ListItem
@@ -305,16 +300,12 @@ class MessagesPage extends Component {
                       photoUrl={item.members_info[0].photoUrl}
                       onClick={this.getConversationId}
                     > 
-                      <ListItemAvatar style={{margin: 0}}>
-                        <Avatar
-                          className={classes.bigAvatar}
-                          alt="Remy Sharp" 
-                          src={item.members_info[0].photoUrl}
-                        />
-                      </ListItemAvatar>
-                      <ListItemText style={{marginTop: "10px"}}>
-                        <Typography variant="h6">{item.members_info[0].firstName} {item.members_info[0].lastName}</Typography>
-                      </ListItemText>
+                      <Avatar
+                        className={classes.bigAvatar}
+                        alt="Remy Sharp" 
+                        src={item.members_info[0].photoUrl}
+                      />
+                      <Typography style={{marginTop: "10px" }} variant="h6">{item.members_info[0].firstName} {item.members_info[0].lastName}</Typography>
                     </ListItem>
                   ))}
                 </List>
