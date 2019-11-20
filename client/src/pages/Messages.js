@@ -169,7 +169,6 @@ class MessagesPage extends Component {
         this.setState({
           profiles: res.data.profile 
         });
-        console.log(this.state.profiles);
       })
       .catch(err => {
         console.log("Error fetching and parsing data", err);
@@ -192,9 +191,9 @@ class MessagesPage extends Component {
   // Get a conversation Id to start sending messages
   getMessages = e => {
     this.setState({ conversationId: e.target.id });
-    this.setState({ firstName: e.target.getAttribute("firstName") });
-    this.setState({ lastName: e.target.getAttribute("lastName") });
-    this.setState({ photoUrl: e.target.getAttribute("photoUrl") });
+    this.setState({ firstName: e.target.getAttribute("firstname") });
+    this.setState({ lastName: e.target.getAttribute("lastname") });
+    this.setState({ photoUrl: e.target.getAttribute("photourl") });
 
     axios.get(`/conversation/${e.target.id}`, { headers: { Authorization: `Bearer ${this.state.token}` }} )
       .then(res => {
@@ -212,7 +211,6 @@ class MessagesPage extends Component {
 
   // Create a new conversation 
   createConversation = e => {
-    console.log(e.target.id);
     e.preventDefault();
     const newConversation = {
       recipientId: e.target.id
@@ -281,8 +279,8 @@ class MessagesPage extends Component {
                 <h3>Inbox Messages</h3>
               </Grid>
               <Grid item xs={1} className={classes.title}>
-                <IconButton size="small" className={classes.addIcon}>
-                  <AddBoxIcon onClick={this.handleOpen} />
+                <IconButton size="small" className={classes.addIcon} onClick={this.handleOpen}>
+                  <AddBoxIcon />
                 </IconButton>
                 <Modal
                   aria-labelledby="transition-modal-title"
@@ -298,7 +296,7 @@ class MessagesPage extends Component {
                 >
                   <Fade in={this.state.open}>
                     <div className={classes.paper}>
-                      <h2 id="transition-modal-title">Dog Sitters</h2>
+                      <h2 id="transition-modal-title" style={{textAlign: "center"}}>Dog Sitters</h2>
                       
                         {this.state.profiles.map(item => (
                           item.userId !== this.state.userId ?
@@ -331,9 +329,9 @@ class MessagesPage extends Component {
                       button 
                       key={item._id} 
                       id={item._id} 
-                      firstName={item.members_info[1].firstName} 
-                      lastName={item.members_info[1].lastName}
-                      photoUrl={item.members_info[1].photoUrl}
+                      firstname={item.members_info[1].firstName} 
+                      lastname={item.members_info[1].lastName}
+                      photourl={item.members_info[1].photoUrl}
                       onClick={this.getMessages} 
                     >
                       <Avatar
@@ -404,41 +402,44 @@ class MessagesPage extends Component {
                 <div className={classes.sentMessages}>{message}</div>
               </Grid>
             </Grid>
-
-            <Grid container className={classes.messagingArea}>
-              <Grid item xs={8}>
-                <TextField
-                  id="standard-bare"
-                  name="message"
-                  className={classes.textField}
-                  placeholder="Reply to Mc Barkly"
-                  margin="normal"
-                  value={this.state.message}
-                  onChange={this.messageChange}
-                  inputProps={{
-                    "aria-label": "bare",
-                    className: classes.input1
-                  }}
-                />
-              </Grid>
-              <Grid item xs={1}></Grid>
-
-              <Grid item xs={2}>
-                <div className={classes.buttonContainer}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    fullWidth
-                    className={classes.sendButton}
-                    onClick={this.createMessage}
-                  >
-                    Send
-                  </Button>
-                </div>
+            
+            { this.state.conversationId ? (
+              <Grid container className={classes.messagingArea}>
+                <Grid item xs={8}>
+                  <TextField
+                    id="standard-bare"
+                    name="message"
+                    className={classes.textField}
+                    placeholder="Type a message..."
+                    margin="normal"
+                    value={this.state.message}
+                    onChange={this.messageChange}
+                    inputProps={{
+                      "aria-label": "bare",
+                      className: classes.input1
+                    }}
+                  />
+                </Grid>
                 <Grid item xs={1}></Grid>
-              </Grid>
-            </Grid>
+
+                <Grid item xs={2}>
+                  <div className={classes.buttonContainer}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      fullWidth
+                      className={classes.sendButton}
+                      onClick={this.createMessage}
+                    >
+                      Send
+                    </Button>
+                  </div>
+                  <Grid item xs={1}></Grid>
+                </Grid>
+              </Grid> 
+              ) : null }
+
           </Grid>
         </Grid>
       </div>
