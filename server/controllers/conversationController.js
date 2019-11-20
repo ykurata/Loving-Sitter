@@ -1,8 +1,8 @@
 import Conversation from "../models/Conversation";
 import Message from "../models/Message";
 import Profile from "../models/Profile";
-const ObjectId = require("mongodb").ObjectID;
 
+const ObjectId = require("mongodb").ObjectID;
 
 // POST a conversation (new conversation)
 module.exports.createConversation = function(req, res, next) {
@@ -16,17 +16,26 @@ module.exports.createConversation = function(req, res, next) {
             return res.status(400).json({ message: "Please select recipient"});
         } else {
             Conversation.findOne({ 
-                members: [ObjectId(req.user), ObjectId(req.body.recipientId)],
-                members: [ObjectId(req.body.recipientId), ObjectId(req.user)]
+                members: [ObjectId(req.user), ObjectId(recipient.userId)]
             }, function(err, duplicate) {
                 if (err) {
                     console.log(err);
                 } else if (duplicate) {
                     console.log("The conversation already exists");
                 } else {
-                    conversation.save(function(err, conversation) {
-                        if (err) return next(err);
-                        res.json(conversation);
+                    Conversation.findOne({
+                        members: [ObjectId(recipient.userId), ObjectId(req.user)]
+                    }, function(err, dup){
+                        if (err) {
+                            console.log(err);
+                        } else if (dup) {
+                            console.log("The conversation already exists");
+                        } else {
+                            conversation.save(function(err, conversation) {
+                                if (err) return next(err);
+                                res.json(conversation);
+                            });
+                        }
                     });
                 }
             });

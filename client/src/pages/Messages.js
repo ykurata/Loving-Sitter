@@ -8,7 +8,6 @@ import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -364,9 +363,9 @@ class MessagesPage extends Component {
                       button 
                       key={item._id} 
                       id={item._id} 
-                      firstName={item.members_info[0].firstName} 
-                      lastName={item.members_info[0].lastName}
-                      photoUrl={item.members_info[0].photoUrl}
+                      firstname={item.members_info[0].firstName} 
+                      lastname={item.members_info[0].lastName}
+                      photourl={item.members_info[0].photoUrl}
                       onClick={this.getMessages}
                     > 
                       {item.members_info[0].photoUrl ?
