@@ -8,6 +8,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
+import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -305,12 +306,20 @@ class MessagesPage extends Component {
                             id={item.userId}
                             button
                             onClick={this.createConversation}
-                          >
-                            <Avatar
-                              className={classes.bigAvatar}
-                              alt="Remy Sharp" 
-                              src={item.photoUrl}
-                            />
+                          > 
+                            {item.photoUrl ?
+                              <Avatar
+                                className={classes.bigAvatar}
+                                alt="Remy Sharp" 
+                                src={item.photoUrl}
+                              />
+                            : <Avatar
+                                className={classes.bigAvatar}
+                                alt="Remy Sharp" 
+                              >
+                                <AccountCircleIcon />
+                              </Avatar>   
+                            }
                             <Typography variant="h6">{item.firstName} {item.lastName}</Typography>
                           </ListItem>
                           : null
@@ -333,15 +342,23 @@ class MessagesPage extends Component {
                       lastname={item.members_info[1].lastName}
                       photourl={item.members_info[1].photoUrl}
                       onClick={this.getMessages} 
-                    >
-                      <Avatar
-                        className={classes.bigAvatar}
-                        alt="Remy Sharp" 
-                        src={item.members_info[1].photoUrl}
-                      />
+                    > 
+                      {item.members_info[1].photoUrl ?
+                        <Avatar
+                          className={classes.bigAvatar}
+                          alt="Remy Sharp" 
+                          src={item.members_info[1].photoUrl}
+                        />
+                      : <Avatar
+                          className={classes.bigAvatar}
+                          alt="Remy Sharp" 
+                        >
+                          <AccountCircleIcon />
+                        </Avatar>  
+                      }
                       <Typography style={{marginTop: "10px" }} variant="h6">{item.members_info[1].firstName} {item.members_info[1].lastName}</Typography>
                     </ListItem>
-
+                  
                   : <ListItem
                       alignItems="flex-start" 
                       button 
@@ -352,11 +369,19 @@ class MessagesPage extends Component {
                       photoUrl={item.members_info[0].photoUrl}
                       onClick={this.getMessages}
                     > 
-                      <Avatar
-                        className={classes.bigAvatar}
-                        alt="Remy Sharp" 
-                        src={item.members_info[0].photoUrl}
-                      />
+                      {item.members_info[0].photoUrl ?
+                        <Avatar
+                          className={classes.bigAvatar}
+                          alt="Remy Sharp" 
+                          src={item.members_info[0].photoUrl}
+                        />
+                      : <Avatar
+                          className={classes.bigAvatar}
+                          alt="Remy Sharp" 
+                        >
+                          <AccountCircleIcon />
+                        </Avatar>  
+                      }
                       <Typography style={{marginTop: "10px" }} variant="h6">{item.members_info[0].firstName} {item.members_info[0].lastName}</Typography>
                     </ListItem>
                   ))}
