@@ -6,8 +6,6 @@ import "../App.scss";
 import NavigationBar from "./Navbar";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -129,6 +127,7 @@ class MessagesPage extends Component {
       conversations: [],
       message: "",
       messages: [],
+      profiles: [],
       conversationId: "",
       firstName: "",
       lastName: "",
@@ -159,7 +158,22 @@ class MessagesPage extends Component {
     this.socket.on("new message", msg => {
       this.setState({ messages: [...this.state.messages, msg] });
     });
+    this.getProfiles();
     this.getConversations();
+  }
+
+  // Get a list of profiles 
+  getProfiles() {
+    axios.get('/profile/get/', { headers: { Authorization: `Bearer ${this.state.token}` }})
+      .then(res => {
+        this.setState({
+          profiles: res.data.profile 
+        });
+        console.log(this.state.profiles);
+      })
+      .catch(err => {
+        console.log("Error fetching and parsing data", err);
+      }); 
   }
 
   // GET a list of conversations and recipient profiles
@@ -167,7 +181,7 @@ class MessagesPage extends Component {
     axios.get('/conversation/list/', { headers: { Authorization: `Bearer ${this.state.token}` }})
       .then(res => {
         this.setState({
-          conversations: res.data    // Get all conversations
+          conversations: res.data  
         });
       })
       .catch(err => {
@@ -176,7 +190,7 @@ class MessagesPage extends Component {
   };
 
   // Get a conversation Id to start sending messages
-  getConversationId = e => {
+  getMessages = e => {
     this.setState({ conversationId: e.target.id });
     this.setState({ firstName: e.target.getAttribute("firstName") });
     this.setState({ lastName: e.target.getAttribute("lastName") });
@@ -195,6 +209,31 @@ class MessagesPage extends Component {
         console.log(err);
       }); 
   };
+
+  // Create a new conversation 
+  createConversation = e => {
+    console.log(e.target.id);
+    e.preventDefault();
+    const newConversation = {
+      recipientId: e.target.id
+    }
+    axios.post('/conversation/', newConversation, { headers: { Authorization: `Bearer ${this.state.token}` }} )
+      .then(res => {
+        console.log(res.data);
+        axios.get('/conversation/list/', { headers: { Authorization: `Bearer ${this.state.token}` }})
+        .then(res => {
+          this.setState({
+            conversations: res.data  
+          });
+        })
+        .catch(err => {
+          console.log("Error fetching and parsing data", err);
+        }); 
+      })
+      .catch(err => {
+        console.log("Error fetching and parsing data", err);
+      }); 
+  }
 
   // Create a new message
   createMessage = e => {
@@ -260,9 +299,24 @@ class MessagesPage extends Component {
                   <Fade in={this.state.open}>
                     <div className={classes.paper}>
                       <h2 id="transition-modal-title">Dog Sitters</h2>
-                      <p id="transition-modal-description">
-                        react-transition-group animates me.
-                      </p>
+                      
+                        {this.state.profiles.map(item => (
+                          item.userId !== this.state.userId ?
+                          <ListItem
+                            key={item._id}
+                            id={item.userId}
+                            button
+                            onClick={this.createConversation}
+                          >
+                            <Avatar
+                              className={classes.bigAvatar}
+                              alt="Remy Sharp" 
+                              src={item.photoUrl}
+                            />
+                            <Typography variant="h6">{item.firstName} {item.lastName}</Typography>
+                          </ListItem>
+                          : null
+                        ))}
                     </div>
                   </Fade>
                 </Modal>
@@ -280,7 +334,7 @@ class MessagesPage extends Component {
                       firstName={item.members_info[1].firstName} 
                       lastName={item.members_info[1].lastName}
                       photoUrl={item.members_info[1].photoUrl}
-                      onClick={this.getConversationId} 
+                      onClick={this.getMessages} 
                     >
                       <Avatar
                         className={classes.bigAvatar}
@@ -298,7 +352,7 @@ class MessagesPage extends Component {
                       firstName={item.members_info[0].firstName} 
                       lastName={item.members_info[0].lastName}
                       photoUrl={item.members_info[0].photoUrl}
-                      onClick={this.getConversationId}
+                      onClick={this.getMessages}
                     > 
                       <Avatar
                         className={classes.bigAvatar}
@@ -322,7 +376,7 @@ class MessagesPage extends Component {
                       className={classes.bigAvatar}
                       src={this.state.photoUrl}
                       />
-                     </Grid>    
+                    </Grid>    
                   : this.state.photoUrl === null ?
                     <Grid item xs={1}>
                       <Avatar

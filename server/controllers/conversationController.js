@@ -11,13 +11,24 @@ module.exports.createConversation = function(req, res, next) {
         const conversation = new Conversation({
             members: [ObjectId(req.user), ObjectId(recipient.userId)]
         });
-
+        
         if (!conversation.members) {
             return res.status(400).json({ message: "Please select recipient"});
         } else {
-            conversation.save(function(err, conversation) {
-                if (err) return next(err);
-                res.json(conversation);
+            Conversation.findOne({ 
+                members: [ObjectId(req.user), ObjectId(req.body.recipientId)],
+                members: [ObjectId(req.body.recipientId), ObjectId(req.user)]
+            }, function(err, duplicate) {
+                if (err) {
+                    console.log(err);
+                } else if (duplicate) {
+                    console.log("The conversation already exists");
+                } else {
+                    conversation.save(function(err, conversation) {
+                        if (err) return next(err);
+                        res.json(conversation);
+                    });
+                }
             });
         }
     });
