@@ -25,6 +25,9 @@ function App() {
         <PrivateRoute path="/profile-details/:id" component={ProfileDetails} />
         <PrivateRoute path="/sitter-search" component={ProfileListPage} />
         <PrivateRoute path="/messages" component={MessagesPage} />
+        <PrivateRoute path="/profile-payment" component={ProfilePayment} />
+        <PrivateRoute path="/profile-photo" component={PhotoPage} />
+        <PrivateRoute path="/my-jobs" component={MyJobsPage} />
         <Route exact path="/" component={LandingPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={SignUpPage} />
