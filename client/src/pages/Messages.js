@@ -225,11 +225,11 @@ class MessagesPage extends Component {
           });
         })
         .catch(err => {
-          console.log("Error fetching and parsing data", err);
+          console.log(err);
         }); 
       })
       .catch(err => {
-        console.log("Error fetching and parsing data", err);
+        console.log(err);
       }); 
   }
 
@@ -297,7 +297,7 @@ class MessagesPage extends Component {
                   <Fade in={this.state.open}>
                     <div className={classes.paper}>
                       <h2 id="transition-modal-title" style={{textAlign: "center"}}>Dog Sitters</h2>
-                      
+                    
                         {this.state.profiles.map(item => (
                           item.userId !== this.state.userId ?
                           <ListItem
@@ -311,18 +311,21 @@ class MessagesPage extends Component {
                                 className={classes.bigAvatar}
                                 alt="Remy Sharp" 
                                 src={item.photoUrl}
+                                id={item.userId}
                               />
                             : <Avatar
                                 className={classes.bigAvatar}
                                 alt="Remy Sharp" 
+                                id={item.userId}
                               >
                                 <AccountCircleIcon />
                               </Avatar>   
                             }
-                            <Typography variant="h6">{item.firstName} {item.lastName}</Typography>
+                            <Typography id={item.userId} variant="h6">{item.firstName} {item.lastName}</Typography>
                           </ListItem>
                           : null
                         ))}
+                       
                     </div>
                   </Fade>
                 </Modal>
@@ -345,17 +348,34 @@ class MessagesPage extends Component {
                       {item.members_info[1].photoUrl ?
                         <Avatar
                           className={classes.bigAvatar}
+                          id={item._id} 
+                          firstname={item.members_info[1].firstName} 
+                          lastname={item.members_info[1].lastName}
+                          photourl={item.members_info[1].photoUrl}
                           alt="Remy Sharp" 
                           src={item.members_info[1].photoUrl}
                         />
                       : <Avatar
-                          className={classes.bigAvatar}
+                          className={classes.bigAvatar} 
+                          id={item._id} 
+                          firstname={item.members_info[1].firstName} 
+                          lastname={item.members_info[1].lastName}
+                          photourl={item.members_info[1].photoUrl}
                           alt="Remy Sharp" 
                         >
                           <AccountCircleIcon />
                         </Avatar>  
                       }
-                      <Typography style={{marginTop: "10px" }} variant="h6">{item.members_info[1].firstName} {item.members_info[1].lastName}</Typography>
+                      <Typography 
+                        id={item._id} 
+                        firstname={item.members_info[1].firstName} 
+                        lastname={item.members_info[1].lastName}
+                        photourl={item.members_info[1].photoUrl}
+                        style={{marginTop: "10px" }} 
+                        variant="h6"
+                      >
+                        {item.members_info[1].firstName} {item.members_info[1].lastName}
+                      </Typography>
                     </ListItem>
                   
                   : <ListItem
@@ -371,17 +391,34 @@ class MessagesPage extends Component {
                       {item.members_info[0].photoUrl ?
                         <Avatar
                           className={classes.bigAvatar}
+                          id={item._id} 
+                          firstname={item.members_info[0].firstName} 
+                          lastname={item.members_info[0].lastName}
+                          photourl={item.members_info[0].photoUrl}
                           alt="Remy Sharp" 
                           src={item.members_info[0].photoUrl}
                         />
                       : <Avatar
                           className={classes.bigAvatar}
+                          id={item._id} 
+                          firstname={item.members_info[0].firstName} 
+                          lastname={item.members_info[0].lastName}
+                          photourl={item.members_info[0].photoUrl}
                           alt="Remy Sharp" 
                         >
                           <AccountCircleIcon />
                         </Avatar>  
                       }
-                      <Typography style={{marginTop: "10px" }} variant="h6">{item.members_info[0].firstName} {item.members_info[0].lastName}</Typography>
+                      <Typography 
+                        id={item._id} 
+                        firstname={item.members_info[0].firstName} 
+                        lastname={item.members_info[0].lastName}
+                        photourl={item.members_info[0].photoUrl}
+                        style={{marginTop: "10px" }} 
+                        variant="h6"
+                      >
+                        {item.members_info[0].firstName} {item.members_info[0].lastName}
+                      </Typography>
                     </ListItem>
                   ))}
                 </List>
