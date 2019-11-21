@@ -18,17 +18,6 @@ import conversationRouter from "./routes/conversation";
 
 var app = express();
 
-// socket.io
-var socket_io = require( "socket.io" );
-var io = socket_io();
-app.io = io;
-
-// When a client connects, show message in the console
-io.on('connection', function (socket) {
-  console.log('A client is connected!');
-});
-
-
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
