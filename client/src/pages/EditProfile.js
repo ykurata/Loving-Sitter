@@ -1,16 +1,15 @@
 import React, { Component } from "react";
-import Grid from "@material-ui/core/Grid";
-import MenuItem from "@material-ui/core/MenuItem";
-import TextField from "@material-ui/core/TextField";
-import NavigationBar from "./Navbar";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-import SideNavigationBar from "./SideNavBar";
-
+import Grid from "@material-ui/core/Grid";
+import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-
 import { Snackbar, IconButton } from "@material-ui/core";
+
+import NavigationBar from "./Navbar";
+import SideNavigationBar from "./SideNavBar";
 
 class EditProfilePage extends Component {
   state = {
@@ -26,17 +25,7 @@ class EditProfilePage extends Component {
       description: "",
       rate: ""
     },
-    errors: {
-      firstName: "",
-      lastName: "",
-      gender: "",
-      birthDate: "",
-      email: "",
-      phone: "",
-      address: "",
-      description: "",
-      rate: ""
-    },
+    errors: [],
     disabled: true,
     snackbaropen: false,
     snackbarmsg: "",
@@ -78,76 +67,12 @@ class EditProfilePage extends Component {
           this.setState({ snackbaropen: true });
         })
         .catch(err => {
-          console.log({ err });
+          console.log(err);
         });
     } else {
       this.setState({ snackbarmsg: "You have errors with your profile details" });
       this.setState({ snackbaropen: true });
     }
-  }
-
-  checkValid() {
-    var valid = true;
-    var checkErrors = {
-      firstName: "",
-      lastName: "",
-      gender: "",
-      birthDate: "",
-      email: "",
-      phone: "",
-      address: "",
-      description: "",
-      rate: ""
-    }
-    if (this.state.user.firstName.length < 1) {
-      valid = false;
-      checkErrors.firstName = "First name is invalid"
-    } else { checkErrors.firstName = "" }
-
-    if (this.state.user.lastName.length < 1) {
-      valid = false;
-      checkErrors.lastName = "Last name is invalid"
-    } else { checkErrors.lastName = "" }
-
-    if (this.state.user.gender.length < 1) {
-      valid = false;
-      checkErrors.gender = "Gender is invalid"
-    } else { checkErrors.gender = "" }
-
-    if (this.state.user.birthDate.length < 1) {
-      valid = false;
-      checkErrors.birthDate = "Birth Date is invalid"
-    } else { checkErrors.birthDate = "" }
-
-    if (this.state.user.email.length < 1) {
-      valid = false;
-      checkErrors.email = "Email is invalid"
-    } else { checkErrors.email = "" }
-
-    if (this.state.user.phone.length < 10) {
-      valid = false;
-      checkErrors.phone = "Phone Number is invalid"
-    } else { checkErrors.phone = "" }
-
-    if (this.state.user.address.length < 1) {
-      valid = false;
-      checkErrors.address = "Address is invalid"
-    } else { checkErrors.address = "" }
-
-    if (this.state.user.description.length < 1) {
-      valid = false;
-      checkErrors.description = "Description is invalid"
-    } else { checkErrors.description = "" }
-
-    if (this.state.user.rate.length < 1) {
-      valid = false;
-      checkErrors.rate = "Rate is invalid"
-    } else { checkErrors.rate = "" }
-
-    this.setState({
-      errors: checkErrors
-    })
-    return valid;
   }
 
   updateProfile() {

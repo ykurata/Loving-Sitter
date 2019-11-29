@@ -30,10 +30,10 @@ router.post("/register", async function(req, res, next) {
   // regex to test if a string contains a number
   const regex = RegExp(".*\\d.*");
 
-  if (!regex.test(password) || password.length < 8) {
+  if (!regex.test(password) || password.length < 6) {
     return res.status(400).json({
       error:
-        "Password has to contain a number and be at least 8 characters long"
+        "Password has to contain a number and be at least 6 characters long"
     });
   }
 
