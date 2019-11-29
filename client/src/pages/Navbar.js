@@ -9,6 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Avatar from "@material-ui/core/Avatar";
 import { Link } from "react-router-dom";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import axios from "axios";
 
 import NotificationButton from "./NotificationButton";
@@ -74,10 +75,25 @@ class NavigationBar extends Component {
     const { classes } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
-    const { profile } = this.state;
+    
+    // Display default photo if there is no profile photo
+    let avatar;
+    if (this.state.profile) {
+      avatar =  <Avatar
+                  alt="Remy Sharp"
+                  src={this.state.profile.photoUrl}
+                  className={classes.bigAvatar}
+                />
+    } else {
+      avatar = <Avatar
+                  className={classes.bigAvatar}
+                  alt="Remy Sharp" 
+                >
+                  <AccountCircleIcon />
+                </Avatar>   
+    } 
 
     let buttons;
-
     if (this.state.token) {
       buttons = (
         <div>
@@ -92,11 +108,7 @@ class NavigationBar extends Component {
             Messages
           </Button>
           <IconButton aria-label="avatar" onClick={this.handleClick}>
-            <Avatar
-              alt="Remy Sharp"
-              src={profile.photoUrl}
-              className={classes.bigAvatar}
-            />
+            {avatar}
           </IconButton>
           <Menu
             id="menu-appbar"
