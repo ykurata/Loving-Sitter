@@ -42,7 +42,7 @@ handleDropOffChange = event => {
         <div className="App">
           <div className="App_aside">
             <div className="info-box">
-              <Grid container>
+              <Grid container style={{ marginTop: "50px" }}>
                 <Grid item xs={12}>
                   <h1>Find the care your dog deserves</h1>
                 </Grid>
