@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 
 import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -13,8 +12,9 @@ import SideNavigationBar from "./SideNavBar";
 
 class EditProfilePage extends Component {
   state = {
+    token: localStorage.getItem("jwtToken"),
+    userId: localStorage.getItem("userId"),
     user: {
-      userId: "",
       firstName: "",
       lastName: "",
       gender: "",
@@ -37,11 +37,8 @@ class EditProfilePage extends Component {
   }
 
   prefillProfile() {
-    const token = localStorage.getItem("jwtToken");
-    const id = jwt_decode(token).id;
-    axios
-      .get(`profile/get/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+    axios.get(`profile/get/${this.state.userId}`, {
+        headers: { Authorization: `Bearer ${this.state.token}` }
       })
       .then(res => {
         if (res.data.profile) {
@@ -54,53 +51,39 @@ class EditProfilePage extends Component {
   }
 
   createProfile() {
-    const token = localStorage.getItem("jwtToken");
-    const valid = this.checkValid();
-
-    if (valid) {
-      axios
-        .post("profile/create", this.state.user, {
-          headers: { Authorization: `Bearer ${token}` }
+    axios.post("profile/create", this.state.user, {
+        headers: { Authorization: `Bearer ${this.state.token}` }
+      })
+      .then(res => {
+        this.setState({ user: res.data });
+        this.setState({ snackbarmsg: "Profile Saved" });
+        this.setState({ snackbaropen: true });
+      })
+      .catch(err => {
+        this.setState({ snackbarmsg: "Please fill up all the fields!" });
+        this.setState({ snackbaropen: true });
+        this.setState({
+          errors: err.response.data
         })
-        .then(res => {
-          this.setState({ user: res.data });
-          this.setState({ snackbaropen: true });
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    } else {
-      this.setState({ snackbarmsg: "You have errors with your profile details" });
-      this.setState({ snackbaropen: true });
-    }
+      });
   }
 
   updateProfile() {
-    const token = localStorage.getItem("jwtToken");
-    const id = this.state.user.userId;
-
-    const valid = this.checkValid();
-
-    if (valid) {
-      axios
-        .put(`profile/update/${id}`, this.state.user, {
-          headers: { Authorization: `Bearer ${token}` }
+    axios.put(`profile/update/${this.state.userId}`, this.state.user, {
+        headers: { Authorization: `Bearer ${this.state.token}` }
+      })
+      .then(res => {
+        this.setState({ user: res.data });
+        this.setState({ snackbarmsg: "Profile Saved" });
+        this.setState({ snackbaropen: true });
+      })
+      .catch(err => {
+        this.setState({ snackbarmsg: "Please fill up all the fields!" });
+        this.setState({ snackbaropen: true });
+        this.setState({
+          errors: err.response.data
         })
-        .then(res => {
-          this.setState({ user: res.data });
-          this.setState({ snackbarmsg: "Profile Saved" });
-          this.setState({ snackbaropen: true });
-        })
-        .catch(err => {
-          this.setState({ snackbarmsg: "Your details do not meet the necessary criteria." });
-          this.setState({ snackbaropen: true });
-          console.log({ err });
-        });
-    }
-    else {
-      this.setState({ snackbarmsg: "You have errors with your profile details" });
-      this.setState({ snackbaropen: true });
-    }
+      });
   }
 
   handleInputChange = event => {
@@ -113,7 +96,7 @@ class EditProfilePage extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    if (this.state.user.userId) {
+    if (this.state.userId) {
       this.updateProfile();
     } else {
       this.createProfile();
@@ -140,7 +123,6 @@ class EditProfilePage extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <div>
         <Snackbar
@@ -180,6 +162,9 @@ class EditProfilePage extends Component {
                     onSubmit={this.handleSubmit}
                   >
                     <Grid container spacing={3} className="pb-1">
+
+                      {/* First Name */}
+              
                       <Grid item xs={1}></Grid>
                       <Grid item xs={9}>
                         <Grid container spacing={3}>

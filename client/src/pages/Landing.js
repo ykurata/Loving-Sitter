@@ -1,12 +1,15 @@
 import React, { Component } from "react";
+
 import NavigationBar from "./Navbar";
+
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 
-
 import "../App.scss";
+
+
 const landingPageStyle = theme => ({
   marginAdjust: {
     top: "100%"
