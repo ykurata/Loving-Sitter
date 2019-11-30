@@ -3,48 +3,30 @@ import User from "../models/User";
 import validator from "validator";
 import requestsController from "../controllers/requestsController";
 import authenticate from "../routes/utils/auth";
-var router = express.Router();
+const router = express.Router();
+
+// Load input validation
+const validateRegisterInput = require("../validator/register");
+const validateLoginInput = require("../validator/login");
 
 router.post("/register", async function(req, res, next) {
-  const name = req.body.name;
-  const email = req.body.email;
-  const password = req.body.password;
-  const confirmPassword = req.body.confirmPassword;
+  // Form validation
+  const { errors, isValid } = validateRegisterInput(req.body);
 
-  // first validate credentials
-  if (!name) {
-    return res.status(400).json({ error: "Name is required" });
-  }
-  if (!email) {
-    return res.status(400).json({ error: "Email is required" });
-  }
-  if (!validator.isEmail(email)) {
-    return res.status(400).json({ error: "Incorrect email format" });
-  }
-  if (!password) {
-    return res.status(400).json({ error: "Password is required" });
-  }
-  if (password !== confirmPassword) {
-    return res.status(400).json({ error: "Passwords do not match" });
-  }
-  // regex to test if a string contains a number
-  const regex = RegExp(".*\\d.*");
-
-  if (!regex.test(password) || password.length < 6) {
-    return res.status(400).json({
-      error:
-        "Password has to contain a number and be at least 6 characters long"
-    });
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
   }
 
   // if credentials are valid see if user already exists
-  var user = await User.findOne({ email: email });
+  const user = await User.findOne({ email: email });
   if (user) {
     return res.status(409).json({ error: "User already exists" });
   } else {
     user = new User({
-      name,
-      email
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password
     });
   }
 
@@ -67,18 +49,24 @@ router.post("/register", async function(req, res, next) {
   }
 });
 
-//login router
 
 router.post("/login", async function(req, res, next) {
+  // Form validation
+  const { errors, isValid } = validateLoginInput(req.body);
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+  
   const email = req.body.email;
   const password = req.body.password;
 
-  var user = await User.findOne({ email: email });
+  const user = await User.findOne({ email: email });
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }
 
-  var validPass = await user.checkPassword(password);
+  const validPass = await user.checkPassword(password);
   if (!validPass) {
     return res.status(401).json({ error: "Password is incorrect" });
   }
