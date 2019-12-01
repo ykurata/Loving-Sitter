@@ -17,14 +17,14 @@ router.post("/register", async function(req, res, next) {
   if (!isValid) {
     return res.status(400).json(errors);
   }
-
+  
   // if credentials are valid see if user already exists
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     user = new User({
       name: req.body.name,
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
     });
   } else {
     return res.status(400).json({ error: "Email already exists" });

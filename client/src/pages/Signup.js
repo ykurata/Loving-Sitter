@@ -37,8 +37,9 @@ class SignUp extends Component {
       name: "",
       email: "",
       pasword: "",
-      confirmPassword: "",
+      password2: "",
       validationErrors: [],
+      error: ""
     }
   }
 
@@ -49,13 +50,13 @@ class SignUp extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { name, email, password, confirmPassword } = this.state;
+    const { name, email, password, password2 } = this.state;
 
     const newUser = {
       name: name,
       email: email,
       password: password,
-      confirmPassword: confirmPassword
+      password2: password2
     }
 
     axios.post('/users/register', newUser)
@@ -68,9 +69,9 @@ class SignUp extends Component {
     })
     .catch(err => {
         this.setState({
-          validationErrors: err.response.data  // Error messages from backend
+          validationErrors: err.response.data,  // Error messages from backend
+          error: err.response.data.error
         });
-        console.log(err.response)
     });
   };
 
@@ -145,9 +146,9 @@ class SignUp extends Component {
             variant="outlined"
             margin="normal"
             fullWidth
-            name="confrimPassword"
+            name="password2"
             type="password"
-            id="confrimPassword"
+            id="password2"
             placeholder="Confirm Password"
             onChange={this.onChange}
           />
