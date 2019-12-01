@@ -7,8 +7,8 @@ import LandingPage from "./pages/Landing";
 import PhotoPage from "./pages/Photo";
 
 import "./App.scss";
-import LoginPage from "./pages/Login";
-import SignUpPage from "./pages/Signup";
+import Login from "./pages/Login";
+import SignUp from "./pages/Signup";
 import ProfileListPage from "./pages/ProfileList";
 import EditProfilePage from "./pages/EditProfile";
 import ProfilePayment from "./pages/ProfilePayment";
@@ -29,8 +29,8 @@ function App() {
         <PrivateRoute path="/profile-photo" component={PhotoPage} />
         <PrivateRoute path="/my-jobs" component={MyJobsPage} />
         <Route exact path="/" component={LandingPage} />
-        <Route path="/login" component={LoginPage} />
-        <Route path="/signup" component={SignUpPage} />
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={SignUp} />
         <Route path="/profile-payment" component={ProfilePayment} />
         <Route path="/profile-photo" component={PhotoPage} />
         <Route path="/my-jobs" component={MyJobsPage} />

@@ -7,12 +7,11 @@ const userSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: "Name is required"
+      required: true
     },
     email: {
       type: String,
-      required: "Email is required",
-      unique: "Email already exists"
+      required: true
     },
     token: {
       type: String
