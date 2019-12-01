@@ -1,159 +1,65 @@
 import React, { Component } from "react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import "../App.scss";
-import Button from "@material-ui/core/Button";
-
 import { Snackbar, IconButton } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import "../App.scss";
 
-export const snackbarmsg = "wow";
-
-const initalState = {
-  name: "",
-  nameError: "",
-  email: "",
-  emailError: "",
-  password: "",
-  passwordError: "",
-  snackbaropen: false,
-  confirmPassword: "",
-  errors: ""
-};
+export const snackbarmsg = "";
 
 class SignUpPage extends Component {
-  state = initalState;
-
-  handleEmailChange = event => {
-    this.setState({ email: event.target.value });
-  };
-
-  handleNameChange = event => {
-    if (event.target.value.match("^[a-zA-Z]*$") != null) {
-      this.setState({ name: event.target.value });
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      email: "",
+      pasword: "",
+      confirmPassword: "",
+      validationErrors: [],
+      snackbaropen: false,
     }
-  };
+  }
 
-  handlePasswordChange = event => {
-    this.setState({ password: event.target.value });
-  };
+  // Update user input
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  }
 
-  handleConfirmPasswordChange = event => {
-    this.setState({ confirmPassword: event.target.value });
-  };
+  handleSubmit = e => {
+    e.preventDefault();
+    const { name, email, password, confirmPassword } = this.state;
 
-  emailValidate = () => {
-    let emailError = "";
-    var re = /[^@]+@[^.]+..+/;
-    var test = re.test(this.state.email);
-    if (!test === true) {
-      emailError = "Invalid email";
-    }
-    
-    if (emailError) {
-      this.setState({ emailError });
-      return false;
-    }
-    this.setState({ emailError: undefined });
-    return true;
-  };
-
-  nameValidate = () => {
-    let nameError = "";
-
-    if (this.state.name.length < 1) {
-      nameError = "Please enter your name";
+    const newUser = {
+      name: name,
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword
     }
 
-    if (nameError) {
-      this.setState({ nameError });
-      return false;
-    }
-    this.setState({ nameError: undefined });
-    return true;
+    axios.post('/users/register', newUser)
+    .then(res => {
+        const { token } = res.data;
+        const decoded = jwt_decode(token);
+        localStorage.setItem('jwtToken', token);
+        localStorage.setItem("userId", decoded.id);
+        this.props.history.push('/');
+    })
+    .catch(err => {
+        this.setState({
+          validationErrors: err.response.data  // Error messages from backend
+        });
+        console.log(err.response)
+    });
   };
 
-  passwordValidate = () => {
-
-    this.setState({ emailError: undefined });
-    return true;
-  };
-  
-  nameValidate = () => {
-    let nameError = "";
-    
-    if (this.state.name.length < 1) {
-      nameError = "Please enter your name";
-    }
-    
-    if (nameError) {
-      this.setState({ nameError });
-      return false;
-    }
-    this.setState({ nameError: undefined });
-    return true;
-  };
-
-  passwordValidate = () => {
-    let passwordError = "";
-    
-    if (this.state.password.length < 6) {
-      passwordError = "Password is too short";
-    }
-    
-    if (passwordError) {
-      this.setState({ passwordError });
-      this.setState({
-        snackbaropen: true,
-        snackbarmsg: "Password is too short!"
-      });
-
-      return false;
-    }
-    this.setState({ passwordError: undefined });
-    return true;
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    const emailIsValid = this.emailValidate();
-    const nameIsValid = this.nameValidate();
-    const passwordIsValid = this.passwordValidate();
-    if (emailIsValid && nameIsValid && passwordIsValid) {
-      console.log(this.state);
-      this.setState(initalState);
-
-      const { name, email, password, confirmPassword } = this.state;
-
-      const newUser = {
-        name: name,
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword
-      }
-
-      axios.post('/users/register', newUser)
-      .then(res => {
-          const { token } = res.data;
-          const decoded = jwt_decode(token);
-          localStorage.setItem('jwtToken', token);
-          localStorage.setItem("userId", decoded.id);
-          this.props.history.push('/');
-      })
-      .catch(err => {
-          this.setState({
-            errors: err.response.data.error  // Error messages from backend
-          });
-      });
-    }
-  };
-
-  snackbarClose = event => {
+  snackbarClose = e => {
     this.setState({ snackbaropen: false });
   };
 
-  enableEdit = event => {
+  enableEdit = e => {
     this.setState({ disabled: false });
   };
 
@@ -189,13 +95,13 @@ class SignUpPage extends Component {
                       <h1 className="center">Sign Up</h1>
                     </Grid>
 
-                    {
+                    {/* {
                       (this.state.errors)
                       ? <Grid item xs={12} className="pb-0 pt-0" style={{ color: "red" }}>
                           <p className="mb-0 mt-0">{this.state.errors}</p>
                         </Grid>
                       : null
-                    }
+                    } */}
 
                     <Grid item xs={12} className="pb-0 pt-0">
                       <p className="mb-0 mt-0">NAME</p>
@@ -209,10 +115,14 @@ class SignUpPage extends Component {
                         variant="outlined"
                         type="text"
                         value={this.state.name}
-                        onChange={this.handleNameChange}
+                        onChange={this.onChange}
                         fullWidth
                       />
-                      <div style={{ color: "red" }}>{this.state.nameError}</div>
+                      {this.state.validationErrors ? 
+                        <div style={{ color: "red" }}>
+                          {this.state.validationErrors.name}
+                        </div>
+                      : null}
                     </Grid>
 
                     <Grid item xs={12} className="pb-0 pt-0">
@@ -227,12 +137,14 @@ class SignUpPage extends Component {
                         variant="outlined"
                         type="email"
                         value={this.state.email}
-                        onChange={this.handleEmailChange}
+                        onChange={this.onChange}
                         fullWidth
                       />
-                      <div style={{ color: "red" }}>
-                        {this.state.emailError}
-                      </div>
+                      {this.state.validationErrors ? 
+                        <div style={{ color: "red" }}>
+                          {this.state.validationErrors.email}
+                        </div>
+                      : null}
                     </Grid>
 
                     <Grid item xs={12} className="pb-0 pt-0">
@@ -247,12 +159,14 @@ class SignUpPage extends Component {
                         variant="outlined"
                         type="password"
                         value={this.state.password}
-                        onChange={this.handlePasswordChange}
+                        onChange={this.onChange}
                         fullWidth
                       />
-                      <div style={{ color: "red" }}>
-                        {this.state.passwordError}
-                      </div>
+                      {this.state.validationErrors ? 
+                        <div style={{ color: "red" }}>
+                          {this.state.validationErrors.password}
+                        </div>
+                      : null}
                     </Grid>
 
                     <Grid item xs={12} className="pb-0 pt-0">
@@ -261,15 +175,20 @@ class SignUpPage extends Component {
                     <Grid item xs={12}>
                       <TextField
                         name="confirmPassword"
-                        id="outlined-password"
+                        id="outlined-confirmPassword"
                         placeholder="Confrim Password"
                         margin="normal"
                         variant="outlined"
                         type="password"
                         value={this.state.confirmPassword}
-                        onChange={this.handleConfirmPasswordChange}
+                        onChange={this.onChange}
                         fullWidth
                       />
+                      {this.state.validationErrors ? 
+                        <div style={{ color: "red" }}>
+                          {this.state.validationErrors.password2}
+                        </div>
+                      : null}
                     </Grid>
                     <Grid item xs={2}></Grid>
                     <Grid item xs={8} className="center">
