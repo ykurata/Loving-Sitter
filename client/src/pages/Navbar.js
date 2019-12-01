@@ -174,10 +174,12 @@ class NavigationBar extends Component {
       <AppBar className={this.state.token ? classes.loggedInNavbar : classes.logInNavbar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
+            <a href="/">
             <img
               src={require("../images/loving-sitter-logo.png")}
               alt="logo of app"
             />
+            </a>
           </Typography>
           {buttons}
         </Toolbar>
