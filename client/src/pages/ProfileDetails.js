@@ -101,7 +101,6 @@ class ProfileDetails extends Component {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(res => {
-        console.log(res);
         this.setState({
           profile: res.data.profile,
         });

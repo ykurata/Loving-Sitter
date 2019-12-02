@@ -1,15 +1,15 @@
 import createError from "http-errors";
 import express, { json, urlencoded } from "express";
 import { join } from "path";
+import bodyParser from 'body-parser';
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import passport from "passport";
 import cors from "cors";
 
-import dbConnection from "./db/mongoose";
-import indexRouter from "./routes/index";
+// import routes
 import profileRouter from "./routes/profile";
-import pingRouter from "./routes/ping";
+import requestRouter from "./routes/request";
 import photoRouter from "./routes/photo";
 import usersRouter from "./routes/users";
 import fileUploadRouter from "./routes/file-upload";
@@ -22,21 +22,24 @@ app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static(join(__dirname, "public")));
 
 app.use(passport.initialize());
 require("./libs/passport")(passport);
 
-app.use("/", indexRouter);
+// Set up routes
 app.use("/profile", profileRouter);
-app.use("/ping", pingRouter);
+app.use("/request", requestRouter);
 app.use("/profile-photo", photoRouter);
 app.use("/users", usersRouter);
 app.use("/files", fileUploadRouter);
 app.use("/profile-payment", paymentRouter);
 app.use("/conversation", conversationRouter);
 
+// Set up cors 
 app.use(cors());
 
 

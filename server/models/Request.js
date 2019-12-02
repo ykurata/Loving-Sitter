@@ -22,7 +22,8 @@ const RequestSchema = mongoose.Schema(
       required: true
     },
     accepted: {
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     paid: {
       type: Boolean,
