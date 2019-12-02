@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import NavigationBar from "./Navbar";
@@ -6,21 +9,12 @@ import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Rating from "@material-ui/lab/Rating";
-
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
-import Card from "@material-ui/core/Card";
 import { Snackbar, IconButton } from "@material-ui/core";
-import { Link } from "react-router-dom";
 
-const detailsPageStyle = theme => ({
-  detailsContainer: {
-    margin: theme.spacing.unit * 2
-  },
-  container: {
-    marginBottom: theme.spacing(100)
-  },
+
+const detailsStyle = theme => ({
   smallAvatar: {
     width: 75,
     height: 75
@@ -56,49 +50,34 @@ const detailsPageStyle = theme => ({
     backgroundColor: "red",
     color: "white"
   },
-
   statusCard: {
     marginBottom: 30,
     width: "80%",
     margin: "auto",
     lineHeight: "26px"
   },
-
-  reviews: {
-    margin: "auto",
-    width: "80%"
-  },
-
   marginAuto: {
     margin: "auto"
   }
 });
 
 class ProfileDetails extends Component {
-  state = {
-    status: "Available",
-    profile: {},
-    request: {
-      requestedUserId: this.props.match.params.id,
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: "Available",
+      profile: {},
       startDate: "",
       endDate: "",
-      accepted: false,
-      paid: false,
-      firstName: "",
-      lastName: "",
-      rate: ""
-    },
-    snackbaropen: false,
-    snackbarmsg: ""
+      token: localStorage.getItem("jwtToken"),
+      snackbaropen: false,
+      snackbarmsg: ""  
+    }
   };
 
   componentDidMount() {
-    // Get token from local storage
-    const token = localStorage.getItem("jwtToken");
-
-    axios
-      .get(`/profile/get/${this.props.match.params.id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+    axios.get(`/profile/get/${this.props.match.params.id}`, {
+        headers: { Authorization: `Bearer ${this.state.token}` }
       })
       .then(res => {
         this.setState({
@@ -110,32 +89,29 @@ class ProfileDetails extends Component {
       });
   }
 
-  handleInputChange = event => {
-    const field = event.target.name;
-    let request = { ...this.state.request };
-    request[field] = event.target.value;
-    this.state.request.firstName = this.state.profile.firstName;
-    this.state.request.lastName = this.state.profile.lastName;
-    this.state.request.rate = this.state.profile.rate;
-    this.setState({ request });
+  handleInputChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   sendRequest = () => {
-    const token = localStorage.getItem("jwtToken");
-    const request = this.state.request;
+    const request = {
+      recieverId: this.props.match.params.id,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate
+    }
 
-    axios
-      .post("/users/sendrequest", request, {
-        headers: { Authorization: `Bearer ${token}` }
+    axios.post("/request", request, {
+        headers: { Authorization: `Bearer ${this.state.token}` }
       })
       .then(res => {
+        console.log(res.data);
         this.setState({ snackbarmsg: "Request was sent" });
         this.setState({ snackbaropen: true });
       })
       .catch(err => {
         this.setState({ snackbarmsg: `${err.response.data.error}` });
         this.setState({ snackbaropen: true });
-        console.log({ err });
+        console.log(err);
       });
   };
   snackbarClose = event => {
@@ -190,19 +166,7 @@ class ProfileDetails extends Component {
                   </Typography>
                 </Grid>
                 <Grid item className={classes.marginBottom}>
-                  <Typography variant="subtitle2">Loving pet sitter</Typography>
-                </Grid>
-
-                <Grid item className={classes.marginBottom}>
-                  <Typography variant="subtitle2">{profile.address}</Typography>
-                </Grid>
-                <Grid
-                  item
-                  xs={11}
-                  align="left"
-                  className={classes.marginBottom}
-                >
-                  <h2>About Me</h2>
+                  <Typography variant="p">{profile.address}</Typography>
                 </Grid>
                 <Grid
                   item
@@ -213,23 +177,12 @@ class ProfileDetails extends Component {
                   <Typography
                     className={classes.marginHorizontal}
                     variant="body1"
-                  >
+                  > 
+                    <h2>About Me</h2>
                     {profile.description}
                   </Typography>
                 </Grid>
-                <Grid
-                  item
-                  xs={11}
-                  align="left"
-                  className={classes.marginBottom}
-                >
-                  <Avatar
-                    alt="Your Pets"
-                    src={profile.photoUrl}
-                    className={classes.roundedBigAvatar}
-                    style={{ borderRadius: 10 }}
-                  />
-                </Grid>
+                
               </Box>
             </Grid>
           </Grid>
@@ -251,9 +204,8 @@ class ProfileDetails extends Component {
                     id="drop-in"
                     label="Drop In"
                     name="startDate"
-                    type="datetime-local"
+                    type="date"
                     onChange={this.handleInputChange}
-                    defaultValue="2019-05-24T10:30"
                     InputLabelProps={{
                       shrink: true
                     }}
@@ -264,9 +216,8 @@ class ProfileDetails extends Component {
                     id="drop-out"
                     label="Drop Out"
                     name="endDate"
-                    type="datetime-local"
+                    type="date"
                     onChange={this.handleInputChange}
-                    defaultValue="2019-05-24T10:30"
                     InputLabelProps={{
                       shrink: true
                     }}
@@ -284,70 +235,6 @@ class ProfileDetails extends Component {
                 </Grid>
               </Grid>
             </Box>
-            <Grid item spacing={4} className={classes.marginBottom}>
-              <Grid
-                container
-                direction="column"
-                align="center"
-                className={classes.marginBottom}
-              >
-                <Typography variant="h4">Reviews</Typography>
-              </Grid>
-
-              <Card className={classes.reviews}>
-                <Grid container>
-                  <Grid item xs={4} className={classes.marginAuto}>
-                    <Avatar
-                      alt="Your Profile Picture"
-                      src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
-                      className={`${classes.smallAvatar} ${classes.marginAuto}`}
-                    />
-                  </Grid>
-                  <Grid item xs={8} className={classes.marginAuto}>
-                    <Grid container>
-                      <Grid item xs={12}>
-                        <Typography variant="h5">Sarah Blakeney</Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Rating value={5} readOnly />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography variant="subtitle2">
-                          I recommend Norma as a pet sitter!
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Card>
-            </Grid>
-
-            <Card className={classes.reviews}>
-              <Grid container>
-                <Grid item xs={4} className={classes.marginAuto}>
-                  <Avatar
-                    alt="Your Profile Picture"
-                    src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
-                    className={`${classes.smallAvatar} ${classes.marginAuto}`}
-                  />
-                </Grid>
-                <Grid item xs={8} className={classes.marginAuto}>
-                  <Grid container>
-                    <Grid item xs={12}>
-                      <Typography variant="h5">Tom Williams</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Rating value={5} readOnly />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant="subtitle2">
-                        I recommend Norma as a pet sitter!
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Card>
           </Grid>
         </Grid>
       </div>
@@ -355,4 +242,4 @@ class ProfileDetails extends Component {
   }
 }
 
-export default withStyles(detailsPageStyle)(ProfileDetails);
+export default withStyles(detailsStyle)(ProfileDetails);
