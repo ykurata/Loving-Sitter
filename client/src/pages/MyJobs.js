@@ -1,34 +1,43 @@
 import React, { Component } from "react";
-import Moment from 'react-moment';
 import axios from "axios";
+import Moment from 'react-moment';
 
-import Grid from "@material-ui/core/Grid";
-import NavigationBar from "./Navbar";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
-import Rating from "@material-ui/lab/Rating";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import RoomIcon from "@material-ui/icons/Room";
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+
+import NavigationBar from "./Navbar";
 
 const MyJobsStyle = theme => ({
   root: {
-    backgroundColor: '#f8f6f6'
+    flexGrow: 1,
+    marginBottom: "50px"
   },
   bigAvatar: {
     width: 100,
     height: 100,
     margin: "10px"
   },
-  contactBtn: {
-    backgroundColor: "orange",
-    color: "#fff"
+  location: {
+    marginTop: "10px"
   },
-  payBtn: {
-    backgroundColor: "green",
-    color: "#fff"
+  paper: {
+    padding: theme.spacing(2),
+    margin: 'auto',
+    maxWidth: 600,
+    marginTop: "20px"
+  },  
+  button: {
+    marginLeft: "10px",
+    marginBottom: "10px"
   }
 });
 
@@ -39,7 +48,10 @@ class MyJobs extends Component {
       sentRequests: [],
       recievedRequests: [],
       token: localStorage.getItem("jwtToken"),
-    }
+      anchorEl: null,
+      setAnchorEl: null,
+    };
+    this.updateStatus = this.updateStatus.bind(this);
   }
   
   componentDidMount() {
@@ -73,392 +85,240 @@ class MyJobs extends Component {
       });
   }
 
+  // Update request status 
+  updateStatus(item) {
+    const request = {
+      senderId: item.senderId,
+      recieverId: item.recieverId,
+      startDate: item.startDate,
+      endDate: item.endDate,
+      accepted: true
+    }
+    axios.put(`request/update/${item._id}`, request, { headers: { Authorization: `Bearer ${this.state.token}` }})
+    .then(res => {
+      console.log(res.data);
+    })
+      axios.get('/request/get-requests', { headers: { Authorization: `Bearer ${this.state.token}` }})
+      .then(res => {
+        this.setState({
+          sentRequests: res.data
+        });
+        console.log("Accepted the request");
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    .catch(err => {
+      console.log(err);
+    });
+  }
+
+  // Remove a request 
+  removeRequest(item) {
+    axios.delete(`request/delete/${item._id}`, { headers: { Authorization: `Bearer ${this.state.token}` }})
+    .then(res => {
+      console.log("successfully deleted");
+    })
+      axios.get('/request/get-requests', { headers: { Authorization: `Bearer ${this.state.token}` }})
+      .then(res => {
+        this.setState({
+          sentRequests: res.data
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    .catch(err => {
+      console.log(err);
+    });
+  }
+
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
   render() {
-    const { classes } = this.props
+    const { classes } = this.props;
+    const open = Boolean(this.state.anchorEl);
+    const ITEM_HEIGHT = 48;
+    const { sentRequests, recievedRequests } = this.state;
+
+    let Srequests;
+    if (sentRequests.length > 0) {
+      Srequests = sentRequests.map((item, i) => (
+        <Paper className={classes.paper} key={i}>
+          <Grid container spacing={2}>
+            <Grid item>
+              <Avatar className={classes.bigAvatar} alt="complex" src={item.reciever_info[0].photoUrl} />
+            </Grid>
+            <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={2}>
+                <Grid item xs>
+                  <Typography gutterBottom variant="subtitle1">
+                    {item.reciever_info[0].firstName} {item.reciever_info[0].lastName}
+                  </Typography>
+                  <Typography variant="body2" gutterBottom>
+                    From: <Moment format="YYYY/MM/DD">{item.startDate}</Moment>
+                  </Typography>
+                  <Typography variant="body2" gutterBottom>
+                    To: <Moment format="YYYY/MM/DD">{item.endDate}</Moment>
+                  </Typography>
+                  <Grid container className={classes.location}>
+                    <Grid item>
+                      <RoomIcon color="secondary"/>
+                    </Grid>
+                    <Typography variant="body2" color="textSecondary">
+                      {item.reciever_info[0].address}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  {item.accepted === true ?
+                    <Typography variant="body2" style={{ cursor: 'pointer' }}>
+                      Status: Accepted
+                    </Typography>
+                  : <Typography variant="body2" style={{ cursor: 'pointer' }}>
+                      Status: Pending
+                    </Typography>
+                  }
+                  <Button size="small" color="secondary" onClick={(e) => { if (window.confirm('Are you sure you wish to delete this item?')) this.removeRequest(item) } }>
+                    Remove
+                  </Button>
+                </Grid>
+              </Grid>
+              <Grid item>
+                <Typography variant="subtitle1">$ {item.reciever_info[0].rate}/hr</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Paper>
+      ));
+    } else {
+      Srequests = <Grid item xs={12} align='center'>
+                    <Typography variant="subtitle1">There is no sent requests</Typography>
+                  </Grid>
+    }
+
+    let Rrequests;
+    if (recievedRequests.length > 0) {
+      Rrequests = recievedRequests.map((item, i) => (
+        <Paper className={classes.paper} key={i}>
+          <Grid container spacing={2}>
+            <Grid item>
+              <Avatar className={classes.bigAvatar} alt="complex" src={item.sender_info[0].photoUrl} />
+            </Grid>
+            <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={2}>
+                <Grid item xs>
+                  <Typography gutterBottom variant="subtitle1">
+                    {item.sender_info[0].firstName} {item.sender_info[0].lastName}
+                  </Typography>
+                  <Typography variant="body2" gutterBottom>
+                    From: <Moment format="YYYY/MM/DD">{item.startDate}</Moment>
+                  </Typography>
+                  <Typography variant="body2" gutterBottom>
+                    To: <Moment format="YYYY/MM/DD">{item.endDate}</Moment>
+                  </Typography>
+                  <Grid container className={classes.location}>
+                    <Grid item>
+                      <RoomIcon color="secondary"/>
+                    </Grid>
+                    <Typography variant="body2" color="textSecondary">
+                      {item.sender_info[0].address}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid container>
+                  {item.accepted === false ?
+                    <Grid item>
+                      <Button 
+                        size="small" 
+                        className={classes.button}
+                        color="secondary" 
+                        variant="contained" 
+                        onClick={(e) => this.updateStatus(item)}
+                      >
+                        Accept
+                      </Button> 
+                      <Button 
+                        size="small" 
+                        color="primary" 
+                        variant="contained" 
+                        className={classes.button}
+                        onClick={(e) => { if (window.confirm('Are you sure you wish to decline this request?')) this.removeRequest(item) } }
+                      >
+                        Decline
+                      </Button> 
+                    </Grid>   
+                  : <Typography variant="body2" style={{ cursor: 'pointer' }}>
+                      Status: Accepted
+                    </Typography>
+                  }
+                </Grid>
+              </Grid>
+              <Grid item>
+                <IconButton
+                  aria-label="more"
+                  aria-controls="long-menu"
+                  aria-haspopup="true"
+                  onClick={this.handleClick}
+                >
+                  <MoreVertIcon />
+                </IconButton>  
+                <Menu
+                  id="long-menu"
+                  anchorEl={this.state.anchorEl}
+                  keepMounted
+                  open={open}
+                  onClose={this.handleClose}
+                  PaperProps={{
+                    style: {
+                      maxHeight: ITEM_HEIGHT * 4.5,
+                      width: 200,
+                    },
+                  }}
+                >
+                  <MenuItem>Contact User</MenuItem>
+                </Menu>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Paper>
+      ));
+    } else {
+      Rrequests = <Grid item xs={12} align='center'>
+                    <Typography variant="subtitle1">There is no recieved requests</Typography>
+                  </Grid>
+    }
+    
+
     return (
       <div>
         <NavigationBar></NavigationBar>
-        <Grid container>
-          <Grid item xs={12} className="center">
-            <h1>My Job Requests</h1>
-          </Grid>
-          <Grid item xs={12} className="center">
-            <h2>Sent Job Requests</h2>
-          </Grid>
-
-          <Grid item xs={2}></Grid>
-
-          <Grid item xs={8}>
-            <Card>
-              <div>
-                <Grid container spacing={3}>
-                  <Grid
-                    item
-                    xs={2}
-                    container
-                    spacing={0}
-                    align="center"
-                    justify="center"
-                    direction="column"
-                  >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={require("../images/07cc6abd390ab904abbf31db5e6ea20357f8b127.png")}
-                      className={classes.bigAvatar}
-                    />
-                  </Grid>
-
-                  <Grid item xs={10}>
-                    <Grid container spacing={3}>
-                      <Grid item xs={3}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            Mc Barkly
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Box
-                          component="fieldset"
-                          borderColor="transparent"
-                          className="mt-1 pt-0"
-                        >
-                          <Rating value={5} readOnly />
-                        </Box>
-                      </Grid>
-
-                      <Grid item xs={2}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            $200/hr
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-
-                      <Grid item xs={4}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            Status: Pending
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-
-                      <Grid item xs={12} className="pt-0">
-                        <CardContent className="pt-0">
-                          <Typography component="h5" variant="h5">
-                            Location: 1600 Amphitheatre Pkwy, Mountain View, CA
-                            94043, United States
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </div>
-            </Card>
-          </Grid>
-          <Grid item xs={2}></Grid>
-
-          <Grid item xs={12} className="center">
-            <h2>Recieved Job Requests</h2>
-          </Grid>
-
-          {/* Loop code will start from here */}
-          <Grid item xs={2}></Grid>
-
-          <Grid item xs={8}>
-            <Card className="mt-1 mb-1">
-              <div>
-                <Grid container spacing={3}>
-                  <Grid
-                    item
-                    xs={2}
-                    container
-                    spacing={0}
-                    align="center"
-                    justify="center"
-                    direction="column"
-                  >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={require("../images/1a350ede83e5c0c4b87586c0d4bad0f66b86da37.png")}
-                      className={classes.bigAvatar}
-                    />
-                  </Grid>
-
-                  <Grid item xs={10}>
-                    <Grid container spacing={3}>
-                      <Grid item xs={3}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            FName LName
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Box
-                          component="fieldset"
-                          borderColor="transparent"
-                          className="mt-1 pt-0"
-                        >
-                          <Rating value={5} readOnly />
-                        </Box>
-                      </Grid>
-
-                      <Grid item xs={2}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            $900/hr
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-
-                      <Grid item xs={4}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            {this.state.status === ""
-                              ? "Status: Pending"
-                              : this.state.status === "accepted"
-                              ? "Status: Accepted"
-                              : "Status: Declined"}
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-
-                      <Grid item xs={5} className="pt-0">
-                        <CardContent className="pt-0">
-                          <Typography component="h5" variant="h5">
-                            Date: 1/1/2018 To 1/1/2019
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-                      <Grid item xs={1} className="pt-0"></Grid>
-
-                      <Grid item xs={3} className="pt-0">
-                        {this.state.status === "" ? (
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                            size="large"
-                            onClick={this.jobRequestResponse}
-                            value="accepted"
-                          >
-                            Accept
-                          </Button>
-                        ) : (
-                          ""
-                        )}
-                      </Grid>
-
-                      <Grid item xs={3} className="pt-0 pr-2">
-                        {this.state.status === "" ? (
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            fullWidth
-                            size="large"
-                            onClick={this.jobRequestResponse}
-                            value="declined"
-                          >
-                            Decline
-                          </Button>
-                        ) : this.state.status === "accepted" ? (
-                          <Button
-                            variant="contained"
-                            className={classes.contactBtn}
-                            fullWidth
-                            size="large"
-                          >
-                            Contact User
-                          </Button>
-                        ) : (
-                          ""
-                        )}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </div>
-            </Card>
-          </Grid>
-          <Grid item xs={2}></Grid>
-          {/* Loop code will end here. All code underneath is unnecessary and is only used for templating and testing */}
-
-          {/* Contact User button view */}
-
-          <Grid item xs={2}></Grid>
-
-          <Grid item xs={8}>
-            <Card className="mt-1">
-              <div>
-                <Grid container spacing={3}>
-                  <Grid
-                    item
-                    xs={2}
-                    container
-                    spacing={0}
-                    align="center"
-                    justify="center"
-                    direction="column"
-                  >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={require("../images/1a350ede83e5c0c4b87586c0d4bad0f66b86da37.png")}
-                      className={classes.bigAvatar}
-                    />
-                  </Grid>
-
-                  <Grid item xs={10}>
-                    <Grid container spacing={3}>
-                      <Grid item xs={3}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            FName LName
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Box
-                          component="fieldset"
-                          borderColor="transparent"
-                          className="mt-1 pt-0"
-                        >
-                          <Rating value={5} readOnly />
-                        </Box>
-                      </Grid>
-
-                      <Grid item xs={2}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            $900/hr
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-
-                      <Grid item xs={4}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            Status: Pending
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-
-                      <Grid item xs={5} className="pt-0">
-                        <CardContent className="pt-0">
-                          <Typography component="h5" variant="h5">
-                            Date: 1/1/2018 To 1/1/2019
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-                      <Grid item xs={1} className="pt-0"></Grid>
-                      <Grid item xs={3} className="pt-0"></Grid>
-
-                      <Grid item xs={3} className="pt-0 pr-2">
-                        <Button
-                          variant="contained"
-                          className={classes.contactBtn}
-                          fullWidth
-                          size="large"
-                        >
-                          Contact User
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </div>
-            </Card>
-          </Grid>
-          <Grid item xs={2}></Grid>
-
-          {/* Pay user button view */}
-          <Grid item xs={2}></Grid>
-
-          <Grid item xs={8}>
-            <Card className={"mt-1 mb-1"}>
-              <div>
-                <Grid container spacing={3}>
-                  <Grid
-                    item
-                    xs={2}
-                    container
-                    spacing={0}
-                    align="center"
-                    justify="center"
-                    direction="column"
-                  >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={require("../images/1a350ede83e5c0c4b87586c0d4bad0f66b86da37.png")}
-                      className={classes.bigAvatar}
-                    />
-                  </Grid>
-
-                  <Grid item xs={10}>
-                    <Grid container spacing={3}>
-                      <Grid item xs={3}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            FName LName
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Box
-                          component="fieldset"
-                          borderColor="transparent"
-                          className="mt-1 pt-0"
-                        >
-                          <Rating value={5} readOnly />
-                        </Box>
-                      </Grid>
-
-                      <Grid item xs={2}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            $900/hr
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-
-                      <Grid item xs={4}>
-                        <CardContent className="pb-0">
-                          <Typography component="h5" variant="h5">
-                            Status: Pending
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-
-                      <Grid item xs={5} className="pt-0">
-                        <CardContent className="pt-0">
-                          <Typography component="h5" variant="h5">
-                            Date: 1/1/2018 To 1/1/2019
-                          </Typography>
-                        </CardContent>
-                      </Grid>
-                      <Grid item xs={1} className="pt-0"></Grid>
-                      <Grid item xs={3} className="pt-0"></Grid>
-
-                      <Grid item xs={3} className="pt-0 pr-2">
-                        <Button
-                          variant="contained"
-                          className={classes.payBtn}
-                          fullWidth
-                          size="large"
-                        >
-                          Pay Now
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </div>
-            </Card>
-          </Grid>
-          <Grid item xs={2}></Grid>
-        </Grid>
-      </div>
+        <div className={classes.root}>
+          <Grid container>
+            <Grid item xs={12} align='center'>
+              <h1>My Job Requests</h1>
+            </Grid>
+            <Grid item xs={12} align='center'>
+              <h2>Your Sent Job Requests</h2>
+            </Grid>
+            <Grid container>
+              {Srequests}
+            </Grid>
+            <Grid item xs={12} align='center' style={{ marginTop: "20px" }}>
+              <h2>Job Requests from Others</h2>
+            </Grid> 
+            <Grid container>
+              {Rrequests}
+            </Grid> 
+          </Grid> 
+        </div>   
+      </div>    
     );
   }
 }

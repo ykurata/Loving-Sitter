@@ -30,7 +30,6 @@ handleDropOffChange = event => {
   this.setState({ dropOff: event.target.value });
 };
   render() {
-    const { classes } = this.props;
     return (
       <div>
         <NavigationBar></NavigationBar>
