@@ -1,34 +1,27 @@
 import React, { Component } from "react";
+import axios from "axios";
+import { Link } from 'react-router-dom';
+
 import Grid from "@material-ui/core/Grid";
-import "../App.scss";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-
 import Avatar from "@material-ui/core/Avatar";
 import NavigationBar from "./Navbar";
-
 import { withStyles } from "@material-ui/core/styles";
-
 import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
 import RoomIcon from "@material-ui/icons/Room";
-
 import TextField from "@material-ui/core/TextField";
-
 import InputAdornment from "@material-ui/core/InputAdornment";
-
 import SearchIcon from "@material-ui/icons/Search";
 
 import "date-fns";
-import axios from "axios";
-import { Link } from 'react-router-dom';
+import "../App.scss";
 
-
-
-const photoPageStyle = theme => ({
+const ProfileListStyle = theme => ({
   bigAvatar: {
     width: 100,
     height: 100,
@@ -54,7 +47,7 @@ const initalState = {
   profiles: []
 };
 
-class ProfileListPage extends Component {
+class ProfileList extends Component {
   state = initalState;
 
   handleLocationChange = event => {
@@ -288,4 +281,4 @@ class ProfileListPage extends Component {
     );
   }
 }
-export default withStyles(photoPageStyle)(ProfileListPage);
+export default withStyles(ProfileListStyle)(ProfileList);

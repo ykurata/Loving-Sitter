@@ -1,22 +1,14 @@
 import React, { Component } from "react";
 
-import NavigationBar from "./Navbar";
-
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
 
 import "../App.scss";
 
+import NavigationBar from "./Navbar";
 
-const landingPageStyle = theme => ({
-  marginAdjust: {
-    top: "100%"
-  }
-});
-
-class LandingPage extends Component {
+class Landing extends Component {
 state = {
   location: "",
   dropIn: "",
@@ -105,8 +97,7 @@ handleDropOffChange = event => {
                     variant="contained"
                     type="submit"
                     fullWidth
-                    className={`${"submit-button"} ${classes.marginAdjust}`}
-                    // onClick={this.createMessage}
+                    style={{ backgroundColor: "#f04040", color: "white", marginTop: "30px"}}
                   >
                     FIND MY DOG SITTER
                   </Button>
@@ -123,4 +114,4 @@ handleDropOffChange = event => {
   }
 }
 
-export default withStyles(landingPageStyle)(LandingPage);
+export default Landing;

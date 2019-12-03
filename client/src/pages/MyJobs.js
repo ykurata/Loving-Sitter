@@ -13,7 +13,7 @@ import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 
-const photoPageStyle = theme => ({
+const MyJobsStyle = theme => ({
   root: {
     backgroundColor: '#f8f6f6'
   },
@@ -31,7 +31,6 @@ const photoPageStyle = theme => ({
     color: "#fff"
   }
 });
-
 
 class MyJobs extends Component {
   constructor(props) {
@@ -464,4 +463,4 @@ class MyJobs extends Component {
   }
 }
 
-export default withStyles(photoPageStyle)(MyJobs);
+export default withStyles(MyJobsStyle)(MyJobs);

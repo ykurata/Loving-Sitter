@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import openSocket from "socket.io-client";
 
-import "../App.scss";
-import NavigationBar from "./Navbar";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
@@ -18,8 +16,11 @@ import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import "../App.scss";
 
-const messagesPageStyle = theme => ({
+import NavigationBar from "./Navbar";
+
+const messagesStyle = theme => ({
   list: {
     maxHeight: "81vh",
     overflow: "auto"
@@ -120,7 +121,7 @@ const messagesPageStyle = theme => ({
   }
 });
 
-class MessagesPage extends Component {
+class Messages extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -508,4 +509,4 @@ class MessagesPage extends Component {
   }
 }
 
-export default withStyles(messagesPageStyle)(MessagesPage);
+export default withStyles(messagesStyle)(Messages);
