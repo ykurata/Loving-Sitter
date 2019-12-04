@@ -13,6 +13,7 @@ import ProfileList from "./pages/ProfileList";
 import EditProfile from "./pages/EditProfile";
 import ProfilePayment from "./pages/ProfilePayment";
 import MyJobs from "./pages/MyJobs";
+import Request from "./pages/Request";
 import ProfileDetails from "./pages/ProfileDetails";
 import PrivateRoute from "./pages/PrivateRoute";
 import Messages from "./pages/Messages";
@@ -28,6 +29,7 @@ function App() {
         <PrivateRoute path="/profile-payment" component={ProfilePayment} />
         <PrivateRoute path="/profile-photo" component={Photo} />
         <PrivateRoute path="/my-jobs" component={MyJobs} />
+        <PrivateRoute path="/request" component={Request} />
         <Route exact path="/" component={Landing} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={SignUp} />
