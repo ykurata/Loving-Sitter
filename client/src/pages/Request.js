@@ -58,16 +58,36 @@ class Request extends Component {
       });
   }
 
+  // Remove a request 
+  removeRequest(item) {
+    axios.delete(`request/delete/${item._id}`, { headers: { Authorization: `Bearer ${this.state.token}` }})
+    .then(res => {
+      console.log("successfully deleted");
+    })
+      axios.get('/request/get-requests', { headers: { Authorization: `Bearer ${this.state.token}` }})
+      .then(res => {
+        this.setState({
+          sentRequests: res.data
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    .catch(err => {
+      console.log(err);
+    });
+  }
+
   render() {
     const { classes } = this.props;
     const { sentRequests } = this.state;
     let requests;
     if (sentRequests.length > 0) {
       requests = sentRequests.map((item, i) => (
-        <Grid item xs={12} align='center' className={classes.container}>
+        <Grid item xs={12} align='center' className={classes.container} key={i}>
           <List className={classes.root}>
             <ListItem  divider={true}>
-              <ListItemAvatar>
+              <ListItemAvatar className={classes.avatar} src={item.reciever_info[0].photoUrl}>
                 <Avatar className={classes.avatar} alt="complex" src={item.reciever_info[0].photoUrl} />
               </ListItemAvatar>
               <ListItemText>
@@ -75,13 +95,22 @@ class Request extends Component {
                   <Typography variant='h5'>{item.reciever_info[0].firstName} {item.reciever_info[0].lastName}</Typography>
                 </Grid>
                 <Grid item>
-                  <p>From: {item.startDate} - {item.endDate}</p>
+                <Typography variant="body2" gutterBottom>From: <Moment format="MM/DD/YYYY">{item.startDate}</Moment> - <Moment format="MM/DD/YYYY">{item.endDate}</Moment></Typography>
                 </Grid>
                 <Grid item>
-                  <p>Status: {item.accepted}</p>
+                  {item.accepted === true ?
+                    <p>Status: Accepted</p>
+                  : <p>Status: Pending</p>
+                  }
                 </Grid>
                 <Grid item>
-                  <Button color="secondary">Remove</Button>
+                  <Button 
+                    variant="outlined" 
+                    color="secondary"
+                    onClick={(e) => { if (window.confirm('Are you sure you wish to delete this item?')) this.removeRequest(item) } }
+                  >
+                    Remove
+                  </Button>
                 </Grid>
               </ListItemText>
               <ListItemText>
@@ -107,35 +136,7 @@ class Request extends Component {
             <Grid item xs={12} align='center'>
               <h1>Your Sent Request</h1>
             </Grid>
-            <Grid item xs={12} align='center' className={classes.container}>
-              <List className={classes.root}>
-                <ListItem  divider={true}>
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar}>
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText>
-                    <Grid item>
-                      <Typography variant='h5'>Yasuko Kurata</Typography>
-                    </Grid>
-                    <Grid item>
-                      <p>From: 12/4/2019 - 12/4/2019</p>
-                    </Grid>
-                    <Grid item>
-                      <p>Status: Accepted</p>
-                    </Grid>
-                    <Grid item>
-                      <Button color="secondary">Remove</Button>
-                    </Grid>
-                  </ListItemText>
-                  <ListItemText>
-                    <Grid item style={{marginBottom: "80px"}}>
-                      <p>$ 18/hr</p>
-                    </Grid>
-                  </ListItemText>
-                </ListItem>        
-              </List>
-            </Grid>
+            {requests}
           </Grid>
         </div>
       </div>
