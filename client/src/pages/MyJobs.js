@@ -29,6 +29,9 @@ const MyJobsStyle = theme => ({
     margin: "10px",
     marginRight: "30px"
   },
+  button: {
+    marginRight: "20px"
+  }
 });
 
 
@@ -50,7 +53,7 @@ class MyJobs extends Component {
     axios.get('/request/get-requested', { headers: { Authorization: `Bearer ${this.state.token}` }})
       .then(res => {
         this.setState({
-          sentRequests: res.data
+          recievedRequests: res.data
         });
       })
       .catch(err => {
@@ -64,10 +67,10 @@ class MyJobs extends Component {
     .then(res => {
       console.log("successfully deleted");
     })
-      axios.get('/request/get-requests', { headers: { Authorization: `Bearer ${this.state.token}` }})
+      axios.get('/request/get-requested', { headers: { Authorization: `Bearer ${this.state.token}` }})
       .then(res => {
         this.setState({
-          sentRequests: res.data
+          recievedRequests: res.data
         });
       })
       .catch(err => {
@@ -103,15 +106,36 @@ class MyJobs extends Component {
                   : <p>Status: Pending</p>
                   }
                 </Grid>
-                <Grid item>
-                  <Button 
-                    variant="outlined" 
-                    color="secondary"
-                    onClick={(e) => { if (window.confirm('Are you sure you wish to delete this item?')) this.removeRequest(item) } }
-                  >
-                    Remove
-                  </Button>
-                </Grid>
+                
+                  {item.accepted === true ?
+                    <Grid container>
+                      <Grid item class={classes.button}>
+                        <Button variant="outlined" color="primary" >
+                          Contact User
+                        </Button>
+                      </Grid> 
+                    </Grid>  
+                  : <Grid container>
+                      <Grid item class={classes.button}>
+                        <Button variant="outlined" color="secondary" >
+                          Accept
+                        </Button>
+                      </Grid>  
+                      <Grid item class={classes.button}>
+                        <Button variant="outlined" color="primary" >
+                          Contact User
+                        </Button>
+                      </Grid> 
+                      <Grid item>
+                        <Button 
+                          variant="outlined" 
+                          onClick={(e) => { if (window.confirm('Are you sure you wish to decline this request?')) this.removeRequest(item) } }
+                        >
+                          Decline
+                        </Button>
+                      </Grid>
+                    </Grid>  
+                  }
               </ListItemText>
               <ListItemText>
                 <Grid item style={{marginBottom: "80px"}}>
