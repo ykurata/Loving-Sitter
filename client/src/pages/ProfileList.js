@@ -7,9 +7,11 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
-import NavigationBar from "./Navbar";
 import { withStyles } from "@material-ui/core/styles";
 import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
@@ -18,49 +20,41 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 
+import NavigationBar from "./Navbar";
+
 import "date-fns";
-import "../App.scss";
 
 const ProfileListStyle = theme => ({
-  bigAvatar: {
+  avatar: {
     width: 100,
     height: 100,
-    margin: "auto"
+    margin: "auto",
+    marginTop: "20px",
+    marginBottom: "20px"
   },
-
-  cardDivider: {
-    borderBottom: "2px solid lightgrey"
+  card: {
+    maxWidth: 345,
+    margin: "30px"
   },
-
-  dateOutline: {
-    border: "1px solid rgba(0, 0, 0, 0.23)",
-    borderRadius: "4px",
-    height: "85%"
+  location: {
+    height: 50
   }
 });
 
-const initalState = {
-  user: {
-    location: "",
-    selectedDate: ""
-  },
-  profiles: []
-};
-
 class ProfileList extends Component {
-  state = initalState;
-
-  handleLocationChange = event => {
-    let user = { ...this.state.user };
-    user.location = event.target.value;
-    this.setState({ user });
-  };
-
-  handleDateChange = event => {
-    let user = { ...this.state.user };
-    user.selectedDate = event.target.value;
-    this.setState({ user });
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      location: "",
+      date: "",
+      profiles: []
+    }
+  }
+  
+  // Update user input
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  }
 
   componentDidMount() {
     // Get token from local storage
@@ -82,200 +76,151 @@ class ProfileList extends Component {
     return (
       <div>
         <NavigationBar></NavigationBar>
-        <Grid container>
-          <Grid item xs={12} className="center">
+        <Grid container justify="center">
+          <Grid item xs={12} align='center'>
             <h1>Your search results</h1>
           </Grid>
-
-          <Grid item xs={1}></Grid>
-          <Grid item xs={10}>
-            <Grid container spacing={3}>
-              <Grid item xs={3}></Grid>
-              <Grid item xs={4} className="pr-0">
-                <TextField
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon color="secondary" />
-                      </InputAdornment>
-                    )
-                  }}
-                  id="outlined-bare"
-                  placeholder="Search Location"
-                  margin="normal"
-                  variant="outlined"
-                  value={this.state.location}
-                  onChange={this.handleLocationChange}
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={2} className="pl-0">
-                <TextField
-                  type="date"
-                  name="selectedDate"
-                  id="standard-selectedDate"
-                  value={this.state.selectedDate}
-                  onChange={this.handleDateChange}
-                  margin="normal"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={3}></Grid>
-                  {/*Checks if the location search bar is empty, if not, inputs based on address*/}
-              {this.state.user.location.length > 0 ? this.state.profiles.map((profile, key) =>
-                profile.address.toLowerCase().includes(this.state.user.location.toLowerCase()) &&
-                  <Grid item xs={4} align="center" key={key} component={Link} to={`/profile-details/${profile.userId}`} style={{ textDecoration: 'none' }}>
-                    <Card>
-                      <CardActionArea className={classes.cardDivider}>
-                        <CardContent>
-                          <Grid container>
-                            <Grid item xs={4}></Grid>
-
-                            <Grid item xs={4}>
-                              <Avatar
-                                alt="Remy Sharp"
-                                src={profile.photoUrl}
-                                className={classes.bigAvatar}
-                              />
-                            </Grid>
-                            <Grid item xs={4}></Grid>
-                          </Grid>
-                          <Typography
-                            gutterBottom
-                            variant="h5"
-                            component="h2"
-                            className="mb-0 center"
-                          >
-                            {profile.firstName} {profile.lastName}
-                          </Typography>
-
-                          <Typography
-                            variant="body1"
-                            color="textSecondary"
-                            className="center"
-                            component="p"
-                          >
-                            Loving Pet
-                      </Typography>
-
-                          <Grid container spacing={3}>
-                            <Grid item xs={12} className="center">
-                              <Box component="fieldset" borderColor="transparent">
-                                <Rating value={5} readOnly />
-                              </Box>
-                            </Grid>
-                          </Grid>
-
-                          <Typography
-                            variant="body1"
-                            className="center"
-                            component="p"
-                            noWrap
-                          >
-                            <b>{profile.description}</b>
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                      <CardActions>
-                        <Grid container spacing={3}>
-                          <Grid item xs={1}>
-                            <RoomIcon color="secondary" />
-                          </Grid>
-                          <Grid item xs={8}>
-                            <p className="mt-0 mb-0">{profile.address}</p>
-                          </Grid>
-                          <Grid item xs={2}>
-                            <b>
-                              {" "}
-                              <p className="mt-0 mb-0">${profile.rate}/hr </p>
-                            </b>
-                          </Grid>
-                          <Grid item xs={1}></Grid>
-                        </Grid>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-              )
-                :
-                this.state.profiles.map((profile, key) =>
-                  <Grid item xs={4} align="center" key={key} component={Link} to={`/profile-details/${profile.userId}`} style={{ textDecoration: 'none' }}>
-                    <Card>
-                      <CardActionArea className={classes.cardDivider}>
-                        <CardContent>
-                          <Grid container>
-                            <Grid item xs={4}></Grid>
-
-                            <Grid item xs={4}>
-                              <Avatar
-                                alt="Remy Sharp"
-                                src={profile.photoUrl}
-                                className={classes.bigAvatar}
-                              />
-                            </Grid>
-                            <Grid item xs={4}></Grid>
-                          </Grid>
-                          <Typography
-                            gutterBottom
-                            variant="h5"
-                            component="h2"
-                            className="mb-0 center"
-                          >
-                            {profile.firstName} {profile.lastName}
-                          </Typography>
-
-                          <Typography
-                            variant="body1"
-                            color="textSecondary"
-                            className="center"
-                            component="p"
-                          >
-                            Loving Pet
-                      </Typography>
-
-                          <Grid container spacing={3}>
-                            <Grid item xs={12} className="center">
-                              <Box component="fieldset" borderColor="transparent">
-                                <Rating value={5} readOnly />
-                              </Box>
-                            </Grid>
-                          </Grid>
-
-                          <Typography
-                            variant="body1"
-                            className="center"
-                            component="p"
-                            noWrap
-                          >
-                            <b>{profile.description}</b>
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                      <CardActions>
-                        <Grid container spacing={3}>
-                          <Grid item xs={1}>
-                            <RoomIcon color="secondary" />
-                          </Grid>
-                          <Grid item xs={8}>
-                            <p className="mt-0 mb-0">{profile.address}</p>
-                          </Grid>
-                          <Grid item xs={2}>
-                            <b>
-                              {" "}
-                              <p className="mt-0 mb-0">${profile.rate}/hr </p>
-                            </b>
-                          </Grid>
-                          <Grid item xs={1}></Grid>
-                        </Grid>
-                      </CardActions>
-                    </Card>
-                  </Grid>
+          <Grid item xs={4}>
+            <TextField
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon color="secondary" />
+                  </InputAdornment>
                 )
-              }
-
-            </Grid>
+              }}
+              id="outlined-bare"
+              name="location"
+              placeholder="Search Location"
+              margin="normal"
+              variant="outlined"
+              value={this.state.location}
+              onChange={this.onChange}
+              fullWidth
+            />
           </Grid>
-          <Grid item xs={1}></Grid>
+          <Grid item xs={2}>
+            <TextField
+              type="date"
+              name="date"
+              id="standard-selectedDate"
+              value={this.state.date}
+              onChange={this.onChange}
+              margin="normal"
+              variant="outlined"
+              fullWidth
+            />
+          </Grid>    
+          <Grid container justify="center">
+            <Card className={classes.card}>
+              <CardActionArea>
+                <CardContent>
+                  <Grid container>
+                    <Avatar className={classes.avatar} />
+                  </Grid>
+                  <Typography gutterBottom variant="h5" component="h2" align="center">
+                    Yasuko Kurata
+                  </Typography>
+                  <Box component="fieldset" mb={3} borderColor="transparent" align="center">
+                    <Rating value={5} readOnly />
+                  </Box>
+                  <Typography variant="body2" color="textSecondary" component="p" noWrap>
+                    Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
+                    across all continents except Antarctica
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <Divider />
+              <CardActions className={classes.location}>
+                <Grid container>
+                  <RoomIcon color="secondary" />
+                  <Grid item xs={8}>
+                    <Typography component='span' variant="body1">somewhete so</Typography>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Typography  component='span' variant="body1">
+                      <Box textAlign="right" fontWeight="fontWeightBold">
+                        $ 20/hr
+                      </Box>
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </CardActions>
+            </Card>
+
+            <Card className={classes.card}>
+              <CardActionArea>
+                <CardContent>
+                  <Grid container>
+                    <Avatar className={classes.avatar} />
+                  </Grid>
+                  <Typography gutterBottom variant="h5" component="h2" align="center">
+                    Yasuko Kurata
+                  </Typography>
+                  <Box component="fieldset" mb={3} borderColor="transparent" align="center">
+                    <Rating value={5} readOnly />
+                  </Box>
+                  <Typography variant="body2" color="textSecondary" component="p" noWrap>
+                    Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
+                    across all continents except Antarctica
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <Divider />
+              <CardActions className={classes.location}>
+                <Grid container>
+                  <RoomIcon color="secondary" />
+                  <Grid item xs={8}>
+                    <Typography component='span' variant="body1">somewhete so</Typography>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Typography  component='span' variant="body1">
+                      <Box textAlign="right" fontWeight="fontWeightBold">
+                        $ 20/hr
+                      </Box>
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </CardActions>
+            </Card>
+            
+            <Card className={classes.card}>
+              <CardActionArea>
+                <CardContent>
+                  <Grid container>
+                    <Avatar className={classes.avatar} />
+                  </Grid>
+                  <Typography gutterBottom variant="h5" component="h2" align="center">
+                    Yasuko Kurata
+                  </Typography>
+                  <Box component="fieldset" mb={3} borderColor="transparent" align="center">
+                    <Rating value={5} readOnly />
+                  </Box>
+                  <Typography variant="body2" color="textSecondary" component="p" noWrap>
+                    Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
+                    across all continents except Antarctica
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <Divider />
+              <CardActions className={classes.location}>
+                <Grid container>
+                  <RoomIcon color="secondary" />
+                  <Grid item xs={8}>
+                    <Typography component='span' variant="body1">somewhete so</Typography>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Typography  component='span' variant="body1">
+                      <Box textAlign="right" fontWeight="fontWeightBold">
+                        $ 20/hr
+                      </Box>
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </CardActions>
+            </Card>
+
+          </Grid> 
         </Grid>
       </div>
     );
