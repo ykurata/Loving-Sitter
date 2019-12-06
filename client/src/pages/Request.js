@@ -132,7 +132,7 @@ class Request extends Component {
       <div>
         <NavigationBar></NavigationBar>
         <div>
-          <Grid container spacing={3}>
+          <Grid container>
             <Grid item xs={12} align='center'>
               <h1>Your Sent Request</h1>
             </Grid>

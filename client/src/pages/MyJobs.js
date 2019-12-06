@@ -155,14 +155,14 @@ class MyJobs extends Component {
     return (
       <div>
         <NavigationBar></NavigationBar>
-        <div>
-          <Grid container spacing={3}>
+        
+          <Grid container>
             <Grid item xs={12} align='center'>
               <h1>My Jobs</h1>
             </Grid>
             {requests}
           </Grid>
-        </div>
+      
       </div>
     );
   }
