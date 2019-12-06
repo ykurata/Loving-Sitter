@@ -19,6 +19,10 @@ const styles = theme => ({
   root: {
     flexGrow: 1
   },
+  avatar: {
+    width: 50,
+    height: 50,
+  },
   menuButton: {
     marginRight: theme.spacing(2)
   },
@@ -79,19 +83,15 @@ class NavigationBar extends Component {
     
     // Display default photo if there is no profile photo
     let avatar;
-    if (this.state.profile) {
+    if (this.state.profile.photoUrl) {
       avatar =  <Avatar
                   alt="Remy Sharp"
                   src={this.state.profile.photoUrl}
-                  className={classes.bigAvatar}
+                  className={classes.avatar}
                 />
     } else {
-      avatar = <Avatar
-                  className={classes.bigAvatar}
-                  alt="Remy Sharp" 
-                >
-                  <AccountCircleIcon />
-                </Avatar>   
+      avatar = <AccountCircleIcon className={classes.avatar}/>
+               
     } 
 
     let buttons;

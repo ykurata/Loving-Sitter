@@ -314,13 +314,8 @@ class Messages extends Component {
                                 src={item.photoUrl}
                                 id={item.userId}
                               />
-                            : <Avatar
-                                className={classes.bigAvatar}
-                                alt="Remy Sharp" 
-                                id={item.userId}
-                              >
-                                <AccountCircleIcon />
-                              </Avatar>   
+                            : 
+                              <AccountCircleIcon className={classes.bigAvatar} id={item.userId}/>
                             }
                             <Typography id={item.userId} variant="h6">{item.firstName} {item.lastName}</Typography>
                           </ListItem>

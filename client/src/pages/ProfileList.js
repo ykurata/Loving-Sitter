@@ -17,6 +17,7 @@ import RoomIcon from "@material-ui/icons/Room";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 import NavigationBar from "./Navbar";
 
@@ -89,7 +90,9 @@ class ProfileList extends Component {
             <CardActionArea>
               <CardContent>
                 <Grid container>
-                  <Avatar className={classes.avatar} src={profile.photoUrl}/>
+                  {profile.photoUrl ?
+                    <Avatar className={classes.avatar} src={profile.photoUrl}/>
+                  : <AccountCircleIcon className={classes.avatar}/>}
                 </Grid>
                 <Typography gutterBottom variant="h5" component="h2" align="center">
                   {profile.firstName} {profile.lastName}
