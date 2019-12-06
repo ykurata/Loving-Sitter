@@ -73,9 +73,16 @@ class ProfileList extends Component {
   render() {
     const { classes } = this.props;
     const { profiles } = this.state;
+    let filteredProfiles = this.state.profiles.filter(
+      (profile) => {
+        return profile.address.toLowerCase().indexOf(
+          this.state.location.toLocaleLowerCase()) !== -1;
+      }
+    );
+
     let listProfiles;
     if (profiles.length > 0) {
-      listProfiles = profiles.map((profile, i) => 
+      listProfiles = filteredProfiles.map((profile, i) => 
         <Card className={classes.card} key={i} component={Link} to={`/profile-details/${profile.userId}`} style={{ textDecoration: 'none' }}>
           <CardActionArea>
             <CardContent>
