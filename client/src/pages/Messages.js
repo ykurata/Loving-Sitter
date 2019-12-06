@@ -25,12 +25,10 @@ const messagesStyle = theme => ({
     maxHeight: "81vh",
     overflow: "auto"
   },
-
   cardStyle: {
     height: "82vh"
   },
-
-  bigAvatar: {
+  avatar: {
     width: 50,
     height: 50,
     marginBottom: "5px",
@@ -38,7 +36,6 @@ const messagesStyle = theme => ({
     marginLeft: "10px",
     marginRight: "10px"
   },
-
   title: {
     borderTop: "0.5px solid #e6e6e6",
     borderBottom: "0.5px solid #e6e6e6",
@@ -52,35 +49,28 @@ const messagesStyle = theme => ({
     border: "0.5px solid #e6e6e6",
     borderRight: "0px"
   },
-
   messagesArea: {
     height: "70vh",
     overflow: "auto",
   },
-
   messagingArea: {
     border: "1px solid #e6e6e6"
   },
-
   textField: {
     width: "100%",
     paddingLeft: "10px"
   },
-
   input1: {
     height: "8vh"
   },
-
   buttonContainer: {
     height: "100%"
   },
-
   sendButton: {
     margin: theme.spacing(1),
     top: "30%",
     backgroundColor: "#f04040"
   },
-
   sentMessages: {
     textAlign: "right",
     paddingRight: "10px",
@@ -309,13 +299,13 @@ class Messages extends Component {
                           > 
                             {item.photoUrl ?
                               <Avatar
-                                className={classes.bigAvatar}
+                                className={classes.avatar}
                                 alt="Remy Sharp" 
                                 src={item.photoUrl}
                                 id={item.userId}
                               />
                             : 
-                              <AccountCircleIcon className={classes.bigAvatar} id={item.userId} color="disabled"/>
+                              <AccountCircleIcon className={classes.avatar} id={item.userId} color="disabled"/>
                             }
                             <Typography id={item.userId} variant="h6">{item.firstName} {item.lastName}</Typography>
                           </ListItem>
@@ -343,7 +333,7 @@ class Messages extends Component {
                     > 
                       {item.members_info[1].photoUrl ?
                         <Avatar
-                          className={classes.bigAvatar}
+                          className={classes.avatar}
                           id={item._id} 
                           firstname={item.members_info[1].firstName} 
                           lastname={item.members_info[1].lastName}
@@ -351,16 +341,9 @@ class Messages extends Component {
                           alt="Remy Sharp" 
                           src={item.members_info[1].photoUrl}
                         />
-                      : <Avatar
-                          className={classes.bigAvatar} 
-                          id={item._id} 
-                          firstname={item.members_info[1].firstName} 
-                          lastname={item.members_info[1].lastName}
-                          photourl={item.members_info[1].photoUrl}
-                          alt="Remy Sharp" 
-                        >
-                          <AccountCircleIcon />
-                        </Avatar>  
+                      : 
+                        <AccountCircleIcon className={classes.avatar} id={item._id} color="disabled"/>
+                       
                       }
                       <Typography 
                         id={item._id} 
@@ -386,7 +369,7 @@ class Messages extends Component {
                     > 
                       {item.members_info[0].photoUrl ?
                         <Avatar
-                          className={classes.bigAvatar}
+                          className={classes.avatar}
                           id={item._id} 
                           firstname={item.members_info[0].firstName} 
                           lastname={item.members_info[0].lastName}
@@ -394,16 +377,8 @@ class Messages extends Component {
                           alt="Remy Sharp" 
                           src={item.members_info[0].photoUrl}
                         />
-                      : <Avatar
-                          className={classes.bigAvatar}
-                          id={item._id} 
-                          firstname={item.members_info[0].firstName} 
-                          lastname={item.members_info[0].lastName}
-                          photourl={item.members_info[0].photoUrl}
-                          alt="Remy Sharp" 
-                        >
-                          <AccountCircleIcon />
-                        </Avatar>  
+                      : 
+                        <AccountCircleIcon className={classes.avatar} id={item._id} color="disabled"/>
                       }
                       <Typography 
                         id={item._id} 
@@ -428,24 +403,19 @@ class Messages extends Component {
                     <Grid item xs={1}>
                       <Avatar
                       alt="Remy Sharp"
-                      className={classes.bigAvatar}
+                      className={classes.avatar}
                       src={this.state.photoUrl}
                       />
                     </Grid>    
                   : this.state.photoUrl === null ?
                     <Grid item xs={1}>
-                      <Avatar
-                      alt="Remy Sharp"
-                      className={classes.bigAvatar}
-                      >
-                        <AccountCircleIcon />
-                      </Avatar>  
+                      <AccountCircleIcon className={classes.avatar} color="disabled"/>
                     </Grid>
                   : 
                     <Grid item xs={1}>
                       <Avatar
                       alt="Remy Sharp"
-                      className={classes.bigAvatar}
+                      className={classes.avatar}
                       style={{ backgroundColor: "white"}}
                       />
                     </Grid>
