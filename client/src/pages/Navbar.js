@@ -135,7 +135,6 @@ class NavigationBar extends Component {
             <MenuItem component={Link} to={"/request"}>
               Requests
             </MenuItem>
-            <MenuItem onClick={this.handleClose}>My account</MenuItem>
             <MenuItem onClick={this.handleLogout}>Log Out</MenuItem>
           </Menu>
         </div>
