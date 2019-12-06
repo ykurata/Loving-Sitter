@@ -11,13 +11,14 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Rating from "@material-ui/lab/Rating";
 import RoomIcon from "@material-ui/icons/Room";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Snackbar, IconButton } from "@material-ui/core";
 
 import NavigationBar from "./Navbar";
 
 
 const detailsStyle = theme => ({
-  bigAvatar: {
+  avatar: {
     width: 300,
     height: 300,
     marginTop: "30px",
@@ -139,11 +140,14 @@ class ProfileDetails extends Component {
             <Grid container align="center">
               <Box width={1} boxShadow={2} style={{marginBottom: "30px"}}>
                 <Grid item>
-                  <Avatar
-                    alt="Your Profile Picture"
-                    src={profile.photoUrl}
-                    className={classes.bigAvatar}
-                  />
+                  {profile.photoUrl ?
+                    <Avatar
+                      alt="Your Profile Picture"
+                      src={profile.photoUrl}
+                      className={classes.avatar}
+                    />
+                  : <AccountCircleIcon className={classes.avatar} color="disabled"/> 
+                  }
                 </Grid>
                 <Grid item>
                   <Typography variant="h4">

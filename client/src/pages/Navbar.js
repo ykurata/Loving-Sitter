@@ -90,7 +90,7 @@ class NavigationBar extends Component {
                   className={classes.avatar}
                 />
     } else {
-      avatar = <AccountCircleIcon className={classes.avatar}/>
+      avatar = <AccountCircleIcon className={classes.avatar} color="disabled"/>
                
     } 
 

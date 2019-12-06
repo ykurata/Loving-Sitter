@@ -92,7 +92,7 @@ class ProfileList extends Component {
                 <Grid container>
                   {profile.photoUrl ?
                     <Avatar className={classes.avatar} src={profile.photoUrl}/>
-                  : <AccountCircleIcon className={classes.avatar}/>}
+                  : <AccountCircleIcon className={classes.avatar} color="disabled"/>}
                 </Grid>
                 <Typography gutterBottom variant="h5" component="h2" align="center">
                   {profile.firstName} {profile.lastName}

@@ -315,7 +315,7 @@ class Messages extends Component {
                                 id={item.userId}
                               />
                             : 
-                              <AccountCircleIcon className={classes.bigAvatar} id={item.userId}/>
+                              <AccountCircleIcon className={classes.bigAvatar} id={item.userId} color="disabled"/>
                             }
                             <Typography id={item.userId} variant="h6">{item.firstName} {item.lastName}</Typography>
                           </ListItem>
