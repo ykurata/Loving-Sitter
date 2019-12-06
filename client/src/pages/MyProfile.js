@@ -3,13 +3,11 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Rating from "@material-ui/lab/Rating";
 import RoomIcon from "@material-ui/icons/Room";
 import { Snackbar, IconButton } from "@material-ui/core";
 
@@ -133,6 +131,9 @@ class MyProfile extends Component {
                     </Box><br></br>
                     {profile.description}
                   </Typography>
+                </Grid>
+                <Grid item style={{marginBottom: "30px"}} >
+                  <Button variant="outlined" color="primary" component={Link} to={'/profile'}>Edit Profile</Button>
                 </Grid>
               </Box>
             </Grid>

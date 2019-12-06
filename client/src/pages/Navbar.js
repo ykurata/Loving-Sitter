@@ -127,7 +127,7 @@ class NavigationBar extends Component {
             onClose={this.handleClose}
           >
             <MenuItem component={Link} to={`/my-profile/${this.state.userId}`}>
-              Profile
+              My Profile
             </MenuItem>
             <MenuItem component={Link} to={"/my-jobs"}>
               My Jobs
