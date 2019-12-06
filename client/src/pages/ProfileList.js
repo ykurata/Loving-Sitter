@@ -130,7 +130,7 @@ class ProfileList extends Component {
         <NavigationBar></NavigationBar>
         <Grid container justify="center">
           <Grid item xs={12} align='center'>
-            <h1>Your search results</h1>
+            <h1>Find Dog Sitters</h1>
           </Grid>
           <Grid item xs={4}>
             <TextField

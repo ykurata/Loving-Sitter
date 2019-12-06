@@ -43,7 +43,7 @@ class NotificationButton extends Component {
           open={open}
           onClose={this.handleClose}
         >
-        <Notification></Notification>
+          <Notification />
         </Menu>
       </span>
     );
