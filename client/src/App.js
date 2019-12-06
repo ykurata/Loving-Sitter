@@ -10,13 +10,14 @@ import Photo from "./pages/Photo";
 import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
 import ProfileList from "./pages/ProfileList";
+import MyProfile from "./pages/MyProfile";
 import EditProfile from "./pages/EditProfile";
 import ProfilePayment from "./pages/ProfilePayment";
 import MyJobs from "./pages/MyJobs";
 import Request from "./pages/Request";
 import ProfileDetails from "./pages/ProfileDetails";
-import PrivateRoute from "./pages/PrivateRoute";
 import Messages from "./pages/Messages";
+import PrivateRoute from "./pages/PrivateRoute";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <BrowserRouter>
         <PrivateRoute path='/profile' component={EditProfile} />
         <PrivateRoute path="/profile-details/:id" component={ProfileDetails} />
+        <PrivateRoute path="/my-profile/:id" component={MyProfile} />
         <PrivateRoute path="/sitter-search" component={ProfileList} />
         <PrivateRoute path="/messages" component={Messages} />
         <PrivateRoute path="/profile-payment" component={ProfilePayment} />
