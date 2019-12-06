@@ -7,8 +7,6 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
@@ -33,6 +31,7 @@ const ProfileListStyle = theme => ({
     marginBottom: "20px"
   },
   card: {
+    width: 345,
     maxWidth: 345,
     margin: "30px"
   },
@@ -73,6 +72,49 @@ class ProfileList extends Component {
 
   render() {
     const { classes } = this.props;
+    const { profiles } = this.state;
+    let listProfiles;
+    if (profiles.length > 0) {
+      listProfiles = profiles.map((profile, i) => 
+        <Card className={classes.card} key={i} component={Link} to={`/profile-details/${profile.userId}`} style={{ textDecoration: 'none' }}>
+          <CardActionArea>
+            <CardContent>
+              <Grid container>
+                <Avatar className={classes.avatar} src={profile.photoUrl}/>
+              </Grid>
+              <Typography gutterBottom variant="h5" component="h2" align="center">
+                {profile.firstName} {profile.lastName}
+              </Typography>
+              <Box component="fieldset" mb={3} borderColor="transparent" align="center">
+                <Rating value={5} readOnly />
+              </Box>
+              <Typography variant="body2" color="textSecondary" component="p" noWrap align="center">
+                {profile.description}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+          <Divider />
+          <CardActions className={classes.location}>
+            <Grid container>
+              <RoomIcon color="secondary" />
+              <Grid item xs={8}>
+                <Typography component='span' variant="body1">{profile.address}</Typography>
+              </Grid>
+              <Grid item xs={2}>
+                <Typography  component='span' variant="body1">
+                  <Box textAlign="right" fontWeight="fontWeightBold">
+                    $ {profile.rate}/hr
+                  </Box>
+                </Typography>
+              </Grid>
+            </Grid>
+          </CardActions>
+        </Card>        
+      )
+    } else {
+      listProfiles = <Typography variant="subtitle1" align="center">There is no profiles</Typography>
+    }
+
     return (
       <div>
         <NavigationBar></NavigationBar>
@@ -112,114 +154,7 @@ class ProfileList extends Component {
             />
           </Grid>    
           <Grid container justify="center">
-            <Card className={classes.card}>
-              <CardActionArea>
-                <CardContent>
-                  <Grid container>
-                    <Avatar className={classes.avatar} />
-                  </Grid>
-                  <Typography gutterBottom variant="h5" component="h2" align="center">
-                    Yasuko Kurata
-                  </Typography>
-                  <Box component="fieldset" mb={3} borderColor="transparent" align="center">
-                    <Rating value={5} readOnly />
-                  </Box>
-                  <Typography variant="body2" color="textSecondary" component="p" noWrap>
-                    Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                    across all continents except Antarctica
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <Divider />
-              <CardActions className={classes.location}>
-                <Grid container>
-                  <RoomIcon color="secondary" />
-                  <Grid item xs={8}>
-                    <Typography component='span' variant="body1">somewhete so</Typography>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Typography  component='span' variant="body1">
-                      <Box textAlign="right" fontWeight="fontWeightBold">
-                        $ 20/hr
-                      </Box>
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </CardActions>
-            </Card>
-
-            <Card className={classes.card}>
-              <CardActionArea>
-                <CardContent>
-                  <Grid container>
-                    <Avatar className={classes.avatar} />
-                  </Grid>
-                  <Typography gutterBottom variant="h5" component="h2" align="center">
-                    Yasuko Kurata
-                  </Typography>
-                  <Box component="fieldset" mb={3} borderColor="transparent" align="center">
-                    <Rating value={5} readOnly />
-                  </Box>
-                  <Typography variant="body2" color="textSecondary" component="p" noWrap>
-                    Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                    across all continents except Antarctica
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <Divider />
-              <CardActions className={classes.location}>
-                <Grid container>
-                  <RoomIcon color="secondary" />
-                  <Grid item xs={8}>
-                    <Typography component='span' variant="body1">somewhete so</Typography>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Typography  component='span' variant="body1">
-                      <Box textAlign="right" fontWeight="fontWeightBold">
-                        $ 20/hr
-                      </Box>
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </CardActions>
-            </Card>
-            
-            <Card className={classes.card}>
-              <CardActionArea>
-                <CardContent>
-                  <Grid container>
-                    <Avatar className={classes.avatar} />
-                  </Grid>
-                  <Typography gutterBottom variant="h5" component="h2" align="center">
-                    Yasuko Kurata
-                  </Typography>
-                  <Box component="fieldset" mb={3} borderColor="transparent" align="center">
-                    <Rating value={5} readOnly />
-                  </Box>
-                  <Typography variant="body2" color="textSecondary" component="p" noWrap>
-                    Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                    across all continents except Antarctica
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <Divider />
-              <CardActions className={classes.location}>
-                <Grid container>
-                  <RoomIcon color="secondary" />
-                  <Grid item xs={8}>
-                    <Typography component='span' variant="body1">somewhete so</Typography>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Typography  component='span' variant="body1">
-                      <Box textAlign="right" fontWeight="fontWeightBold">
-                        $ 20/hr
-                      </Box>
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </CardActions>
-            </Card>
-
+            {listProfiles}
           </Grid> 
         </Grid>
       </div>
