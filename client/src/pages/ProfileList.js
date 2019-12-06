@@ -46,7 +46,8 @@ class ProfileList extends Component {
     this.state = {
       location: "",
       date: "",
-      profiles: []
+      profiles: [],
+      userId: localStorage.getItem("userId")
     }
   }
   
@@ -83,43 +84,45 @@ class ProfileList extends Component {
     let listProfiles;
     if (profiles.length > 0) {
       listProfiles = filteredProfiles.map((profile, i) => 
-        <Card className={classes.card} key={i} component={Link} to={`/profile-details/${profile.userId}`} style={{ textDecoration: 'none' }}>
-          <CardActionArea>
-            <CardContent>
-              <Grid container>
-                <Avatar className={classes.avatar} src={profile.photoUrl}/>
-              </Grid>
-              <Typography gutterBottom variant="h5" component="h2" align="center">
-                {profile.firstName} {profile.lastName}
-              </Typography>
-              <Box component="fieldset" mb={3} borderColor="transparent" align="center">
-                <Rating value={5} readOnly />
-              </Box>
-              <Typography variant="body2" color="textSecondary" component="p" noWrap align="center">
-                {profile.description}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <Divider />
-          <CardActions className={classes.location}>
-            <Grid container>
-              <RoomIcon color="secondary" />
-              <Grid item xs={8}>
-                <Typography component='span' variant="body1">{profile.address}</Typography>
-              </Grid>
-              <Grid item xs={2}>
-                <Typography  component='span' variant="body1">
-                  <Box textAlign="right" fontWeight="fontWeightBold">
-                    $ {profile.rate}/hr
-                  </Box>
+        profile.userId !== this.state.userId ?
+          <Card className={classes.card} key={i} component={Link} to={`/profile-details/${profile.userId}`} style={{ textDecoration: 'none' }}>
+            <CardActionArea>
+              <CardContent>
+                <Grid container>
+                  <Avatar className={classes.avatar} src={profile.photoUrl}/>
+                </Grid>
+                <Typography gutterBottom variant="h5" component="h2" align="center">
+                  {profile.firstName} {profile.lastName}
                 </Typography>
+                <Box component="fieldset" mb={3} borderColor="transparent" align="center">
+                  <Rating value={5} readOnly />
+                </Box>
+                <Typography variant="body2" color="textSecondary" component="p" noWrap align="center">
+                  {profile.description}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+            <Divider />
+            <CardActions className={classes.location}>
+              <Grid container>
+                <RoomIcon color="secondary" />
+                <Grid item xs={8}>
+                  <Typography component='span' variant="body1">{profile.address}</Typography>
+                </Grid>
+                <Grid item xs={2}>
+                  <Typography  component='span' variant="body1">
+                    <Box textAlign="right" fontWeight="fontWeightBold">
+                      $ {profile.rate}/hr
+                    </Box>
+                  </Typography>
+                </Grid>
               </Grid>
-            </Grid>
-          </CardActions>
-        </Card>        
+            </CardActions>
+          </Card>   
+        : null   
       )
     } else {
-      listProfiles = <Typography variant="subtitle1" align="center">There is no profiles</Typography>
+      listProfiles = <Typography variant="h6" align="center" style={{ marginTop: "30px"}}>There is no profiles</Typography>           
     }
 
     return (
