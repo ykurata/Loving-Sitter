@@ -3,12 +3,12 @@ import dbConnection from "./../db/mongoose";
 
 const RequestSchema = mongoose.Schema(
   {
-    userId: {
+    senderId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true
     },
-    requestedUserId: {
+    recieverId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true
@@ -22,15 +22,17 @@ const RequestSchema = mongoose.Schema(
       required: true
     },
     accepted: {
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     paid: {
       type: Boolean,
       default: false
+    },
+    createdAt : {
+      type: Date,
+      default: Date.now
     }
-  },
-  {
-    timestamp: true
   }
 );
 

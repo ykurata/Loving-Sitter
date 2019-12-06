@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-const loginStyles = theme => ({
+const LoginStyles = theme => ({
   paper: {
     marginTop: theme.spacing(18),
     display: 'flex',
@@ -60,7 +60,6 @@ class Login extends Component {
         const decoded = jwt_decode(token);
         localStorage.setItem("jwtToken", token);
         localStorage.setItem("userId", decoded.id);
-        console.log("successfully logged in ");
         this.props.history.push("/profile");
       })
       .catch(err => {
@@ -140,4 +139,4 @@ class Login extends Component {
   }
 }
 
-export default withStyles(loginStyles)(Login);
+export default withStyles(LoginStyles)(Login);

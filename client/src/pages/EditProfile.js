@@ -10,7 +10,7 @@ import { Snackbar, IconButton } from "@material-ui/core";
 import NavigationBar from "./Navbar";
 import SideNavigationBar from "./SideNavBar";
 
-class EditProfilePage extends Component {
+class EditProfile extends Component {
   state = {
     token: localStorage.getItem("jwtToken"),
     userId: localStorage.getItem("userId"),
@@ -494,4 +494,4 @@ class EditProfilePage extends Component {
   }
 }
 
-export default EditProfilePage;
+export default EditProfile;

@@ -11,7 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 import "../App.scss";
 
-const photoPageStyle = theme => ({
+const photoStyle = theme => ({
   photoContainer: {
     margin: theme.spacing(2)
   },
@@ -25,7 +25,7 @@ const photoPageStyle = theme => ({
   }
 });
 
-class PhotoPage extends Component {
+class Photo extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -178,4 +178,4 @@ class PhotoPage extends Component {
   }
 }
 
-export default withStyles(photoPageStyle)(PhotoPage);
+export default withStyles(photoStyle)(Photo);

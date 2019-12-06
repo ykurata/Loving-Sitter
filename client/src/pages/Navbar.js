@@ -126,13 +126,15 @@ class NavigationBar extends Component {
             open={open}
             onClose={this.handleClose}
           >
-            <MenuItem component={Link} to={"/profile"}>
-              Profile
+            <MenuItem component={Link} to={`/my-profile/${this.state.userId}`}>
+              My Profile
             </MenuItem>
             <MenuItem component={Link} to={"/my-jobs"}>
               My Jobs
             </MenuItem>
-            <MenuItem onClick={this.handleClose}>My account</MenuItem>
+            <MenuItem component={Link} to={"/request"}>
+              Requests
+            </MenuItem>
             <MenuItem onClick={this.handleLogout}>Log Out</MenuItem>
           </Menu>
         </div>

@@ -1,8 +1,5 @@
 import express from "express";
 import User from "../models/User";
-import validator from "validator";
-import requestsController from "../controllers/requestsController";
-import authenticate from "../routes/utils/auth";
 const router = express.Router();
 
 // Load input validation
@@ -85,11 +82,6 @@ router.post("/login", async function(req, res, next) {
   }
 });
 
-router.post("/sendRequest", authenticate, requestsController.createRequest);
-router.post("/updateRequest", authenticate, requestsController.updateRequest);
-router.get("/getRequests", authenticate, requestsController.getRequests);
-router.get("/getRequested", authenticate, requestsController.getRequested);
-router.get("/getRequestsWithProfile", authenticate, requestsController.getRequestsWithProfile);
-router.get("/getRequestedWithProfile", authenticate, requestsController.getRequestedWithProfile);
-
 module.exports = router;
+
+

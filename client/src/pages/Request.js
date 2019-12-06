@@ -14,7 +14,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
 import NavigationBar from "./Navbar";
 
-const MyJobsStyle = theme => ({
+const RequestStyle = theme => ({
   root: {
     width: '100%',
     maxWidth: 700,
@@ -29,17 +29,14 @@ const MyJobsStyle = theme => ({
     margin: "10px",
     marginRight: "30px"
   },
-  button: {
-    marginRight: "20px"
-  }
 });
 
 
-class MyJobs extends Component {
+class Request extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      recievedRequests: [],
+      sentRequests: [],
       token: localStorage.getItem("jwtToken"),
     };
   }
@@ -50,10 +47,10 @@ class MyJobs extends Component {
 
   // Get all requests you sent
   getRequests() {
-    axios.get('/request/get-requested', { headers: { Authorization: `Bearer ${this.state.token}` }})
+    axios.get('/request/get-requests', { headers: { Authorization: `Bearer ${this.state.token}` }})
       .then(res => {
         this.setState({
-          recievedRequests: res.data
+          sentRequests: res.data
         });
       })
       .catch(err => {
@@ -67,10 +64,10 @@ class MyJobs extends Component {
     .then(res => {
       console.log("successfully deleted");
     })
-      axios.get('/request/get-requested', { headers: { Authorization: `Bearer ${this.state.token}` }})
+      axios.get('/request/get-requests', { headers: { Authorization: `Bearer ${this.state.token}` }})
       .then(res => {
         this.setState({
-          recievedRequests: res.data
+          sentRequests: res.data
         });
       })
       .catch(err => {
@@ -83,19 +80,19 @@ class MyJobs extends Component {
 
   render() {
     const { classes } = this.props;
-    const { recievedRequests } = this.state;
+    const { sentRequests } = this.state;
     let requests;
-    if (recievedRequests.length > 0) {
-      requests = recievedRequests.map((item, i) => (
+    if (sentRequests.length > 0) {
+      requests = sentRequests.map((item, i) => (
         <Grid item xs={12} align='center' className={classes.container} key={i}>
           <List className={classes.root}>
             <ListItem  divider={true}>
-              <ListItemAvatar className={classes.avatar} src={item.sender_info[0].photoUrl}>
-                <Avatar className={classes.avatar} alt="complex" src={item.sender_info[0].photoUrl} />
+              <ListItemAvatar className={classes.avatar} src={item.reciever_info[0].photoUrl}>
+                <Avatar className={classes.avatar} alt="complex" src={item.reciever_info[0].photoUrl} />
               </ListItemAvatar>
               <ListItemText>
                 <Grid item>
-                  <Typography variant='h5'>{item.sender_info[0].firstName} {item.sender_info[0].lastName}</Typography>
+                  <Typography variant='h5'>{item.reciever_info[0].firstName} {item.reciever_info[0].lastName}</Typography>
                 </Grid>
                 <Grid item>
                 <Typography variant="body2" gutterBottom>From: <Moment format="MM/DD/YYYY">{item.startDate}</Moment> - <Moment format="MM/DD/YYYY">{item.endDate}</Moment></Typography>
@@ -106,40 +103,19 @@ class MyJobs extends Component {
                   : <p>Status: Pending</p>
                   }
                 </Grid>
-                
-                  {item.accepted === true ?
-                    <Grid container>
-                      <Grid item class={classes.button}>
-                        <Button variant="outlined" color="primary" >
-                          Contact User
-                        </Button>
-                      </Grid> 
-                    </Grid>  
-                  : <Grid container>
-                      <Grid item class={classes.button}>
-                        <Button variant="outlined" color="secondary" >
-                          Accept
-                        </Button>
-                      </Grid>  
-                      <Grid item class={classes.button}>
-                        <Button variant="outlined" color="primary" >
-                          Contact User
-                        </Button>
-                      </Grid> 
-                      <Grid item>
-                        <Button 
-                          variant="outlined" 
-                          onClick={(e) => { if (window.confirm('Are you sure you wish to decline this request?')) this.removeRequest(item) } }
-                        >
-                          Decline
-                        </Button>
-                      </Grid>
-                    </Grid>  
-                  }
+                <Grid item>
+                  <Button 
+                    variant="outlined" 
+                    color="secondary"
+                    onClick={(e) => { if (window.confirm('Are you sure you wish to delete this item?')) this.removeRequest(item) } }
+                  >
+                    Remove
+                  </Button>
+                </Grid>
               </ListItemText>
               <ListItemText>
                 <Grid item style={{marginBottom: "80px"}}>
-                  <p>$ {item.sender_info[0].rate}/hr</p>
+                  <p>$ {item.reciever_info[0].rate}/hr</p>
                 </Grid>
               </ListItemText>
             </ListItem>        
@@ -148,7 +124,7 @@ class MyJobs extends Component {
       ))
     } else {
       requests = <Grid item xs={12} align='center' className={classes.container}>
-                    <p>There is no requests</p>
+                    <p>There is no sent requests</p>
                   </Grid>
     }
 
@@ -158,7 +134,7 @@ class MyJobs extends Component {
         <div>
           <Grid container spacing={3}>
             <Grid item xs={12} align='center'>
-              <h1>My Jobs</h1>
+              <h1>Your Sent Request</h1>
             </Grid>
             {requests}
           </Grid>
@@ -168,4 +144,4 @@ class MyJobs extends Component {
   }
 }
 
-export default withStyles(MyJobsStyle)(MyJobs);
+export default withStyles(RequestStyle)(Request);

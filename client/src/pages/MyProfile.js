@@ -3,20 +3,18 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Rating from "@material-ui/lab/Rating";
 import RoomIcon from "@material-ui/icons/Room";
 import { Snackbar, IconButton } from "@material-ui/core";
 
 import NavigationBar from "./Navbar";
 
 
-const detailsStyle = theme => ({
+const MyProfileStyle = theme => ({
   bigAvatar: {
     width: 300,
     height: 300,
@@ -32,26 +30,14 @@ const detailsStyle = theme => ({
     borderRadius: 0,
     width: 300,
     height: 300
-  },
-  requestBtn: {
-    backgroundColor: "red",
-    color: "white"
-  },
-  statusCard: {
-    marginBottom: 30,
-    width: "80%",
-    margin: "auto",
-    lineHeight: "26px"
   }
 });
 
-class ProfileDetails extends Component {
+class MyProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       profile: {},
-      startDate: "",
-      endDate: "",
       token: localStorage.getItem("jwtToken"),
       snackbaropen: false,
       snackbarmsg: ""  
@@ -72,31 +58,6 @@ class ProfileDetails extends Component {
       });
   }
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  sendRequest = () => {
-    const request = {
-      recieverId: this.props.match.params.id,
-      startDate: this.state.startDate,
-      endDate: this.state.endDate
-    }
-
-    axios.post("/request", request, {
-        headers: { Authorization: `Bearer ${this.state.token}` }
-      })
-      .then(res => {
-        console.log(res.data);
-        this.setState({ snackbarmsg: "Request was sent" });
-        this.setState({ snackbaropen: true });
-      })
-      .catch(err => {
-        this.setState({ snackbarmsg: `${err.response.data.error}` });
-        this.setState({ snackbaropen: true });
-        console.log(err);
-      });
-  };
   snackbarClose = event => {
     this.setState({ snackbaropen: false });
   };
@@ -127,14 +88,7 @@ class ProfileDetails extends Component {
 
         <NavigationBar></NavigationBar>
 
-        <Grid container >
-          <Grid item xs={1}></Grid>
-          <Grid item xs={11}>
-            <Button component={Link} to={"../sitter-search"}>
-              &lt; Back to list
-            </Button>
-          </Grid>
-          <Grid item xs={1}></Grid>
+        <Grid container justify="center" style={{ marginTop: "50px"}}>
           <Grid item xs={7}>
             <Grid container align="center">
               <Box width={1} boxShadow={2} style={{marginBottom: "30px"}}>
@@ -153,6 +107,13 @@ class ProfileDetails extends Component {
                 <Grid container justify="center" style={{marginTop: "30px"}}> 
                   <RoomIcon  color="secondary" />
                   <Typography variant="subtitle1">{profile.address}</Typography>
+                  <Grid item style={{ marginLeft: "100px"}}>
+                    <Typography variant="subtitle1">
+                      <Box fontWeight="fontWeightBold">
+                        $ {profile.rate}/hr
+                      </Box>
+                    </Typography>
+                  </Grid>
                 </Grid>
                 <Grid
                   item
@@ -171,54 +132,11 @@ class ProfileDetails extends Component {
                     {profile.description}
                   </Typography>
                 </Grid>
+                <Grid item style={{marginBottom: "30px"}} >
+                  <Button variant="outlined" color="primary" component={Link} to={'/profile'}>Edit Profile</Button>
+                </Grid>
               </Box>
             </Grid>
-          </Grid>
-          <Grid item xs={3}>
-            <Box boxShadow={2} className={classes.statusCard}>
-              <Grid container align="center" direction="column">
-                <Grid item style={{ marginTop: "30px"}}>
-                  <h2>${profile.rate}/hr</h2>
-                </Grid>
-                <Grid item>
-                  <Rating value={5} readOnly className={"mb-1"} />
-                </Grid>
-                <Grid item className={classes.marginBottom}>
-                  <TextField
-                    id="drop-in"
-                    label="Drop In"
-                    name="startDate"
-                    type="date"
-                    onChange={this.handleInputChange}
-                    InputLabelProps={{
-                      shrink: true
-                    }}
-                  />
-                </Grid>
-                <Grid item className={classes.marginBottom}>
-                  <TextField
-                    id="drop-out"
-                    label="Drop Out"
-                    name="endDate"
-                    type="date"
-                    onChange={this.handleInputChange}
-                    InputLabelProps={{
-                      shrink: true
-                    }}
-                  />
-                </Grid>
-                <Grid item style={{marginTop: "30px", marginBottom: "30px"}}>
-                  <Button
-                    size="large"
-                    variant="contained"
-                    onClick={this.sendRequest}
-                    className={classes.requestBtn}
-                  >
-                    Send Request
-                  </Button>
-                </Grid>
-              </Grid>
-            </Box>
           </Grid>
         </Grid>
       </div>
@@ -226,4 +144,4 @@ class ProfileDetails extends Component {
   }
 }
 
-export default withStyles(detailsStyle)(ProfileDetails);
+export default withStyles(MyProfileStyle)(MyProfile);
