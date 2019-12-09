@@ -6,7 +6,6 @@ import Card from '@material-ui/core/Card';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import { Avatar } from '@material-ui/core';
@@ -32,16 +31,7 @@ class Notification extends Component {
     this.state = {
       recievedRequests: [],
       token: localStorage.getItem("jwtToken"),
-      anchorEl: null
     }
-  };
-
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handleClose = () => {
-    this.setState({ anchorEl: null });
   };
 
   componentDidMount() {

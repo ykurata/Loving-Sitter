@@ -38,7 +38,7 @@ class NotificationButton extends Component {
           }}
           transformOrigin={{
             vertical: 'top',
-            horizontal: 'center',
+            horizontal: 'right',
           }}
           open={open}
           onClose={this.handleClose}
