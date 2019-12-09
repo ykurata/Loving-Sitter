@@ -18,13 +18,10 @@ const NotificationStyle = theme => ({
     boxShadow: 'none',
     maxHeight: 200,
   },
-  image: {
-    width: 70,
-    height: 80,
-  },
   avatar: {
-    width: 70,
-    height: 70,
+    width: 50,
+    height: 50,
+    margin: "2px",
   }
 });
 
@@ -75,7 +72,7 @@ class Notification extends Component {
           <Card className={classes.card}>
             <Grid container wrap="nowrap" spacing={2}>
               <Grid item>
-                <Avatar src={item.sender_info[0].photoUrl} />
+                <Avatar className={classes.avatar} src={item.sender_info[0].photoUrl} />
               </Grid>
               <Grid item xs zeroMinWidth>
                 <Typography noWrap variant='subtitle1'>{item.sender_info[0].firstName} {item.sender_info[0].lastName} has requested your service</Typography>
