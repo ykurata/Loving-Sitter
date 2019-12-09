@@ -97,7 +97,7 @@ class NavigationBar extends Component {
     let buttons;
     if (this.state.token) {
       buttons = (
-        <div>
+        <span>
           <Button component={Link} to={"/profile"}>
             BECOME A SITTER
           </Button>
@@ -114,15 +114,7 @@ class NavigationBar extends Component {
           <Menu
             id="menu-appbar"
             anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right"
-            }}
             keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right"
-            }}
             open={open}
             onClose={this.handleClose}
           >
@@ -137,7 +129,7 @@ class NavigationBar extends Component {
             </MenuItem>
             <MenuItem onClick={this.handleLogout}>Log Out</MenuItem>
           </Menu>
-        </div>
+        </span>
       );
     } else {
       buttons = (
@@ -173,20 +165,20 @@ class NavigationBar extends Component {
 
     return (
       <div className={classes.root}>
-      <AppBar className={this.state.token ? classes.loggedInNavbar : classes.logInNavbar}>
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            <a href="/">
-            <img
-              src={require("../images/loving-sitter-logo.png")}
-              alt="logo of app"
-            />
-            </a>
-          </Typography>
-          {buttons}
-        </Toolbar>
-      </AppBar>
-    </div>
+        <AppBar className={this.state.token ? classes.loggedInNavbar : classes.logInNavbar}>
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              <a href="/">
+              <img
+                src={require("../images/loving-sitter-logo.png")}
+                alt="logo of app"
+              />
+              </a>
+            </Typography>
+            {buttons}
+          </Toolbar>
+        </AppBar>
+      </div>
     );
   };
 }
