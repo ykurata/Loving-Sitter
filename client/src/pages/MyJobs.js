@@ -98,7 +98,7 @@ class MyJobs extends Component {
                   <Typography variant='h5'>{item.sender_info[0].firstName} {item.sender_info[0].lastName}</Typography>
                 </Grid>
                 <Grid item>
-                <Typography variant="body2" gutterBottom>From: <Moment format="MM/DD/YYYY">{item.startDate}</Moment> - <Moment format="MM/DD/YYYY">{item.endDate}</Moment></Typography>
+                <Typography variant="body2" gutterBottom>From: <Moment format="MMM Do YYYY">{item.startDate}</Moment> - <Moment format="MMM Do YYYY">{item.endDate}</Moment></Typography>
                 </Grid>
                 <Grid item>
                   {item.accepted === true ?
@@ -116,12 +116,12 @@ class MyJobs extends Component {
                       </Grid> 
                     </Grid>  
                   : <Grid container>
-                      <Grid item class={classes.button}>
+                      <Grid item className={classes.button}>
                         <Button variant="outlined" color="secondary" >
                           Accept
                         </Button>
                       </Grid>  
-                      <Grid item class={classes.button}>
+                      <Grid item className={classes.button}>
                         <Button variant="outlined" color="primary" >
                           Contact User
                         </Button>

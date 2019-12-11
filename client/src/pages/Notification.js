@@ -67,7 +67,7 @@ class Notification extends Component {
               <Grid item xs zeroMinWidth>
                 <Typography noWrap variant='subtitle1'>{item.sender_info[0].firstName} {item.sender_info[0].lastName} has requested your service</Typography>
                 <Typography variant="caption" color="textSecondary">Dog Sitting</Typography>
-                <Typography variant="subtitle1"><Moment format="MM/DD/YYYY">{item.startDate}</Moment> - <Moment format="MM/DD/YYYY">{item.endDate}</Moment></Typography>
+                <Typography variant="subtitle1"><Moment format="MMM Do YYYY">{item.startDate}</Moment> - <Moment format="MMM Do YYYY">{item.endDate}</Moment></Typography>
               </Grid>
             </Grid>
             <Divider />

@@ -95,7 +95,7 @@ class Request extends Component {
                   <Typography variant='h5'>{item.reciever_info[0].firstName} {item.reciever_info[0].lastName}</Typography>
                 </Grid>
                 <Grid item>
-                <Typography variant="body2" gutterBottom>From: <Moment format="MM/DD/YYYY">{item.startDate}</Moment> - <Moment format="MM/DD/YYYY">{item.endDate}</Moment></Typography>
+                <Typography variant="body2" gutterBottom>From: <Moment format="MMM Do YYYY">{item.startDate}</Moment> - <Moment format="MMM Do YYYY">{item.endDate}</Moment></Typography>
                 </Grid>
                 <Grid item>
                   {item.accepted === true ?
