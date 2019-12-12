@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import Moment from 'react-moment';
+import { Link } from 'react-router-dom';
 
 import Card from '@material-ui/core/Card';
 import Divider from '@material-ui/core/Divider';
@@ -58,7 +59,7 @@ class Notification extends Component {
 
     if (recievedRequests.length > 0) {
       notifications = recievedRequests.map((item, i) => (
-        <MenuItem style={{backgroundColor: 'white'}} key={i}>
+        <MenuItem style={{backgroundColor: 'white'}} key={i} component={Link} to={`/profile-details/${item.sender_info[0].userId}`} >
           <Card className={classes.card}>
             <Grid container wrap="nowrap" spacing={2}>
               <Grid item>
