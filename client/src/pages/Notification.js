@@ -7,12 +7,17 @@ import Card from '@material-ui/core/Card';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import { Avatar } from '@material-ui/core';
 
 
 const NotificationStyle = theme => ({
+  list: {
+    maxHeight: 200,
+    overflow: 'auto'
+  },
   card: {
     maxWidth: 450,
     boxShadow: 'none',
@@ -92,7 +97,9 @@ class Notification extends Component {
 
     return (
       <Grid>
+        <List className={classes.list}>
         {notifications}
+        </List>
       </Grid>
     );
   }
