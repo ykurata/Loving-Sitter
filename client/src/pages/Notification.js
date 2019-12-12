@@ -80,7 +80,7 @@ class Notification extends Component {
 
     if (filteredRequests.length > 0) {
       notifications = filteredRequests.map((item, i) => (
-        <MenuItem style={{backgroundColor: 'white'}} key={i} component={Link} to={`/profile-details/${item.sender_info[0].userId}`} >
+        <MenuItem style={{backgroundColor: 'white'}} key={i} component={Link} to={"/my-jobs"} >
           <Card className={classes.card}>
             <Grid container wrap="nowrap" spacing={2}>
               <Grid item>
