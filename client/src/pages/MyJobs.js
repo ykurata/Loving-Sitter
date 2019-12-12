@@ -136,7 +136,7 @@ class MyJobs extends Component {
                   {item.accepted === true ?
                     <Grid container>
                       <Grid item className={classes.button}>
-                        <Button variant="outlined" color="primary" >
+                        <Button variant="outlined" color="primary" component={Link} to={'/messages'}>
                           Contact User
                         </Button>
                       </Grid>  
@@ -152,7 +152,7 @@ class MyJobs extends Component {
                         </Button>
                       </Grid>  
                       <Grid item className={classes.button}>
-                        <Button variant="outlined" color="primary" >
+                        <Button variant="outlined" color="primary" component={Link} to={'/messages'}>
                           Contact User
                         </Button>
                       </Grid> 
