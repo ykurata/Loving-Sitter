@@ -55,10 +55,13 @@ class Notification extends Component {
   render() {
     const { classes } = this.props;
     const { recievedRequests } = this.state;
+    const filteredRequests = recievedRequests.filter((request) => {
+      return request.accepted === false;
+    });
     let notifications;
 
-    if (recievedRequests.length > 0) {
-      notifications = recievedRequests.map((item, i) => (
+    if (filteredRequests.length > 0) {
+      notifications = filteredRequests.map((item, i) => (
         <MenuItem style={{backgroundColor: 'white'}} key={i} component={Link} to={`/profile-details/${item.sender_info[0].userId}`} >
           <Card className={classes.card}>
             <Grid container wrap="nowrap" spacing={2}>
