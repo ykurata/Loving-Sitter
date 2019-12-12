@@ -13,7 +13,7 @@ import Menu from "@material-ui/core/Menu";
 import Avatar from "@material-ui/core/Avatar";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
-import NotificationButton from "./NotificationButton";
+import Notification from "./Notification";
 
 const styles = theme => ({
   root: {
@@ -104,7 +104,7 @@ class NavigationBar extends Component {
           <Button component={Link} to={"/sitter-search"}>
             My Sitters
           </Button>
-          <NotificationButton />
+          <Notification />
           <Button component={Link} to={"/messages"}>
             Messages
           </Button>

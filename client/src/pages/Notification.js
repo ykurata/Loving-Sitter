@@ -4,19 +4,26 @@ import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 
 import Card from '@material-ui/core/Card';
+import Button from "@material-ui/core/Button";
+import Badge from '@material-ui/core/Badge';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import { Avatar } from '@material-ui/core';
 
 
 const NotificationStyle = theme => ({
+  list: {
+    maxHeight: 200,
+    overflow: 'auto'
+  },
   card: {
     maxWidth: 450,
-    boxShadow: 'none',
-    maxHeight: 200,
+    boxShadow: 'none'
   },
   avatar: {
     width: 50,
@@ -32,6 +39,7 @@ class Notification extends Component {
     this.state = {
       recievedRequests: [],
       token: localStorage.getItem("jwtToken"),
+      anchorEl: null
     }
   };
 
@@ -52,8 +60,18 @@ class Notification extends Component {
       });
   }
 
+  handleMenu = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
   render() {
     const { classes } = this.props;
+    const { anchorEl } = this.state;
+    const open = Boolean(anchorEl);
     const { recievedRequests } = this.state;
     const filteredRequests = recievedRequests.filter((request) => {
       return request.accepted === false;
@@ -62,7 +80,7 @@ class Notification extends Component {
 
     if (filteredRequests.length > 0) {
       notifications = filteredRequests.map((item, i) => (
-        <MenuItem style={{backgroundColor: 'white'}} key={i} component={Link} to={`/profile-details/${item.sender_info[0].userId}`} >
+        <MenuItem style={{backgroundColor: 'white'}} key={i} component={Link} to={"/my-jobs"} >
           <Card className={classes.card}>
             <Grid container wrap="nowrap" spacing={2}>
               <Grid item>
@@ -91,9 +109,37 @@ class Notification extends Component {
     }
 
     return (
-      <Grid>
-        {notifications}
-      </Grid>
+      <span>
+        {filteredRequests.length > 0 ?
+          <Badge color="secondary" variant="dot">
+            <Button onClick={this.handleMenu} style={{padding:"0"}}>
+              Notifications
+            </Button>
+          </Badge>
+        : <Button onClick={this.handleMenu} style={{padding:"0"}}>
+            Notifications
+          </Button>
+        }
+        <Menu
+          id="menu-appbar"
+          anchorEl={anchorEl}
+          getContentAnchorEl={null}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          open={open}
+          onClose={this.handleClose}
+        >
+          <List className={classes.list}>
+            {notifications}
+          </List>
+        </Menu>
+      </span>
     );
   }
 };

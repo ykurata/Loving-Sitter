@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Moment from 'react-moment';
+import { Link } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from "@material-ui/core/Avatar";
@@ -91,21 +92,19 @@ class MyJobs extends Component {
     }
     axios.put(`request/update/${item._id}`, request, { headers: { Authorization: `Bearer ${this.state.token}` }})
     .then(res => {
-      console.log("successfully updated");
-    })
-      axios.get('/request/get-requested', { headers: { Authorization: `Bearer ${this.state.token}` }})
-      .then(res => {
-        this.setState({
-          recievedRequests: res.data
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      })
+      return  axios.get('/request/get-requested', { headers: { Authorization: `Bearer ${this.state.token}` }})
+                .then(res => {
+                  this.setState({
+                    recievedRequests: res.data
+                  });
+                })
+                .catch(err => {
+                  console.log(err);
+                })
+              })
     .catch(err => {
       console.log(err);
     });
-
   }
 
   render() {
@@ -118,7 +117,7 @@ class MyJobs extends Component {
           <List className={classes.root}>
             <ListItem  divider={true}>
               <ListItemAvatar className={classes.avatar} src={item.sender_info[0].photoUrl}>
-                <Avatar className={classes.avatar} alt="complex" src={item.sender_info[0].photoUrl} />
+                <Avatar className={classes.avatar} alt="complex" src={item.sender_info[0].photoUrl} component={Link} to={`/profile-details/${item.sender_info[0].userId}`}/>
               </ListItemAvatar>
               <ListItemText>
                 <Grid item>
@@ -187,14 +186,12 @@ class MyJobs extends Component {
     return (
       <div>
         <NavigationBar></NavigationBar>
-        
           <Grid container>
             <Grid item xs={12} align='center'>
               <h1>My Jobs</h1>
             </Grid>
             {requests}
           </Grid>
-      
       </div>
     );
   }
