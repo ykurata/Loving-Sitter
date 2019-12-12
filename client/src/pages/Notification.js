@@ -112,11 +112,11 @@ class Notification extends Component {
       <span>
         {filteredRequests.length > 0 ?
           <Badge color="secondary" variant="dot">
-            <Button onClick={this.handleMenu} style={{padding:"0"}}>
+            <Button onClick={this.handleMenu} style={{padding: "0"}}>
               Notifications
             </Button>
-          </Badge>
-        : <Button onClick={this.handleMenu} style={{padding:"0"}}>
+          </Badge>  
+        : <Button onClick={this.handleMenu} >
             Notifications
           </Button>
         }
