@@ -21,7 +21,6 @@ const NotificationStyle = theme => ({
   card: {
     maxWidth: 450,
     boxShadow: 'none',
-    maxHeight: 200,
   },
   avatar: {
     width: 50,

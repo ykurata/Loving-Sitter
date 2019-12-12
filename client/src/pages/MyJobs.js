@@ -91,21 +91,19 @@ class MyJobs extends Component {
     }
     axios.put(`request/update/${item._id}`, request, { headers: { Authorization: `Bearer ${this.state.token}` }})
     .then(res => {
-      console.log("successfully updated");
-    })
-      axios.get('/request/get-requested', { headers: { Authorization: `Bearer ${this.state.token}` }})
-      .then(res => {
-        this.setState({
-          recievedRequests: res.data
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      })
+      return  axios.get('/request/get-requested', { headers: { Authorization: `Bearer ${this.state.token}` }})
+                .then(res => {
+                  this.setState({
+                    recievedRequests: res.data
+                  });
+                })
+                .catch(err => {
+                  console.log(err);
+                })
+              })
     .catch(err => {
       console.log(err);
     });
-
   }
 
   render() {
