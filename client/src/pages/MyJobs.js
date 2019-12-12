@@ -81,6 +81,33 @@ class MyJobs extends Component {
     });
   }
 
+  updateRequest(item) {
+    const request = {
+      senderId: item.senderId,
+      recieverId: item.recieverId,
+      startDate: item.startDate,
+      endDate: item.endDate,
+      accepted: true
+    }
+    axios.put(`request/update/${item._id}`, request, { headers: { Authorization: `Bearer ${this.state.token}` }})
+    .then(res => {
+      console.log("successfully updated");
+    })
+      axios.get('/request/get-requested', { headers: { Authorization: `Bearer ${this.state.token}` }})
+      .then(res => {
+        this.setState({
+          recievedRequests: res.data
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    .catch(err => {
+      console.log(err);
+    });
+
+  }
+
   render() {
     const { classes } = this.props;
     const { recievedRequests } = this.state;
@@ -109,15 +136,19 @@ class MyJobs extends Component {
                 
                   {item.accepted === true ?
                     <Grid container>
-                      <Grid item class={classes.button}>
+                      <Grid item className={classes.button}>
                         <Button variant="outlined" color="primary" >
                           Contact User
                         </Button>
-                      </Grid> 
+                      </Grid>  
                     </Grid>  
                   : <Grid container>
                       <Grid item className={classes.button}>
-                        <Button variant="outlined" color="secondary" >
+                        <Button 
+                          variant="outlined" 
+                          color="secondary" 
+                          onClick={(e) => { if (window.confirm('Are you sure you want to accept this request?')) this.updateRequest(item) } }
+                        >
                           Accept
                         </Button>
                       </Grid>  
@@ -128,7 +159,8 @@ class MyJobs extends Component {
                       </Grid> 
                       <Grid item>
                         <Button 
-                          variant="outlined" 
+                          variant="outlined"
+                          className={classes.button}
                           onClick={(e) => { if (window.confirm('Are you sure you wish to decline this request?')) this.removeRequest(item) } }
                         >
                           Decline
