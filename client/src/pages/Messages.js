@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import openSocket from "socket.io-client";
+import Moment from 'react-moment';
+import moment from "moment";
 
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -246,17 +248,26 @@ class Messages extends Component {
     const { classes } = this.props;
     const message = this.state.messages.map((message, i) => (
       message.userId._id === this.state.userId ? 
-        <p key={i} className={classes.sentMessageLength}>
-          <span className={classes.msg}>{message.body}</span>
-        </p>
+        <span key={i} >
+          <p className={classes.sentMessageLength}>
+            <span className={classes.msg}>{message.body}</span>
+          </p>
+          <Typography variant="subtitle1" color="textSecondary">{moment(message.createdAt).format('MMMM Do YYYY, h:mm a')}</Typography>
+        </span>
       : !message.userId._id ?
-        <p key={i} className={classes.sentMessageLength}>
-          <span className={classes.msg}>{message.body}</span>
-        </p>
+        <span key={i} >
+          <p key={i} className={classes.sentMessageLength}>
+            <span className={classes.msg}>{message.body}</span>
+          </p>
+          <Typography variant="subtitle1">{message.createdAt}</Typography>
+        </span>
       : 
-        <p key={i} className={classes.sentMessageLengthLeft}>
-          <span className={classes.msgLeft}>{message.body}</span>
-        </p>
+        <span key={i} >
+          <p key={i} className={classes.sentMessageLengthLeft}>
+            <span className={classes.msgLeft}>{message.body}</span>
+          </p>
+          <Typography variant="subtitle1">{message.createdAt}</Typography>
+        </span>
     ));
     
     return (
