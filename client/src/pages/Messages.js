@@ -16,7 +16,6 @@ import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import "../App.scss";
 
 import NavigationBar from "./Navbar";
 
@@ -248,15 +247,15 @@ class Messages extends Component {
     const message = this.state.messages.map((message, i) => (
       message.userId._id === this.state.userId ? 
         <p key={i} className={classes.sentMessageLength}>
-        <span className={classes.msg}>{message.body}</span>
+          <span className={classes.msg}>{message.body}</span>
         </p>
       : !message.userId._id ?
         <p key={i} className={classes.sentMessageLength}>
-        <span className={classes.msg}>{message.body}</span>
+          <span className={classes.msg}>{message.body}</span>
         </p>
       : 
         <p key={i} className={classes.sentMessageLengthLeft}>
-        <span className={classes.msgLeft}>{message.body}</span>
+          <span className={classes.msgLeft}>{message.body}</span>
         </p>
     ));
     
