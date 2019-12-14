@@ -102,7 +102,7 @@ class NavigationBar extends Component {
             BECOME A SITTER
           </Button>
           <Button component={Link} to={"/sitter-search"}>
-            My Sitters
+            Find Sitters
           </Button>
           <Notification />
           <Button component={Link} to={"/messages"}>
