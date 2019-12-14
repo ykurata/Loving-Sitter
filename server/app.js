@@ -1,11 +1,20 @@
 import createError from "http-errors";
 import express, { json, urlencoded } from "express";
 import { join } from "path";
+import bodyParser from 'body-parser';
 import cookieParser from "cookie-parser";
 import logger from "morgan";
+import passport from "passport";
+import cors from "cors";
 
-import indexRouter from "./routes/index";
-import pingRouter from "./routes/ping";
+// import routes
+import profileRouter from "./routes/profile";
+import requestRouter from "./routes/request";
+import photoRouter from "./routes/photo";
+import usersRouter from "./routes/users";
+import fileUploadRouter from "./routes/file-upload";
+import paymentRouter from "./routes/payment";
+import conversationRouter from "./routes/conversation";
 
 var app = express();
 
@@ -13,10 +22,25 @@ app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static(join(__dirname, "public")));
 
-app.use("/", indexRouter);
-app.use("/ping", pingRouter);
+app.use(passport.initialize());
+require("./libs/passport")(passport);
+
+// Set up routes
+app.use("/profile", profileRouter);
+app.use("/request", requestRouter);
+app.use("/profile-photo", photoRouter);
+app.use("/users", usersRouter);
+app.use("/files", fileUploadRouter);
+app.use("/profile-payment", paymentRouter);
+app.use("/conversation", conversationRouter);
+
+// Set up cors 
+app.use(cors());
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
