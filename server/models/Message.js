@@ -14,11 +14,10 @@ const MessageSchema = new Schema(
         },
         body : {
             type: String
-        },
-        createdAt : {
-            type: Date,
-            default: Date.now
         }
+    },
+    {
+        timestamps: { createdAt: true }
     }
 );
 

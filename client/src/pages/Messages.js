@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import openSocket from "socket.io-client";
+import Moment from 'react-moment';
 
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -76,10 +77,10 @@ const messagesStyle = theme => ({
     paddingLeft: "10px"
   },
   sentMessageLength: {
-    padding: "6px",
+    padding: 0,
   },
   sentMessageLengthLeft: {
-    padding: "6px",
+    padding: 0,
     textAlign: "left",
   },
   msg: {
@@ -107,6 +108,15 @@ const messagesStyle = theme => ({
     border: "none",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3)
+  },
+  date: {
+    fontSize: 10,
+    paddingBottom: "5px"
+  },
+  dateLeft: {
+    fontSize: 10,
+    textAlign: "left",
+    paddingBottom: "5px"
   }
 });
 
@@ -190,7 +200,8 @@ class Messages extends Component {
         let msgs = res.data.map(item => ({ 
           id: item._id,
           body: item.body,
-          userId: item.userId
+          userId: item.userId,
+          createdAt: item.createdAt
         }));
         this.setState({ messages: msgs });
       })
@@ -246,17 +257,26 @@ class Messages extends Component {
     const { classes } = this.props;
     const message = this.state.messages.map((message, i) => (
       message.userId._id === this.state.userId ? 
-        <p key={i} className={classes.sentMessageLength}>
-          <span className={classes.msg}>{message.body}</span>
-        </p>
+        <span key={i} >
+          <p className={classes.sentMessageLength}>
+            <span className={classes.msg}>{message.body}</span>
+          </p>
+          <Typography variant="subtitle1" color="textSecondary" className={classes.date}><Moment format="MMMM Do YYYY, h:mm a">{message.createdAt}</Moment></Typography>
+        </span>
       : !message.userId._id ?
-        <p key={i} className={classes.sentMessageLength}>
-          <span className={classes.msg}>{message.body}</span>
-        </p>
+        <span key={i} >
+          <p key={i} className={classes.sentMessageLength}>
+            <span className={classes.msg}>{message.body}</span>
+          </p>
+          <Typography variant="subtitle1" color="textSecondary" className={classes.date}><Moment format="MMMM Do YYYY, h:mm a">{message.createdAt}</Moment></Typography>
+        </span>
       : 
-        <p key={i} className={classes.sentMessageLengthLeft}>
-          <span className={classes.msgLeft}>{message.body}</span>
-        </p>
+        <span key={i} >
+          <p key={i} className={classes.sentMessageLengthLeft}>
+            <span className={classes.msgLeft}>{message.body}</span>
+          </p>
+          <Typography variant="subtitle1" color="textSecondary" className={classes.dateLeft}><Moment format="MMMM Do YYYY, h:mm a">{message.createdAt}</Moment></Typography>
+        </span>
     ));
     
     return (
