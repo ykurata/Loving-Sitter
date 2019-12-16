@@ -46,27 +46,11 @@ export default function SideNavigationBar() {
       </MenuItem>
       <MenuItem
         component={Link}
-        to="/profile-payment"
-        selected={"profile-payment" === lastURLSegment}
-        className={ lastURLSegment === "profile-payment" ? classes.selectedMenu : classes.notSelectedMenu}
+        to="/payment"
+        selected={"payment" === lastURLSegment}
+        className={ lastURLSegment === "payment" ? classes.selectedMenu : classes.notSelectedMenu}
       >
         Payment
-      </MenuItem>
-      <MenuItem
-        component={Link}
-        to="/security"
-        selected={"security" === lastURLSegment}
-        className={ lastURLSegment === "security" ? classes.selectedMenu : classes.notSelectedMenu}
-      >
-        Security
-      </MenuItem>
-      <MenuItem
-        component={Link}
-        to="/settings"
-        selected={"settings" === lastURLSegment}
-        className={ lastURLSegment === "settings" ? classes.selectedMenu : classes.notSelectedMenu}
-      >
-        Settings
       </MenuItem>
     </MenuList>
   );

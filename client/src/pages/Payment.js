@@ -23,7 +23,7 @@ const paymentDetails = {
   snackbaropen: false,
 };
 
-class ProfilePayment extends Component {
+class Payment extends Component {
 
   state = paymentDetails;
 
@@ -168,4 +168,4 @@ class ProfilePayment extends Component {
   }
 }
 
-export default ProfilePayment;
+export default Payment;
