@@ -33,7 +33,7 @@ app.use("/profile", profileRouter);
 app.use("/request", requestRouter);
 app.use("/users", usersRouter);
 app.use("/files", fileUploadRouter);
-app.use("/profile-payment", paymentRouter);
+app.use("/payment", paymentRouter);
 app.use("/conversation", conversationRouter);
 
 // Set up cors 

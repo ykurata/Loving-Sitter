@@ -28,7 +28,7 @@ router.post("/", async function (req, res) {
             }
         ],
         success_url: `${domainURL}/my-jobs`,
-        cancel_url: `${domainURL}/profile-payment`
+        cancel_url: `${domainURL}/payment`
     });
 
     res.send({
