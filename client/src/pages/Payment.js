@@ -14,7 +14,8 @@ class Payment extends Component {
     super(props);
     this.state = {
       amount: "15",
-      decimal: "00"
+      
+      description: "dog sitting"
     };
   }
 
@@ -22,8 +23,19 @@ class Payment extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onToken = (token, addresses) => {
-
+  onToken = (amount, description) => token => {
+    axios.post("/payment", {
+      description,
+      source: token.id,
+      currency: "CAD",
+      amount: this.state.amount * 100
+    })
+    .then(res => {
+      alert("Payment Successful");
+    })
+    .catch(err => {
+      alert("Payment Error");
+    })
   }
 
   snackbarClose = event => {
@@ -77,29 +89,15 @@ class Payment extends Component {
                       required
                       disabled={this.state.disabled ? true : false}
                     />
-                    <TextField
-                      name="decimal-amount"
-                      id="standard-amount"
-                      placeholder="00"
-                      helperText="Cents"
-                      type="number"
-                      min="0"
-                      max="99"
-                      value={this.state.decimal}
-                      onChange={this.onChange}
-                      margin="normal"
-                      variant="outlined"
-                      required
-                      disabled={this.state.disabled ? true : false}
-                    />
                   </Grid>
                   <Grid item>
                     <StripeCheckout
+                      name={this.state.name}
                       amount={this.state.amount * 100}
                       currency="cad"
-                      description="dog sitting"
+                      description={this.state.description}
                       stripeKey="pk_test_jB07RDdD2SJjuc0khprUiBce00z88npnC5"
-                      token={this.onToken}
+                      token={this.onToken(this.state.amount, this.state.description)}
                     />
                   </Grid>
                 </Grid>
