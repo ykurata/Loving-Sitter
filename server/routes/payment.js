@@ -1,8 +1,8 @@
 //Make keySecret secret before deploying
 const keySecret = process.env.STRIPE_SECRET;
 
-const express = require("express");
-const router = express.Router();
+var express = require("express");
+var router = express.Router();
 //const authenticate = require("./utils/auth");
 const stripe = require("stripe")(keySecret);
 //Add Authorization later
@@ -28,7 +28,7 @@ router.post("/", async function (req, res) {
             }
         ],
         success_url: `${domainURL}/my-jobs`,
-        cancel_url: `${domainURL}/payment`
+        cancel_url: `${domainURL}/profile-payment`
     });
 
     res.send({
@@ -36,4 +36,4 @@ router.post("/", async function (req, res) {
     });
 }),
 
-module.exports = router;
+    module.exports = router;

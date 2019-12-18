@@ -1,11 +1,7 @@
 import React, { Component } from "react";
-import axios from "axios";
 import StripeCheckout from 'react-stripe-checkout';
+import axios from "axios";
 
-import STRIPE_PUBLISHABLE from '../constants/stripe';
-import PAYMENT_SERVER_URL from '../constants/server';
-
-import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import { Snackbar, IconButton } from "@material-ui/core";
@@ -18,39 +14,17 @@ class Payment extends Component {
     super(props);
     this.state = {
       amount: "15",
-      decimal: "00",
-      quantity: 1,
-      currency: "cad",
-      payment_method_type: "card",
-      disabled: false,
-      snackbarmsg: "",
-      snackbaropen: false,
-    }
+      decimal: "00"
+    };
   }
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  fromDollarToCent = amount => parseInt(this.state.amount * 100);
+  onToken = (token, addresses) => {
 
-  successPayment = data => {
-    alert('Payment Successful');
-  };
-  
-  errorPayment = data => {
-    alert('Something went wrong');
-  };
-
-  onToken = (amount) => token =>
-    axios.post(PAYMENT_SERVER_URL,
-      {
-        source: token.id,
-        currency: this.state.currency,
-        amount: this.fromDollarToCent(this.state.amount)
-      })
-      .then(this.successPayment)
-      .catch(this.errorPayment);
+  }
 
   snackbarClose = event => {
     this.setState({ snackbaropen: false });
@@ -121,12 +95,11 @@ class Payment extends Component {
                   </Grid>
                   <Grid item>
                     <StripeCheckout
-                      amount={this.fromDollarToCent(this.state.amount)}
-                      token={this.onToken(this.state.amount)}
-                      currency={this.state.currency}
-                      stripeKey={STRIPE_PUBLISHABLE}
-                      email
-                      allowRememberMe
+                      amount={this.state.amount * 100}
+                      currency="cad"
+                      description="dog sitting"
+                      stripeKey="pk_test_jB07RDdD2SJjuc0khprUiBce00z88npnC5"
+                      token={this.onToken}
                     />
                   </Grid>
                 </Grid>
