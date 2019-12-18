@@ -14,8 +14,8 @@ class Payment extends Component {
     super(props);
     this.state = {
       amount: "15",
-      
-      description: "dog sitting"
+      name: localStorage.getItem("name"),
+      description: "dog sitting fee"
     };
   }
 
@@ -26,7 +26,7 @@ class Payment extends Component {
   onToken = (amount, description) => token => {
     axios.post("/payment", {
       description,
-      source: token.id,
+      token: token.id,
       currency: "CAD",
       amount: this.state.amount * 100
     })
@@ -37,6 +37,20 @@ class Payment extends Component {
       alert("Payment Error");
     })
   }
+  // async handleToken(token) {
+  //   const response = await axios.post("/payment", {
+  //     token,
+  //     amount: this.state.amount * 100,
+  //     description: this.state.description,
+  //     name: this.state.name
+  //   })
+  //   const { status } = response.data;
+  //   if (status === "success") {
+  //     alert("Payment success");
+  //   } else {
+  //     alert("Payment Error");
+  //   }
+  // }
 
   snackbarClose = event => {
     this.setState({ snackbaropen: false });
@@ -94,7 +108,7 @@ class Payment extends Component {
                     <StripeCheckout
                       name={this.state.name}
                       amount={this.state.amount * 100}
-                      currency="cad"
+                      currency="CAD"
                       description={this.state.description}
                       stripeKey="pk_test_jB07RDdD2SJjuc0khprUiBce00z88npnC5"
                       token={this.onToken(this.state.amount, this.state.description)}
