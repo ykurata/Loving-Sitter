@@ -44,14 +44,6 @@ export default function SideNavigationBar() {
       >
         Profile Photo
       </MenuItem>
-      <MenuItem
-        component={Link}
-        to="/payment"
-        selected={"payment" === lastURLSegment}
-        className={ lastURLSegment === "payment" ? classes.selectedMenu : classes.notSelectedMenu}
-      >
-        Payment
-      </MenuItem>
     </MenuList>
   );
 }
