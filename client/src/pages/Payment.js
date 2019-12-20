@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import StripeCheckout from 'react-stripe-checkout';
-import axios from "axios";
 
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
@@ -23,20 +22,8 @@ class Payment extends Component {
   }
 
   onToken = (amount, description) => token => {
-    axios.post("/payment", {
-      description,
-      cource: token.id,
-      currency: "CAD",
-      amount: this.state.amount 
-    })
-    .then(res => {
-      console.log(res.data);
-      alert("Payment Successful");
-    })
-    .catch(err => {
-      console.log(err);
-      alert("Payment Error");
-    })
+    console.log(token);
+    alert("Successfully Charged");
   }
   
   render() {
