@@ -10,7 +10,6 @@ import cors from "cors";
 // import routes
 import profileRouter from "./routes/profile";
 import requestRouter from "./routes/request";
-import photoRouter from "./routes/photo";
 import usersRouter from "./routes/users";
 import fileUploadRouter from "./routes/file-upload";
 import paymentRouter from "./routes/payment";
@@ -32,10 +31,9 @@ require("./libs/passport")(passport);
 // Set up routes
 app.use("/profile", profileRouter);
 app.use("/request", requestRouter);
-app.use("/profile-photo", photoRouter);
 app.use("/users", usersRouter);
 app.use("/files", fileUploadRouter);
-app.use("/profile-payment", paymentRouter);
+app.use("/payment", paymentRouter);
 app.use("/conversation", conversationRouter);
 
 // Set up cors 
