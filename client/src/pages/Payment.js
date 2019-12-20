@@ -4,7 +4,6 @@ import axios from "axios";
 
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import { Snackbar, IconButton } from "@material-ui/core";
 
 import SideNavigationBar from "./SideNavBar";
 import NavigationBar from "./Navbar";
@@ -15,7 +14,7 @@ class Payment extends Component {
     this.state = {
       amount: "15",
       name: localStorage.getItem("name"),
-      description: "dog sitting fee"
+      description: "Dog sitting fee"
     };
   }
 
@@ -26,57 +25,23 @@ class Payment extends Component {
   onToken = (amount, description) => token => {
     axios.post("/payment", {
       description,
-      token: token.id,
+      cource: token.id,
       currency: "CAD",
-      amount: this.state.amount * 100
+      amount: this.state.amount 
     })
     .then(res => {
+      console.log(res.data);
       alert("Payment Successful");
     })
     .catch(err => {
+      console.log(err);
       alert("Payment Error");
     })
   }
-  // async handleToken(token) {
-  //   const response = await axios.post("/payment", {
-  //     token,
-  //     amount: this.state.amount * 100,
-  //     description: this.state.description,
-  //     name: this.state.name
-  //   })
-  //   const { status } = response.data;
-  //   if (status === "success") {
-  //     alert("Payment success");
-  //   } else {
-  //     alert("Payment Error");
-  //   }
-  // }
-
-  snackbarClose = event => {
-    this.setState({ snackbaropen: false });
-  };
-
+  
   render() {
     return (
       <div>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "center"
-          }}
-          open={this.state.snackbaropen}
-          autoHideDuration={3000}
-          onClose={this.snackbarClose}
-          message={<span id="message-id">{this.state.snackbarmsg}</span>}
-          action={[
-            <IconButton
-              key="close"
-              arial-label="Close"
-              color="inherit"
-              onClick={this.snackbarClose}
-            ></IconButton>
-          ]}
-        />
         <NavigationBar></NavigationBar>
         <div className="pageArea">
           <div className="infoArea">
