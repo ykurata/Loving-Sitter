@@ -18,31 +18,30 @@ router.post("/register", async function(req, res, next) {
   // if credentials are valid see if user already exists
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    user = new User({
+    const newUser = new User({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
     });
+    // setPassword() is a function defined in the userSchema
+    await newUser.setPassword(req.body.password);
+    await newUser.save();
+
+    // now login the user
+    const payload = {
+      id: newUser._id,
+      name: newUser.name
+    };
+
+    const token = newUser.generateToken(payload);
+
+    if (token) {
+      res.status(200).json({ token });
+    } else {
+      res.status(401).json({ error: "Login failed" });
+    }
   } else {
     return res.status(400).json({ error: "Email already exists" });
-  }
-
-  // setPassword() is a function defined in the userSchema
-  await user.setPassword(password);
-  await user.save();
-
-  // now login the user
-  const payload = {
-    id: user._id,
-    name: user.name
-  };
-
-  const token = user.generateToken(payload);
-
-  if (token) {
-    res.status(200).json({ token });
-  } else {
-    res.status(401).json({ error: "Login failed" });
   }
 });
 
