@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 import axios from "axios";
 import Moment from 'react-moment';
 
@@ -111,6 +112,18 @@ class Request extends Component {
                   >
                     Remove
                   </Button>
+                  {item.accepted === true ?
+                    <Button 
+                    variant="outlined" 
+                    color="primary"
+                    style={{ marginLeft: "10px" }}
+                    component={Link}
+                    to={'/payment'}
+                    >
+                      Pay Now
+                    </Button>
+                  : null  
+                  }
                 </Grid>
               </ListItemText>
               <ListItemText>

@@ -168,11 +168,6 @@ class MyJobs extends Component {
                     </Grid>  
                   }
               </ListItemText>
-              <ListItemText>
-                <Grid item style={{marginBottom: "80px"}}>
-                  <p>$ {item.sender_info[0].rate}/hr</p>
-                </Grid>
-              </ListItemText>
             </ListItem>        
           </List>
         </Grid>

@@ -12,7 +12,7 @@ import SignUp from "./pages/Signup";
 import ProfileList from "./pages/ProfileList";
 import MyProfile from "./pages/MyProfile";
 import EditProfile from "./pages/EditProfile";
-import ProfilePayment from "./pages/ProfilePayment";
+import Payment from "./pages/Payment";
 import MyJobs from "./pages/MyJobs";
 import Request from "./pages/Request";
 import ProfileDetails from "./pages/ProfileDetails";
@@ -28,7 +28,7 @@ function App() {
         <PrivateRoute path="/my-profile/:id" component={MyProfile} />
         <PrivateRoute path="/sitter-search" component={ProfileList} />
         <PrivateRoute path="/messages" component={Messages} />
-        <PrivateRoute path="/profile-payment" component={ProfilePayment} />
+        <PrivateRoute path="/payment" component={Payment} />
         <PrivateRoute path="/profile-photo" component={Photo} />
         <PrivateRoute path="/my-jobs" component={MyJobs} />
         <PrivateRoute path="/request" component={Request} />

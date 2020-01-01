@@ -44,7 +44,6 @@ class Photo extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log(this.state);
     let image = this.state.sendFile;
     if (image) {
       let formData = new FormData();
@@ -66,7 +65,6 @@ class Photo extends Component {
   };
 
   render() {
-    console.log(this.state.file);
     const { classes } = this.props;
     return (
       <div>
