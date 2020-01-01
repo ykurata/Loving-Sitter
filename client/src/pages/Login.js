@@ -73,7 +73,6 @@ class Login extends Component {
 
   render() {
     const { classes } = this.props;
-  
     return (
       <Container component="main" maxWidth="xs">
       <CssBaseline />
