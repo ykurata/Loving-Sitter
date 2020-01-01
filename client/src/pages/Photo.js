@@ -30,7 +30,7 @@ class Photo extends Component {
     super(props);
     this.state = {
       file: null,
-      sentFile: null,
+      sendFile: null,
     };
     this.handlePhotoChange = this.handlePhotoChange.bind(this);
   }
@@ -56,7 +56,6 @@ class Photo extends Component {
           }
         })
         .then(res => {
-          // res.data.imageUrl has the public image url you can use
           console.log(res.data);
         })
         .catch(err => {
