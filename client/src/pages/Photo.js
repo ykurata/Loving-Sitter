@@ -29,21 +29,23 @@ class Photo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      file: null
+      file: null,
+      sendFile: null,
     };
     this.handlePhotoChange = this.handlePhotoChange.bind(this);
   }
 
   handlePhotoChange(event) {
     this.setState({
-      file: event.target.files[0]
+      file: URL.createObjectURL(event.target.files[0]),
+      sendFile: event.target.files[0]
     });
   }
 
   handleSubmit = event => {
     event.preventDefault();
     console.log(this.state);
-    let image = this.state.file;
+    let image = this.state.sendFile;
     if (image) {
       let formData = new FormData();
       formData.append("image", image);
@@ -55,7 +57,6 @@ class Photo extends Component {
           }
         })
         .then(res => {
-          // res.data.imageUrl has the public image url you can use
           console.log(res.data);
         })
         .catch(err => {
