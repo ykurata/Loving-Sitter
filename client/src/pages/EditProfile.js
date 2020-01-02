@@ -11,28 +11,32 @@ import NavigationBar from "./Navbar";
 import SideNavigationBar from "./SideNavBar";
 
 class EditProfile extends Component {
-  state = {
-    token: localStorage.getItem("jwtToken"),
-    userId: localStorage.getItem("userId"),
-    user: {
-      firstName: "",
-      lastName: "",
-      gender: "",
-      birthDate: "",
-      email: "",
-      phone: "",
-      address: "",
-      description: "",
-      rate: ""
-    },
-    profile: "",
-    errors: [],
-    disabled: true,
-    snackbaropen: false,
-    snackbarmsg: "",
-    formChanges: false
-  };
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      token: localStorage.getItem("jwtToken"),
+      userId: localStorage.getItem("userId"),
+      user: {
+        firstName: "",
+        lastName: "",
+        gender: "",
+        birthDate: "",
+        email: "",
+        phone: "",
+        address: "",
+        description: "",
+        rate: ""
+      },
+      profile: "",
+      errors: [],
+      disabled: true,
+      snackbaropen: false,
+      snackbarmsg: "",
+      formChanges: false
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  
   componentDidMount() {
     this.prefillProfile();
   }
@@ -108,11 +112,6 @@ class EditProfile extends Component {
 
     this.setState({ disabled: true });
   };
-
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
 
   snackbarClose = event => {
     this.setState({ snackbaropen: false });
