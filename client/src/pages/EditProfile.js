@@ -25,6 +25,7 @@ class EditProfile extends Component {
       description: "",
       rate: ""
     },
+    profile: "",
     errors: [],
     disabled: true,
     snackbaropen: false,
@@ -32,7 +33,7 @@ class EditProfile extends Component {
     formChanges: false
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.prefillProfile();
   }
 
@@ -42,7 +43,10 @@ class EditProfile extends Component {
       })
       .then(res => {
         if (res.data.profile) {
-          this.setState({ user: res.data.profile });
+          this.setState({ 
+            user: res.data.profile,
+            profile: res.data.profile
+          });
         }
       })
       .catch(err => {
@@ -96,7 +100,7 @@ class EditProfile extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    if (this.state.userId) {
+    if (this.state.profile) {
       this.updateProfile();
     } else {
       this.createProfile();
