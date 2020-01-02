@@ -83,7 +83,7 @@ class NavigationBar extends Component {
     
     // Display default photo if there is no profile photo
     let avatar;
-    if (this.state.profile) {
+    if (this.state.profile.photoUrl) {
       avatar =  <Avatar
                   alt="Remy Sharp"
                   src={this.state.profile.photoUrl}
