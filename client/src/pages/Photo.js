@@ -31,10 +31,6 @@ class Photo extends Component {
     this.state = {
       file: null,
       sendFile: null,
-      disabled: true,
-      snackbaropen: false,
-      snackbarmsg: "",
-      formChanges: false
     };
     this.handlePhotoChange = this.handlePhotoChange.bind(this);
   }
@@ -61,19 +57,11 @@ class Photo extends Component {
         })
         .then(res => {
           console.log(res.data);
-          this.setState({ snackbarmsg: "Profile Photo Saved" });
-          this.setState({ snackbaropen: true });
         })
         .catch(err => {
           console.log({ err });
-          this.setState({ snackbarmsg: "Something went wrong" });
-          this.setState({ snackbaropen: true });
         });
     }
-  };
-
-  snackbarClose = event => {
-    this.setState({ snackbaropen: false });
   };
 
   render() {
@@ -82,8 +70,8 @@ class Photo extends Component {
       <div>
         <Snackbar
           anchorOrigin={{
-            vertical: "top",
-            horizontal: "center"
+            vertical: "bottom",
+            horizontal: "left"
           }}
           open={this.state.snackbaropen}
           autoHideDuration={3000}
