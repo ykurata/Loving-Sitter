@@ -6,7 +6,6 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import passport from "passport";
 import cors from "cors";
-import path from "path";
 
 // import routes
 import profileRouter from "./routes/profile";
@@ -40,11 +39,11 @@ app.use("/conversation", conversationRouter);
 // Set up cors 
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, "client", "build")))
+// app.use(express.static(path.join(__dirname, "client", "build")))
 
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-});
+// app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
