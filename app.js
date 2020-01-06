@@ -1,7 +1,4 @@
 const createError = require("http-errors");
-// const express, { json, urlencoded } from "express";
-// const json = require("express.json");
-// const urlencoded = require("express.urlencoded");
 const express = require("express");
 const path = require("path");
 const bodyParser = require('body-parser');
@@ -9,7 +6,6 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const passport = require("passport");
 const cors = require("cors");
-// const join = require("join");
 
 // import routes
 const profileRouter = require("./routes/profile");
@@ -27,7 +23,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-// app.use(express.static(join(__dirname, "public")));
 
 app.use(passport.initialize());
 require("./libs/passport")(passport);
