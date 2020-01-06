@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const passport = require("passport");
 const cors = require("cors");
+const mongoose = require("mongoose");
 
 // import routes
 const profileRouter = require("./routes/profile");
@@ -23,6 +24,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// Set up mondoDB connection
+mongoose.connect("mongodb://localhost:27017/lovingSitter",{ useNewUrlParser: true, useUnifiedTopology: true });
+
+const db = mongoose.connection;
+
+db.on("error", function(err){
+  console.error("connection error:", err);
+});
+
+db.once("open", function(){
+  console.log("db connection successful");
+});
+
 
 app.use(passport.initialize());
 require("./libs/passport")(passport);

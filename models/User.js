@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
-const dbConnection = require("./../db/mongoose");
+// const dbConnection = require("./../db/mongoose");
 const jwt = require("jsonwebtoken");
 
 const userSchema = mongoose.Schema(
@@ -71,4 +71,4 @@ userSchema.methods.generateToken = function(payload) {
   return token;
 };
 
-module.exports = dbConnection.model("User", userSchema);
+module.exports = mongoose.model("User", userSchema);

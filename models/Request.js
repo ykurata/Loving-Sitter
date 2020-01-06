@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const dbConnection = require("./../db/mongoose");
+// const dbConnection = require("./../db/mongoose");
 
 const RequestSchema = mongoose.Schema(
   {
@@ -36,4 +36,4 @@ const RequestSchema = mongoose.Schema(
   }
 );
 
-module.exports = dbConnection.model("Request", RequestSchema);
+module.exports = mongoose.model("Request", RequestSchema);

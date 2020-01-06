@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const dbConnection = require("./../db/mongoose");
+// const dbConnection = require("./../db/mongoose");
 
 const ProfileSchema = new Schema({
   userId: {
@@ -47,4 +47,4 @@ const ProfileSchema = new Schema({
   }
 });
 
-module.exports = dbConnection.model("Profile", ProfileSchema);
+module.exports = mongoose.model("Profile", ProfileSchema);
