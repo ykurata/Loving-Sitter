@@ -1,29 +1,33 @@
-import createError from "http-errors";
-import express, { json, urlencoded } from "express";
-import { join } from "path";
-import bodyParser from 'body-parser';
-import cookieParser from "cookie-parser";
-import logger from "morgan";
-import passport from "passport";
-import cors from "cors";
+const createError = require("http-errors");
+// const express, { json, urlencoded } from "express";
+// const json = require("express.json");
+// const urlencoded = require("express.urlencoded");
+const express = require("express");
+const path = require("path");
+const bodyParser = require('body-parser');
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const passport = require("passport");
+const cors = require("cors");
+// const join = require("join");
 
 // import routes
-import profileRouter from "./routes/profile";
-import requestRouter from "./routes/request";
-import usersRouter from "./routes/users";
-import fileUploadRouter from "./routes/file-upload";
-import paymentRouter from "./routes/payment";
-import conversationRouter from "./routes/conversation";
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
+const usersRouter = require("./routes/users");
+const fileUploadRouter = require("./routes/file-upload");
+const paymentRouter = require("./routes/payment");
+const conversationRouter = require("./routes/conversation");
 
 var app = express();
 
 app.use(logger("dev"));
-app.use(json());
-app.use(urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static(join(__dirname, "public")));
+// app.use(express.static(join(__dirname, "public")));
 
 app.use(passport.initialize());
 require("./libs/passport")(passport);
@@ -66,5 +70,4 @@ app.use(function(err, req, res, next) {
   res.json({ error: err });
 });
 
-app.listen();
 module.exports = app;

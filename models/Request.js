@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import dbConnection from "./../db/mongoose";
+const mongoose = require("mongoose");
+const dbConnection = require("./../db/mongoose");
 
 const RequestSchema = mongoose.Schema(
   {

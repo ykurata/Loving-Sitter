@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import beautifyUnique from "mongoose-beautiful-unique-validation";
-import config from "../config";
+const mongoose = require("mongoose");
+const beautifyUnique = require("mongoose-beautiful-unique-validation");
+const config = require("../config");
 
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);

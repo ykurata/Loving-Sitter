@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-import dbConnection from "./../db/mongoose";
+const dbConnection = require("./../db/mongoose");
 
 const ProfileSchema = new Schema({
   userId: {
