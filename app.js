@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Set up mondoDB connection
-mongoose.connect("mongodb://localhost:27017/loving-sitter",{ useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb://localhost:27017/loving-sitter");
 
 const db = mongoose.connection;
 
