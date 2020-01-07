@@ -26,7 +26,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Set up mondoDB connection
-mongoose.connect("mongodb://localhost:27017/lovingSitter", { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+// mongoose.connect("mongodb://localhost:27017/lovingSitter", { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/lovingSitter" ,{ useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
 
 const db = mongoose.connection;
 
