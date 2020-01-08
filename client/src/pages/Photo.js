@@ -48,19 +48,18 @@ class Photo extends Component {
     if (image) {
       let formData = new FormData();
       formData.append("image", image);
-      axios
-        .post("/files/image-upload", formData, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-            "Content-Type": "multipart/form-data"
-          }
-        })
-        .then(res => {
-          console.log(res.data);
-        })
-        .catch(err => {
-          console.log({ err });
-        });
+      axios.post("/files/image-upload", formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          "Content-Type": "multipart/form-data"
+        }
+      })
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log({ err });
+      });
     }
   };
 
