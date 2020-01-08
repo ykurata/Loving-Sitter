@@ -7,6 +7,7 @@ const logger = require("morgan");
 const passport = require("passport");
 const cors = require("cors");
 const mongoose = require("mongoose");
+require("dotenv").config()
 
 // import routes
 const profileRouter = require("./routes/profile");
