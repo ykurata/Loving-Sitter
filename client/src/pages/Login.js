@@ -1,11 +1,11 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
@@ -128,9 +128,9 @@ class Login extends Component {
           </Button>
           <Grid container alignItems="center" justify="center" >
             <Grid item>
-              <Link href="/signup" variant="body2">
+              <Typography variant="body2" component={Link} to={"/signup"} style={{ textDecoration: "none" }}>
                 Don't have an account? Sign Up
-              </Link>
+              </Typography>
             </Grid>
           </Grid>
         </form>
