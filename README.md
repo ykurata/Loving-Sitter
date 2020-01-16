@@ -45,14 +45,18 @@ The following software is required to be installed on your system:
     *  Open Command or Command Prompt and run `mongod (or sudo mongod)` to start 
         the MongoDB daemon.
 
+
+## Test User
+Email: yasuko@gmail.com </br>
+Password: testpassword
         
 
 ## Built With 
 
 * [NodeJS](https://nodejs.org/en/download/)
 * [MongoDB](https://www.mongodb.com/)
-* [ExpressJS](https://expressjs.com/)
-* [ReactJS](https://reactjs.org/)
+* [Express](https://expressjs.com/)
+* [React](https://reactjs.org/)
 
 
 ## Authors 
