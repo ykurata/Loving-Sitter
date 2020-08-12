@@ -18,7 +18,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
-import NavigationBar from "./Navbar";
+import Navbar from "../components/Navbar";
 
 const messagesStyle = theme => ({
   list: {
@@ -281,7 +281,7 @@ class Messages extends Component {
     
     return (
       <div>
-        <NavigationBar></NavigationBar>
+        <Navbar/>
         <Grid container>
           <Grid item xs={3}>
             <Grid container>

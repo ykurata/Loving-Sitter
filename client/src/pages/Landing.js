@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 
 import "../App.scss";
 
-import NavigationBar from "./Navbar";
+import Navbar from "../components/Navbar";
 
 class Landing extends Component {
 state = {
@@ -32,7 +32,7 @@ handleDropOffChange = event => {
   render() {
     return (
       <div>
-        <NavigationBar></NavigationBar>
+        <Navbar/>
         <div className="App">
           <div className="App_aside">
             <div className="info-box">

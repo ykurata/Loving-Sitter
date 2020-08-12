@@ -19,7 +19,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
-import NavigationBar from "./Navbar";
+import Navbar from "../components/Navbar";
 
 import "date-fns";
 
@@ -130,7 +130,7 @@ class ProfileList extends Component {
 
     return (
       <div>
-        <NavigationBar></NavigationBar>
+        <Navbar />
         <Grid container justify="center">
           <Grid item xs={12} align='center'>
             <h1>Find Dog Sitters</h1>

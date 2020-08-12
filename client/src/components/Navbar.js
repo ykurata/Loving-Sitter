@@ -41,7 +41,7 @@ const styles = theme => ({
   }
 });
 
-class NavigationBar extends Component {
+class Navbar extends Component {
   state = {
     anchorEl: null,
     setAnchorEl: null,
@@ -183,4 +183,4 @@ class NavigationBar extends Component {
   };
 }
 
-export default withStyles(styles, { withTheme: true })(NavigationBar);
+export default withStyles(styles, { withTheme: true })(Navbar);

@@ -7,8 +7,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { Snackbar, IconButton } from "@material-ui/core";
 
-import NavigationBar from "./Navbar";
-import SideNavigationBar from "./SideNavBar";
+import Navbar from "../components/Navbar";
+import SideNavigationBar from "../components/SideNavBar";
 
 class EditProfile extends Component {
   state = {
@@ -146,7 +146,7 @@ class EditProfile extends Component {
             ></IconButton>
           ]}
         />
-        <NavigationBar></NavigationBar>
+        <Navbar/>
         <div className="pageArea">
           <div className="infoArea">
             <div className="menuArea">
