@@ -3,7 +3,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
-import { snackbarmsg } from "./Signup";
+import { snackbarmsg } from "../pages/Signup";
 
 export default function SimpleSnackbar() {
   const [open, setOpen] = React.useState(false);

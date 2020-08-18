@@ -1,13 +1,14 @@
 import React, { Component } from "react";
+import axios from "axios";
+
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import { Snackbar, IconButton } from "@material-ui/core";
-import NavigationBar from "./Navbar";
-import SideNavigationBar from "./SideNavBar";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
-
 import { withStyles } from "@material-ui/core/styles";
+
+import Navbar from "../components/Navbar";
+import SideNavigationBar from "../components/SideNavBar";
 
 import "../App.scss";
 
@@ -85,11 +86,11 @@ class Photo extends Component {
             ></IconButton>
           ]}
         />
-        <NavigationBar></NavigationBar>
+        <Navbar/>
         <div className="pageArea">
           <div className="infoArea">
             <div className="menuArea">
-              <SideNavigationBar></SideNavigationBar>
+              <SideNavigationBar/>
             </div>
             <div className="settingsArea">
               <div className={classes.photoContainer}>

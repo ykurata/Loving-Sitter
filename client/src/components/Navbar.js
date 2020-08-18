@@ -22,7 +22,7 @@ const styleSheet = {
   }
 }
 
-class NavigationBar extends Component{
+class Navbar extends Component{
   constructor(props){
     super(props);
     this.state = {drawerActivate:false, drawer:false};
@@ -110,10 +110,10 @@ class NavigationBar extends Component{
   }
 }
 
-NavigationBar.propTypes = {
+Navbar.propTypes = {
   classes : PropTypes.object.isRequired
 };
 
 
 
-export default withStyles(styleSheet)(NavigationBar);
+export default withStyles(styleSheet)(Navbar);

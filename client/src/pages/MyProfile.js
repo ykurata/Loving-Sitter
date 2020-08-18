@@ -12,7 +12,7 @@ import RoomIcon from "@material-ui/icons/Room";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Snackbar, IconButton } from "@material-ui/core";
 
-import NavigationBar from "./Navbar";
+import Navbar from "../components/Navbar";
 
 
 const MyProfileStyle = theme => ({
@@ -87,8 +87,7 @@ class MyProfile extends Component {
           ]}
         />
 
-        <NavigationBar></NavigationBar>
-
+        <Navbar/>
         <Grid container justify="center" style={{ marginTop: "50px"}}>
           <Grid item xs={7}>
             <Grid container align="center">
