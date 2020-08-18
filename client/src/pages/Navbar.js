@@ -1,186 +1,119 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import {
+  AppBar, Toolbar, Typography, List, ListItem,
+  withStyles, Grid, SwipeableDrawer
+} from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 
-import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import Avatar from "@material-ui/core/Avatar";
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+const styleSheet = {
+  list : {
+    width : 200,
+  },
+  padding : {
+    paddingRight : 30,
+    cursor : "pointer",
+  },
 
-import Notification from "./Notification";
-
-const styles = theme => ({
-  root: {
-    flexGrow: 1
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
-  title: {
-    flexGrow: 1
-  },
-  logInNavbar: {
-    backgroundColor: "transparent",
-    boxShadow: "none",
-    position: "fixed"
-  },
-  loggedInNavbar: {
-    backgroundColor: "transparent",
-    boxShadow: "none",
-    position: "static"
+  sideBarIcon : {
+    padding : 0,
+    color : "white",
+    cursor : "pointer",
   }
-});
-
-class NavigationBar extends Component {
-  state = {
-    anchorEl: null,
-    setAnchorEl: null,
-    token: localStorage.getItem("jwtToken"),
-    userId: localStorage.getItem("userId"),
-    profile: {}
-  };
-
-  handleClick = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
-
-  handleLogout = event => {
-    event.preventDefault();
-    localStorage.clear();
-    window.location.href = "/";
-  };
-
-  componentDidMount() {
-    axios.get(`/profile/get/${this.state.userId}`, { headers: { Authorization: `Bearer ${this.state.token}` } })
-    .then(res => {
-        this.setState({
-            profile: res.data.profile
-        });
-    })
-    .catch(err => {
-        console.log("Error fetching and parsing data", err);
-    });
-  }
-  
-  render() {
-    const { classes } = this.props;
-    const { anchorEl } = this.state;
-    const open = Boolean(anchorEl);
-    
-    // Display default photo if there is no profile photo
-    let avatar;
-    if (this.state.profile) {
-      avatar =  <Avatar
-                  alt="Remy Sharp"
-                  src={this.state.profile.photoUrl}
-                  className={classes.avatar}
-                />
-    } else {
-      avatar = <AccountCircleIcon className={classes.avatar} color="disabled"/>
-               
-    } 
-
-    let buttons;
-    if (this.state.token) {
-      buttons = (
-        <span>
-          <Button component={Link} to={"/profile"}>
-            BECOME A SITTER
-          </Button>
-          <Button component={Link} to={"/sitter-search"}>
-            Find Sitters
-          </Button>
-          <Notification />
-          <Button component={Link} to={"/messages"}>
-            Messages
-          </Button>
-          <IconButton aria-label="avatar" onClick={this.handleClick}>
-            {avatar}
-          </IconButton>
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorEl}
-            keepMounted
-            open={open}
-            onClose={this.handleClose}
-          >
-            <MenuItem component={Link} to={`/my-profile/${this.state.userId}`}>
-              My Profile
-            </MenuItem>
-            <MenuItem component={Link} to={"/my-jobs"}>
-              My Jobs
-            </MenuItem>
-            <MenuItem component={Link} to={"/request"}>
-              Requests
-            </MenuItem>
-            <MenuItem onClick={this.handleLogout}>Log Out</MenuItem>
-          </Menu>
-        </span>
-      );
-    } else {
-      buttons = (
-        <div>
-          <Button
-            className={classes.menuButton}
-            color="inherit"
-            component={Link}
-            to={"/profile"}
-          >
-            BECOME A SITTER
-          </Button>
-          <Button
-            className={classes.menuButton}
-            variant="outlined"
-            color="secondary"
-            component={Link}
-            to={"/login"}
-          >
-            Log In
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            component={Link}
-            to={"/signup"}
-          >
-            Sign Up
-          </Button>
-        </div>
-      );
-    }
-
-    return (
-      <div className={classes.root}>
-        <AppBar className={this.state.token ? classes.loggedInNavbar : classes.logInNavbar}>
-          <Toolbar>
-            <Typography variant="h6" className={classes.title}>
-              <a href="/">
-              <img
-                src={require("../images/loving-sitter-logo.png")}
-                alt="logo of app"
-              />
-              </a>
-            </Typography>
-            {buttons}
-          </Toolbar>
-        </AppBar>
-      </div>
-    );
-  };
 }
 
-export default withStyles(styles, { withTheme: true })(NavigationBar);
+class NavigationBar extends Component{
+  constructor(props){
+    super(props);
+    this.state = {drawerActivate:false, drawer:false};
+    this.createDrawer = this.createDrawer.bind(this);
+    this.destroyDrawer = this.destroyDrawer.bind(this);
+  }
+
+  componentWillMount(){
+    if(window.innerWidth <= 600){
+      this.setState({drawerActivate:true});
+    }
+
+    window.addEventListener('resize',()=>{
+      if(window.innerWidth <= 600){
+        this.setState({drawerActivate:true});
+      }
+      else{
+        this.setState({drawerActivate:false})
+      }
+    });
+  }
+
+  //Small Screens
+  createDrawer(){
+    return (
+      <div>
+        <AppBar >
+          <Toolbar>
+            <Grid container direction = "row" justify = "space-between" alignItems="center">
+              <MenuIcon
+                className = {this.props.classes.sideBarIcon}
+                onClick={()=>{this.setState({drawer:true})}} />
+
+              <Typography color="inherit" variant = "headline">Title</Typography>
+              <Typography color="inherit" variant = "headline"></Typography>
+            </Grid>
+          </Toolbar>
+        </AppBar>
+
+        <SwipeableDrawer
+         open={this.state.drawer}
+         onClose={()=>{this.setState({drawer:false})}}
+         onOpen={()=>{this.setState({drawer:true})}}>
+
+           <div
+             tabIndex={0}
+             role="button"
+             onClick={()=>{this.setState({drawer:false})}}
+             onKeyDown={()=>{this.setState({drawer:false})}}>
+
+            <List className = {this.props.classes.list}>
+               <ListItem key = {1} button divider> Option 1 </ListItem>
+               <ListItem key = {2} button divider> Option 2 </ListItem>
+               <ListItem key = {3} button divider> Option 3 </ListItem>
+             </List>
+
+         </div>
+       </SwipeableDrawer>
+
+      </div>
+    );
+  }
+
+  //Larger Screens
+  destroyDrawer(){
+    const {classes} = this.props
+    return (
+      <AppBar>
+        <Toolbar>
+          <Typography variant = "headline" style={{flexGrow:1}} color="inherit" >Title</Typography>
+          <Typography variant = "subheading" className = {classes.padding} color="inherit" >OPTION 1</Typography>
+          <Typography variant = "subheading" className = {classes.padding} color="inherit" >OPTION 2</Typography>
+          <Typography variant = "subheading" className = {classes.padding} color="inherit" >OPTION 3</Typography>
+        </Toolbar>
+      </AppBar>
+    )
+  }
+
+  render(){
+    return(
+      <div>
+        {this.state.drawerActivate ? this.createDrawer() : this.destroyDrawer()}
+      </div>
+    );
+  }
+}
+
+NavigationBar.propTypes = {
+  classes : PropTypes.object.isRequired
+};
+
+
+
+export default withStyles(styleSheet)(NavigationBar);
