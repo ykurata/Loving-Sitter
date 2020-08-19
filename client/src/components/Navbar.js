@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import {
   AppBar, Toolbar, Typography, List, ListItem,
-  withStyles, Grid, SwipeableDrawer
+  withStyles, Grid, SwipeableDrawer, Button
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
+import logo from '../images/loving-sitter-logo.png';
+
 const styleSheet = {
+  navbar: {
+    backgroundColor: 'transparent',
+    boxShadow: "none",
+  },
   list : {
     width : 200,
   },
@@ -14,12 +21,14 @@ const styleSheet = {
     paddingRight : 30,
     cursor : "pointer",
   },
-
   sideBarIcon : {
     padding : 0,
     color : "white",
     cursor : "pointer",
-  }
+  },
+  menuButton: {
+    marginRight: 20
+  },
 }
 
 class Navbar extends Component{
@@ -47,16 +56,19 @@ class Navbar extends Component{
 
   //Small Screens
   createDrawer(){
+    const {classes} = this.props
     return (
       <div>
-        <AppBar >
+        <AppBar className={classes.navbar}>
           <Toolbar>
             <Grid container direction = "row" justify = "space-between" alignItems="center">
               <MenuIcon
                 className = {this.props.classes.sideBarIcon}
                 onClick={()=>{this.setState({drawer:true})}} />
 
-              <Typography color="inherit" variant = "headline">Title</Typography>
+              <Typography color="inherit" variant = "headline">
+                <img src={logo} alt="logo"></img>
+              </Typography>
               <Typography color="inherit" variant = "headline"></Typography>
             </Grid>
           </Toolbar>
@@ -90,12 +102,36 @@ class Navbar extends Component{
   destroyDrawer(){
     const {classes} = this.props
     return (
-      <AppBar>
+      <AppBar className={classes.navbar}>
         <Toolbar>
-          <Typography variant = "headline" style={{flexGrow:1}} color="inherit" >Title</Typography>
-          <Typography variant = "subheading" className = {classes.padding} color="inherit" >OPTION 1</Typography>
-          <Typography variant = "subheading" className = {classes.padding} color="inherit" >OPTION 2</Typography>
-          <Typography variant = "subheading" className = {classes.padding} color="inherit" >OPTION 3</Typography>
+          <Typography variant = "headline" style={{flexGrow:1}} color="inherit" >
+            <img src={logo} alt="logo"></img>
+          </Typography>
+          <Button
+            className={classes.menuButton}
+            color="inherit"
+            component={Link}
+            to={"/profile"}
+          >
+            BECOME A SITTER
+          </Button>
+          <Button
+            className={classes.menuButton}
+            variant="outlined"
+            color="secondary"
+            component={Link}
+            to={"/login"}
+          >
+            Log In
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            component={Link}
+            to={"/signup"}
+          >
+            Sign Up
+          </Button>
         </Toolbar>
       </AppBar>
     )
