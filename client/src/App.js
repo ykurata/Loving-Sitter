@@ -17,7 +17,7 @@ import MyJobs from "./pages/MyJobs";
 import Request from "./pages/Request";
 import ProfileDetails from "./pages/ProfileDetails";
 import Messages from "./pages/Messages";
-import PrivateRoute from "./pages/PrivateRoute";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (

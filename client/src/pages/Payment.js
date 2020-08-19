@@ -4,8 +4,8 @@ import StripeCheckout from 'react-stripe-checkout';
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 
-import SideNavigationBar from "./SideNavBar";
-import NavigationBar from "./Navbar";
+import SideNavigationBar from "../components/SideNavBar";
+import Navbar from "../components/Navbar";
 
 class Payment extends Component {
   constructor(props) {
@@ -29,11 +29,11 @@ class Payment extends Component {
   render() {
     return (
       <div>
-        <NavigationBar></NavigationBar>
+        <Navbar/>
         <div className="pageArea">
           <div className="infoArea">
             <div className="menuArea">
-              <SideNavigationBar></SideNavigationBar>
+              <SideNavigationBar/>
             </div>
             <div className="settingsArea">
               <form noValidate autoComplete="off" method="POST" onSubmit={this.handleSubmit}>

@@ -13,7 +13,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
-import NavigationBar from "./Navbar";
+import Navbar from "../components/Navbar";
 
 const MyJobsStyle = theme => ({
   root: {
@@ -180,7 +180,7 @@ class MyJobs extends Component {
 
     return (
       <div>
-        <NavigationBar></NavigationBar>
+        <Navbar/>
           <Grid container>
             <Grid item xs={12} align='center'>
               <h1>My Jobs</h1>

@@ -13,7 +13,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
-import NavigationBar from "./Navbar";
+import Navbar from "../components/Navbar";
 
 const RequestStyle = theme => ({
   root: {
@@ -143,7 +143,7 @@ class Request extends Component {
 
     return (
       <div>
-        <NavigationBar></NavigationBar>
+        <Navbar/>
         <div>
           <Grid container>
             <Grid item xs={12} align='center'>
