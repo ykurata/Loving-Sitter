@@ -18,6 +18,10 @@ const styleSheet = {
   list : {
     width : 200,
   },
+  listItem: {
+    height: 50,
+    textTransform: "uppercase"
+  },  
   padding : {
     paddingRight : 30,
     cursor : "pointer",
@@ -122,19 +126,19 @@ class Navbar extends Component{
              onKeyDown={()=>{this.setState({drawer:false})}}>
             {this.state.token ?
               <List className = {classes.list}>
-                <ListItem button component={Link} to={'/login'}> Become a Sitter </ListItem>
-                <ListItem button component={Link} to={"/sitter-search"}> Find Sitters </ListItem>
-                <ListItem button > Notifications </ListItem>
-                <ListItem button component={Link} to="/messages"> Messages </ListItem>
-                <ListItem button component={Link} to={`/my-profile/${this.state.userId}`}> My Profile</ListItem>
-                <ListItem button component={Link} to="/my-jobs"> My Jobs</ListItem>
-                <ListItem button component={Link} to="/request"> Requests</ListItem>
-                <ListItem button onClick={this.handleLogout}>Log Out</ListItem>
+                <ListItem className={classes.listItem} button component={Link} to={'/login'}> Become a Sitter </ListItem>
+                <ListItem className={classes.listItem} button component={Link} to={"/sitter-search"}> Find Sitters </ListItem>
+                <ListItem className={classes.listItem} button > Notifications </ListItem>
+                <ListItem className={classes.listItem} button component={Link} to="/messages"> Messages </ListItem>
+                <ListItem className={classes.listItem} button component={Link} to={`/my-profile/${this.state.userId}`}> My Profile</ListItem>
+                <ListItem className={classes.listItem} button component={Link} to="/my-jobs"> My Jobs</ListItem>
+                <ListItem className={classes.listItem} button component={Link} to="/request"> Requests</ListItem>
+                <ListItem className={classes.listItem} button onClick={this.handleLogout}>Log Out</ListItem>
               </List>
             : <List className = {this.props.classes.list}>
-                <ListItem button>Find Sitters</ListItem>
-                <ListItem button component={Link} to={'/login'}>Log In</ListItem>
-                <ListItem button component={Link} to={'/signup'}> Sign Up</ListItem>
+                <ListItem className={classes.listItem} button>Find Sitters</ListItem>
+                <ListItem className={classes.listItem} button component={Link} to={'/login'}>Log In</ListItem>
+                <ListItem className={classes.listItem} button component={Link} to={'/signup'}> Sign Up</ListItem>
               </List>
             }
          </div>
