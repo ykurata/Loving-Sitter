@@ -7,7 +7,6 @@ import {
   withStyles, Grid, SwipeableDrawer, IconButton, Button, Menu, MenuItem
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-
 import logo from '../images/loving-sitter-logo.png';
 
 const styleSheet = {

@@ -127,10 +127,8 @@ const Landing = (props) => {
                 FIND MY DOG SITTER
               </Button>
             </Grid>
-          
           </Grid>
         </Grid>
-       
       </Grid>
     </div>
   );
