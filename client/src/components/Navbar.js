@@ -102,7 +102,7 @@ class Navbar extends Component{
                 className = {this.props.classes.sideBarIcon}
                 onClick={()=>{this.setState({drawer:true})}} />
 
-              <Typography color="inherit">
+              <Typography color="inherit" component={Link} to="/">
                 <img src={logo} alt="logo"></img>
               </Typography>
               <Typography color="inherit"></Typography>
@@ -152,7 +152,7 @@ class Navbar extends Component{
     return (
       <AppBar className={classes.navbar}>
         <Toolbar>
-          <Typography style={{flexGrow:1}} color="inherit" >
+          <Typography style={{flexGrow:1}} color="inherit" component={Link} to="/" >
             <img src={logo} alt="logo"></img>
           </Typography>
           {this.state.token ? 
