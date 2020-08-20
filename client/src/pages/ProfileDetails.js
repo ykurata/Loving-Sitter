@@ -16,9 +16,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Snackbar, IconButton } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 
-
 import Navbar from "../components/Navbar";
-
 
 const ProfileDetailsStyles = makeStyles(theme => ({
   root: {
@@ -36,10 +34,6 @@ const ProfileDetailsStyles = makeStyles(theme => ({
     height: 300,
     marginTop: 30,
     marginBottom: 30,
-    [theme.breakpoints.down('sm')]: {
-      width: 250,
-      height: 250
-    },
     [theme.breakpoints.down('xs')]: {
       width: 200,
       height: 200
@@ -60,20 +54,15 @@ const ProfileDetailsStyles = makeStyles(theme => ({
       margin: 30
     },
   },
-  squareBackground: {
-    borderRadius: 0,
-    width: 300,
-    height: 300
-  },
-  requestBtn: {
-    backgroundColor: "red",
-    color: "white"
-  },
   requestCard: {
     marginLeft: 0,
+    padding: 30,
     [theme.breakpoints.up('md')]: {
       marginLeft: 20
     },
+  },
+  date: {
+    marginBottom: 20
   }
 }));
 
@@ -190,48 +179,44 @@ const ProfileDetails = (props) => {
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
           <Card className={classes.requestCard}>
-            <Grid container align="center" direction="column">
-              <Grid item style={{ marginTop: "30px"}}>
-                <h2>${profile.rate}/hr</h2>
+            <CardContent align="center" >
+              <Typography variant="h4">${profile.rate}/hr</Typography>
+              <Rating value={5} readOnly className={"mb-1"} />
+              <Grid container>
+                <Grid item xs={12} className={classes.date}>
+                  <TextField
+                    id="drop-in"
+                    label="Drop In"
+                    name="startDate"
+                    type="date"
+                    onChange={handleInputChange}
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} className={classes.date}>
+                  <TextField
+                    id="drop-out"
+                    label="Drop Out"
+                    name="endDate"
+                    type="date"
+                    onChange={handleInputChange}
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                </Grid>
               </Grid>
-              <Grid item>
-                <Rating value={5} readOnly className={"mb-1"} />
-              </Grid>
-              <Grid item className={classes.marginBottom}>
-                <TextField
-                  id="drop-in"
-                  label="Drop In"
-                  name="startDate"
-                  type="date"
-                  onChange={handleInputChange}
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                />
-              </Grid>
-              <Grid item className={classes.marginBottom}>
-                <TextField
-                  id="drop-out"
-                  label="Drop Out"
-                  name="endDate"
-                  type="date"
-                  onChange={handleInputChange}
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                />
-              </Grid>
-              <Grid item style={{marginTop: "30px", marginBottom: "30px"}}>
-                <Button
-                  size="large"
-                  variant="contained"
-                  onClick={sendRequest}
-                  className={classes.requestBtn}
-                >
-                  Send Request
-                </Button>
-              </Grid>
-            </Grid>
+              <Button
+                size="large"
+                variant="contained"
+                color="secondary"
+                onClick={sendRequest}
+              >
+                Send Request
+              </Button>
+            </CardContent>
           </Card>
         </Grid>
       </Grid>
