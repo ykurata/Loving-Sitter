@@ -24,6 +24,9 @@ import Navbar from "../components/Navbar";
 import "date-fns";
 
 const ProfileListStyle = theme => ({
+  root: {
+    marginTop: 50
+  },
   avatar: {
     width: 100,
     height: 100,
@@ -131,7 +134,7 @@ class ProfileList extends Component {
     return (
       <div>
         <Navbar/>
-        <Grid container justify="center">
+        <Grid container className={classes.root} justify="center">
           <Grid item xs={12} align='center'>
             <h1>Find Dog Sitters</h1>
           </Grid>
