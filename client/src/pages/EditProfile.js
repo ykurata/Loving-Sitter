@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import Grid from "@material-ui/core/Grid";
@@ -10,491 +10,482 @@ import { Snackbar, IconButton } from "@material-ui/core";
 import Navbar from "../components/Navbar";
 import SideNavigationBar from "../components/SideNavBar";
 
-class EditProfile extends Component {
-  state = {
-    token: localStorage.getItem("jwtToken"),
-    userId: localStorage.getItem("userId"),
-    user: {
-      firstName: "",
-      lastName: "",
-      gender: "",
-      birthDate: "",
-      email: "",
-      phone: "",
-      address: "",
-      description: "",
-      rate: ""
-    },
-    profile: "",
-    errors: [],
-    disabled: true,
-    snackbaropen: false,
-    snackbarmsg: "",
-    formChanges: false
+const EditProfile = (props) => {
+  const [userInput, setUserInput] = useState({
+    firstName: "",
+    lastName: "",
+    gender: "",
+    birthDate: "",
+    email: "",
+    phone: "",
+    address: "",
+    description: "",
+    date: ""
+  });
+  const [profile, setProfile] = useState("");
+  const [user, setUser] = useState({});
+  const [errors, setErrors] = useState([]);
+  const [disabled, setDisabled] = useState(true);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMsg, setSnackBarMsg] = useState("");
+  const [formChange, setFormChange] = useState(false);
+  const token = localStorage.getItem("jwtToken");
+  const userId = localStorage.getItem("userId");
+ 
+  
+  useEffect(() => {
+    axios.get(`profile/get/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => {
+      setProfile(res.data.profile);
+      setUserInput({
+        firstName: res.data.profile.firstName,
+        lastName: res.data.profile.lastName,
+        gender: res.data.profile.gender,
+        birthDate: res.data.profile.birthDate,
+        email: res.data.profile.email,
+        phone: res.data.profile.phone,
+        address: res.data.profile.address,
+        description: res.data.profile.description,
+        date: res.data.profile.date
+      })
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }, []);
+
+ 
+  const createProfile = e => {
+    e.preventDefault();
+    axios.post("profile/create", userInput, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => {
+        setSnackBarMsg("Profile Saved" );
+        setSnackbarOpen(true);
+      })
+      .catch(err => {
+        setSnackBarMsg("Please fill up all the fields!");
+        setSnackbarOpen(true);
+        setErrors(err.response.data);
+      });
+  }
+
+  const updateProfile = e => {
+    e.preventDefault();
+    axios.put(`profile/update/${userId}`, userInput, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => {
+        setUser(res.data.profile);
+        setSnackBarMsg("Profile Saved" );
+        setSnackbarOpen(true);
+      })
+      .catch(err => {
+        setSnackBarMsg("Please fill up all the fields!");
+        setSnackbarOpen(true);
+        setErrors(err.response.data);
+      });
+  }
+
+  const handleInputChange = e => {
+    setUserInput({...userInput, [e.target.name]: e.target.value })
   };
 
-  componentDidMount() {
-    this.prefillProfile();
-  }
+  const handleSubmit = e => {
+    e.preventDefault();
 
-  prefillProfile() {
-    axios.get(`profile/get/${this.state.userId}`, {
-        headers: { Authorization: `Bearer ${this.state.token}` }
-      })
-      .then(res => {
-        if (res.data.profile) {
-          this.setState({ 
-            user: res.data.profile,
-            profile: res.data.profile
-          });
-        }
-      })
-      .catch(err => {
-        console.log({ err });
-      });
-  }
-
-  createProfile() {
-    axios.post("profile/create", this.state.user, {
-        headers: { Authorization: `Bearer ${this.state.token}` }
-      })
-      .then(res => {
-        this.setState({ user: res.data });
-        this.setState({ snackbarmsg: "Profile Saved" });
-        this.setState({ snackbaropen: true });
-      })
-      .catch(err => {
-        this.setState({ snackbarmsg: "Please fill up all the fields!" });
-        this.setState({ snackbaropen: true });
-        this.setState({
-          errors: err.response.data
-        })
-      });
-  }
-
-  updateProfile() {
-    axios.put(`profile/update/${this.state.userId}`, this.state.user, {
-        headers: { Authorization: `Bearer ${this.state.token}` }
-      })
-      .then(res => {
-        this.setState({ user: res.data });
-        this.setState({ snackbarmsg: "Profile Saved" });
-        this.setState({ snackbaropen: true });
-      })
-      .catch(err => {
-        this.setState({ snackbarmsg: "Please fill up all the fields!" });
-        this.setState({ snackbaropen: true });
-        this.setState({
-          errors: err.response.data
-        })
-      });
-  }
-
-  handleInputChange = event => {
-    const field = event.target.name;
-    let user = { ...this.state.user };
-    user[field] = event.target.value;
-    this.setState({ user });
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-
-    if (this.state.profile) {
-      this.updateProfile();
+    if (profile) {
+      updateProfile();
     } else {
-      this.createProfile();
+      createProfile();
     }
-    this.setState({ disabled: true });
+    setDisabled(true);
   };
 
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  snackbarClose = event => {
-    this.setState({ snackbaropen: false });
+  const snackbarClose = event => {
+    setSnackbarOpen(false);
   };
 
-  enableEdit = event => {
-    this.setState({ disabled: false, edit: "1" });
+  const enableEdit = e => {
+    setDisabled(false);
   };
 
-  cancelEdit = event => {
-    this.setState({ disabled: true, edit: "0" });
+  const cancelEdit = event => {
+    setDisabled(true);
   };
 
-  render() {
-    return (
-      <div>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "center"
-          }}
-          open={this.state.snackbaropen}
-          autoHideDuration={3000}
-          onClose={this.snackbarClose}
-          message={<span id="message-id">{this.state.snackbarmsg}</span>}
-          action={[
-            <IconButton
-              key="close"
-              arial-label="Close"
-              color="inherit"
-              onClick={this.snackbarClose}
-            ></IconButton>
-          ]}
-        />
-        <Navbar/>
-        <div className="pageArea">
-          <div className="infoArea">
-            <div className="menuArea">
-              <SideNavigationBar></SideNavigationBar>
-            </div>
-            <div className="settingsArea">
-              <Grid container spacing={3}>
-                <Grid item xs={12} className="center">
-                  <h1>Edit Profile</h1>
-                </Grid>
-                <Grid item xs={12}>
-                  <form
-                    noValidate
-                    autoComplete="off"
-                    method="POST"
-                    onSubmit={this.handleSubmit}
-                  >
-                    <Grid container spacing={3} className="pb-1">
+  
+  return (
+    <div>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center"
+        }}
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={snackbarClose}
+        message={<span id="message-id">{snackbarMsg}</span>}
+        action={[
+          <IconButton
+            key="close"
+            arial-label="Close"
+            color="inherit"
+            onClick={snackbarClose}
+          ></IconButton>
+        ]}
+      />
+      <Navbar/>
+      <div className="pageArea">
+        <div className="infoArea">
+          <div className="menuArea">
+            <SideNavigationBar></SideNavigationBar>
+          </div>
+          <div className="settingsArea">
+            <Grid container spacing={3}>
+              <Grid item xs={12} className="center">
+                <h1>Edit Profile</h1>
+              </Grid>
+              <Grid item xs={12}>
+                <form
+                  noValidate
+                  autoComplete="off"
+                  method="POST"
+                  onSubmit={handleSubmit}
+                >
+                  <Grid container spacing={3} className="pb-1">
 
-                      {/* First Name */}
-              
-                      <Grid item xs={1}></Grid>
-                      <Grid item xs={9}>
-                        <Grid container spacing={3}>
-                          <Grid item xs={3} className="text-right">
-                            <p>FIRST NAME</p>
-                            {this.state.errors ? (
-                              <div style={{ color: "red" }}>
-                                {this.state.errors.firstName}
-                              </div>
-                            ) : null}
-                          </Grid>
-                          <Grid item xs={9}>
-                            <TextField
-                              name="firstName"
-                              id="standard-firstName"
-                              placeholder="John"
-                              value={this.state.user.firstName}
-                              onChange={this.handleInputChange}
-                              margin="normal"
-                              variant="outlined"
-                              disabled={this.state.disabled}
-                              fullWidth
-                            />
-                          </Grid>
+                    {/* First Name */}
+            
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={9}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={3} className="text-right">
+                          <p>FIRST NAME</p>
+                          {errors ? (
+                            <div style={{ color: "red" }}>
+                              {errors.firstName}
+                            </div>
+                          ) : null}
+                        </Grid>
+                        <Grid item xs={9}>
+                          <TextField
+                            name="firstName"
+                            id="standard-firstName"
+                            placeholder="John"
+                            value={userInput.firstName}
+                            onChange={handleInputChange}
+                            margin="normal"
+                            variant="outlined"
+                            disabled={disabled}
+                            fullWidth
+                          />
                         </Grid>
                       </Grid>
-                      <Grid item xs={2}></Grid>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
 
-                      {/* Last name */}
+                    {/* Last name */}
 
-                      <Grid item xs={1}></Grid>
-                      <Grid item xs={9}>
-                        <Grid container spacing={3}>
-                          <Grid item xs={3} className="text-right">
-                            <p>LAST NAME</p>
-                            {this.state.errors ? (
-                              <div style={{ color: "red" }}>
-                                {this.state.errors.lastName}
-                              </div>
-                            ) : null}
-                          </Grid>
-                          <Grid item xs={9}>
-                            <TextField
-                              name="lastName"
-                              id="standard-lastName"
-                              placeholder="Doe"
-                              value={this.state.user.lastName}
-                              onChange={this.handleInputChange}
-                              margin="normal"
-                              variant="outlined"
-                              disabled={this.state.disabled}
-                              fullWidth
-                            />
-                          </Grid>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={9}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={3} className="text-right">
+                          <p>LAST NAME</p>
+                          {errors ? (
+                            <div style={{ color: "red" }}>
+                              {errors.lastName}
+                            </div>
+                          ) : null}
+                        </Grid>
+                        <Grid item xs={9}>
+                          <TextField
+                            name="lastName"
+                            id="standard-lastName"
+                            placeholder="Doe"
+                            value={userInput.lastName}
+                            onChange={handleInputChange}
+                            margin="normal"
+                            variant="outlined"
+                            disabled={disabled}
+                            fullWidth
+                          />
                         </Grid>
                       </Grid>
-                      <Grid item xs={2}></Grid>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
 
-                      {/* Gender */}
+                    {/* Gender */}
 
-                      <Grid item xs={1}></Grid>
-                      <Grid item xs={9}>
-                        <Grid container spacing={3}>
-                          <Grid item xs={3} className="text-right">
-                            <p>GENDER</p>
-                            {this.state.errors ? (
-                              <div style={{ color: "red" }}>
-                                {this.state.errors.gender}
-                              </div>
-                            ) : null}
-                          </Grid>
-                          <Grid item xs={9}>
-                            <TextField
-                              select
-                              name="gender"
-                              id="standard-gender"
-                              label="gender"
-                              value={this.state.user.gender}
-                              onChange={this.handleInputChange}
-                              margin="normal"
-                              variant="outlined"
-                              disabled={this.state.disabled}
-                              fullWidth
-                            >
-                              <MenuItem value="">
-                                <em>Gender</em>
-                              </MenuItem>
-                              <MenuItem value={"male"}>Male</MenuItem>
-                              <MenuItem value={"female"}>Female</MenuItem>
-                            </TextField>
-                          </Grid>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={9}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={3} className="text-right">
+                          <p>GENDER</p>
+                          {errors ? (
+                            <div style={{ color: "red" }}>
+                              {errors.gender}
+                            </div>
+                          ) : null}
+                        </Grid>
+                        <Grid item xs={9}>
+                          <TextField
+                            select
+                            name="gender"
+                            id="standard-gender"
+                            label="gender"
+                            value={userInput.gender}
+                            onChange={handleInputChange}
+                            margin="normal"
+                            variant="outlined"
+                            disabled={disabled}
+                            fullWidth
+                          >
+                            <MenuItem value="">
+                              <em>Gender</em>
+                            </MenuItem>
+                            <MenuItem value={"male"}>Male</MenuItem>
+                            <MenuItem value={"female"}>Female</MenuItem>
+                          </TextField>
                         </Grid>
                       </Grid>
-                      <Grid item xs={2}></Grid>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
 
-                      {/* DOB */}
+                    {/* DOB */}
 
-                      <Grid item xs={1}></Grid>
-                      <Grid item xs={9}>
-                        <Grid container spacing={3}>
-                          <Grid item xs={3} className="text-right">
-                            <p>BIRTH DATE</p>
-                            {this.state.errors ? (
-                              <div style={{ color: "red" }}>
-                                {this.state.errors.birthDate}
-                              </div>
-                            ) : null}
-                          </Grid>
-                          <Grid item xs={9}>
-                            <TextField
-                              type="date"
-                              name="birthDate"
-                              id="standard-birthDate"
-                              value={this.state.user.birthDate}
-                              onChange={this.handleInputChange}
-                              margin="normal"
-                              variant="outlined"
-                              disabled={this.state.disabled}
-                              fullWidth
-                            />
-                          </Grid>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={9}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={3} className="text-right">
+                          <p>BIRTH DATE</p>
+                          {errors ? (
+                            <div style={{ color: "red" }}>
+                              {errors.birthDate}
+                            </div>
+                          ) : null}
+                        </Grid>
+                        <Grid item xs={9}>
+                          <TextField
+                            type="date"
+                            name="birthDate"
+                            id="standard-birthDate"
+                            value={userInput.birthDate}
+                            onChange={handleInputChange}
+                            margin="normal"
+                            variant="outlined"
+                            disabled={disabled}
+                            fullWidth
+                          />
                         </Grid>
                       </Grid>
-                      <Grid item xs={2}></Grid>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
 
-                      {/* Email */}
+                    {/* Email */}
 
-                      <Grid item xs={1}></Grid>
-                      <Grid item xs={9}>
-                        <Grid container spacing={3}>
-                          <Grid item xs={3} className="text-right">
-                            <p>EMAIL ADDRESS</p>
-                            {this.state.errors ? (
-                              <div style={{ color: "red" }}>
-                                {this.state.errors.email}
-                              </div>
-                            ) : null}
-                          </Grid>
-                          <Grid item xs={9}>
-                            <TextField
-                              name="email"
-                              placeholder="john-doe.s@gmail.com"
-                              id="standard-email"
-                              value={this.state.user.email}
-                              onChange={this.handleInputChange}
-                              margin="normal"
-                              variant="outlined"
-                              disabled={this.state.disabled}
-                              fullWidth
-                            />
-                          </Grid>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={9}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={3} className="text-right">
+                          <p>EMAIL ADDRESS</p>
+                          {errors ? (
+                            <div style={{ color: "red" }}>
+                              {errors.email}
+                            </div>
+                          ) : null}
+                        </Grid>
+                        <Grid item xs={9}>
+                          <TextField
+                            name="email"
+                            placeholder="john-doe.s@gmail.com"
+                            id="standard-email"
+                            value={userInput.email}
+                            onChange={handleInputChange}
+                            margin="normal"
+                            variant="outlined"
+                            disabled={disabled}
+                            fullWidth
+                          />
                         </Grid>
                       </Grid>
-                      <Grid item xs={2}></Grid>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
 
-                      {/* Phone number */}
+                    {/* Phone number */}
 
-                      <Grid item xs={1}></Grid>
-                      <Grid item xs={9}>
-                        <Grid container spacing={3}>
-                          <Grid item xs={3} className="text-right">
-                            <p>PHONE NUMBER</p>
-                            {this.state.errors ? (
-                              <div style={{ color: "red" }}>
-                                {this.state.errors.phone}
-                              </div>
-                            ) : null}
-                          </Grid>
-                          <Grid item xs={9}>
-                            <TextField
-                              name="phone"
-                              id="standard-phone"
-                              value={this.state.user.phone}
-                              onChange={this.handleInputChange}
-                              margin="normal"
-                              variant="outlined"
-                              disabled={this.state.disabled}
-                              fullWidth
-                            />
-                          </Grid>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={9}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={3} className="text-right">
+                          <p>PHONE NUMBER</p>
+                          {errors ? (
+                            <div style={{ color: "red" }}>
+                              {errors.phone}
+                            </div>
+                          ) : null}
+                        </Grid>
+                        <Grid item xs={9}>
+                          <TextField
+                            name="phone"
+                            id="standard-phone"
+                            value={userInput.phone}
+                            onChange={handleInputChange}
+                            margin="normal"
+                            variant="outlined"
+                            disabled={disabled}
+                            fullWidth
+                          />
                         </Grid>
                       </Grid>
-                      <Grid item xs={2}></Grid>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
 
-                      {/* Address */}
+                    {/* Address */}
 
-                      <Grid item xs={1}></Grid>
-                      <Grid item xs={9}>
-                        <Grid container spacing={3}>
-                          <Grid item xs={3} className="text-right">
-                            <p>WHERE YOU LIVE</p>
-                            {this.state.errors ? (
-                              <div style={{ color: "red" }}>
-                                {this.state.errors.address}
-                              </div>
-                            ) : null}
-                          </Grid>
-                          <Grid item xs={9}>
-                            <TextField
-                              name="address"
-                              placeholder="Address"
-                              id="standard-address"
-                              value={this.state.user.address}
-                              onChange={this.handleInputChange}
-                              margin="normal"
-                              variant="outlined"
-                              disabled={this.state.disabled}
-                              fullWidth
-                            />
-                          </Grid>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={9}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={3} className="text-right">
+                          <p>WHERE YOU LIVE</p>
+                          {errors ? (
+                            <div style={{ color: "red" }}>
+                              {errors.address}
+                            </div>
+                          ) : null}
+                        </Grid>
+                        <Grid item xs={9}>
+                          <TextField
+                            name="address"
+                            placeholder="Address"
+                            id="standard-address"
+                            value={userInput.address}
+                            onChange={handleInputChange}
+                            margin="normal"
+                            variant="outlined"
+                            disabled={disabled}
+                            fullWidth
+                          />
                         </Grid>
                       </Grid>
-                      <Grid item xs={2}></Grid>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
 
-                      {/* Description */}
-                      <Grid item xs={1}></Grid>
-                      <Grid item xs={9}>
-                        <Grid container spacing={3}>
-                          <Grid item xs={3} className="text-right">
-                            <p>DESCRIBE YOURSELF</p>
-                            {this.state.errors ? (
-                              <div style={{ color: "red" }}>
-                                {this.state.errors.description}
-                              </div>
-                            ) : null}
-                          </Grid>
-                          <Grid item xs={9}>
-                            <TextField
-                              name="description"
-                              placeholder="About you"
-                              id="standard-description"
-                              value={this.state.user.description}
-                              onChange={this.handleInputChange}
-                              margin="normal"
-                              variant="outlined"
-                              disabled={this.state.disabled}
-                              fullWidth
-                            />
-                          </Grid>
+                    {/* Description */}
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={9}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={3} className="text-right">
+                          <p>DESCRIBE YOURSELF</p>
+                          {errors ? (
+                            <div style={{ color: "red" }}>
+                              {errors.description}
+                            </div>
+                          ) : null}
+                        </Grid>
+                        <Grid item xs={9}>
+                          <TextField
+                            name="description"
+                            placeholder="About you"
+                            id="standard-description"
+                            value={userInput.description}
+                            onChange={handleInputChange}
+                            margin="normal"
+                            variant="outlined"
+                            disabled={disabled}
+                            fullWidth
+                          />
                         </Grid>
                       </Grid>
-                      <Grid item xs={2}></Grid>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
 
-                      {/*Hourly Rate*/}
-                      <Grid item xs={1}></Grid>
-                      <Grid item xs={9}>
-                        <Grid container spacing={3}>
-                          <Grid item xs={3} className="text-right">
-                            <p>YOUR HOURLY RATE</p>
-                            {this.state.errors ? (
-                              <div style={{ color: "red" }}>
-                                {this.state.errors.rate}
-                              </div>
-                            ) : null}
-                          </Grid>
-                          <Grid item xs={9}>
-                            <TextField
-                              name="rate"
-                              placeholder="Your hourly rate"
-                              id="standard-rate"
-                              type="number"
-                              value={this.state.user.rate}
-                              onChange={this.handleInputChange}
-                              margin="normal"
-                              variant="outlined"
-                              disabled={this.state.disabled}
-                              fullWidth
-                            />
-                          </Grid>
+                    {/*Hourly Rate*/}
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={9}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={3} className="text-right">
+                          <p>YOUR HOURLY RATE</p>
+                          {errors ? (
+                            <div style={{ color: "red" }}>
+                              {errors.rate}
+                            </div>
+                          ) : null}
+                        </Grid>
+                        <Grid item xs={9}>
+                          <TextField
+                            name="rate"
+                            placeholder="Your hourly rate"
+                            id="standard-rate"
+                            type="number"
+                            value={userInput.rate}
+                            onChange={handleInputChange}
+                            margin="normal"
+                            variant="outlined"
+                            disabled={disabled}
+                            fullWidth
+                          />
                         </Grid>
                       </Grid>
-                      <Grid item xs={2}></Grid>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
 
-                      <Grid item xs={4}></Grid>
+                    <Grid item xs={4}></Grid>
 
-                      <Grid item xs={4} className="center">
-                        <Button
-                          fullWidth
-                          size="large"
-                          variant="contained"
-                          className="submit-button"
-                          onClick={this.handleSubmit}
-                          disabled={this.state.disabled}
-                        >
-                          Save
-                        </Button>
-                      </Grid>
+                    <Grid item xs={4} className="center">
+                      <Button
+                        fullWidth
+                        size="large"
+                        variant="contained"
+                        className="submit-button"
+                        onClick={handleSubmit}
+                        disabled={disabled}
+                      >
+                        Save
+                      </Button>
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Button
+                        fullWidth
+                        size="large"
+                        variant="contained"
+                        className="submit-button"
+                        onClick={enableEdit}
+                        disabled={!disabled}
+                      >
+                        Edit
+                      </Button>
+                    </Grid>
+
+                    {!disabled ? (
                       <Grid item xs={2}>
                         <Button
+                          variant="outlined"
+                          color="secondary"
                           fullWidth
                           size="large"
-                          variant="contained"
-                          className="submit-button"
-                          onClick={this.enableEdit}
-                          disabled={!this.state.disabled}
+                          onClick={cancelEdit}
                         >
-                          Edit
+                          Cancel
                         </Button>
                       </Grid>
-
-                      {!this.state.disabled ? (
-                        <Grid item xs={2}>
-                          <Button
-                            variant="outlined"
-                            color="secondary"
-                            fullWidth
-                            size="large"
-                            onClick={this.cancelEdit}
-                          >
-                            Cancel
-                          </Button>
-                        </Grid>
-                      ) : (
-                          <Grid item xs={2}></Grid>
-                        )}
-                      <Grid item xs={2}></Grid>
-                    </Grid>
-                  </form>
-                </Grid>
+                    ) : (
+                        <Grid item xs={2}></Grid>
+                      )}
+                    <Grid item xs={2}></Grid>
+                  </Grid>
+                </form>
               </Grid>
-            </div>
+            </Grid>
           </div>
         </div>
-        {/* <SimpleSnackbar></SimpleSnackbar> */}
       </div>
-    );
-  }
+      {/* <SimpleSnackbar></SimpleSnackbar> */}
+    </div>
+  );
 }
 
 export default EditProfile;
