@@ -160,11 +160,11 @@ class Navbar extends Component{
           </Typography>
           {this.state.token ? 
             <span>
-              <Button component={Link} to={"/profile"}>
-                BECOME A SITTER
-              </Button>
               <Button component={Link} to={"/sitter-search"}>
                 Find Sitters
+              </Button>
+              <Button component={Link} to={"/profile"}>
+                BECOME A SITTER
               </Button>
               <Button >
                 Notifications
