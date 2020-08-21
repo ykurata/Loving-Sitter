@@ -24,7 +24,11 @@ const MyProfileStyle = makeStyles(theme => ({
     width: "60%",
     margin: "auto",
     padding: 50,
-    textAlign: "center"
+    textAlign: "center",
+    [theme.breakpoints.down('xs')]: {
+      width: "90%",
+      padding: 10
+    },
   },
   text: {
     marginBottom: 10
@@ -32,11 +36,18 @@ const MyProfileStyle = makeStyles(theme => ({
   avatar: {
     width: 300,
     height: 300,
-    margin: "auto"
+    margin: "auto",
+    [theme.breakpoints.down('xs')]: {
+      width: 200,
+      height: 200
+    },
   },
   rate: {
     fontWeight: "bold",
     marginBottom: 10
+  },
+  button: {
+    marginTop: 20
   }
 }));
 
@@ -62,39 +73,44 @@ const MyProfile = (props) => {
     <div>
       <Navbar/>
       <Grid container className={classes.root} justify="center">
-        <Card className={classes.card}>
-          {profile.photoUrl ?
-            <Avatar
-              alt="Your Profile Picture"
-              src={profile.photoUrl}
-              className={classes.avatar}
-            />
-          : <AccountCircleIcon className={classes.avatar} color="disabled"/> 
-          }
-          <CardContent>
-            <Typography variant="h4" className={classes.text}>
-              {profile.firstName} {profile.lastName}
-            </Typography>
-            <Grid container justify="center" className={classes.text}> 
-              <RoomIcon  color="secondary" />
-              <Typography variant="subtitle1">{profile.address}</Typography>
-            </Grid>
-            <Typography variant="subtitle1" className={classes.rate}>$ {profile.rate} /hr</Typography>
-            <Grid item align="left"> 
-              <Typography
-                className={classes.description}
-                variant="body1"
-                component="div"
-              > 
-              <Box fontWeight="fontWeightBold" fontSize="h6.fontSize">
-                About Me
-              </Box><br></br>
-              {profile.description}
-            </Typography>
-            </Grid>
-            <Button variant="outlined" color="primary" component={Link} to={'/profile'}>Edit Profile</Button>
-          </CardContent>
-        </Card>
+        {profile ? 
+          <Card className={classes.card}>
+            {profile.photoUrl ?
+              <Avatar
+                alt="Your Profile Picture"
+                src={profile.photoUrl}
+                className={classes.avatar}
+              />
+            : <AccountCircleIcon className={classes.avatar} color="disabled"/> 
+            }
+            <CardContent>
+              <Typography variant="h4" className={classes.text}>
+                {profile.firstName} {profile.lastName}
+              </Typography>
+              <Grid container justify="center" className={classes.text}> 
+                <RoomIcon  color="secondary" />
+                <Typography variant="subtitle1">{profile.address}</Typography>
+              </Grid>
+              <Typography variant="subtitle1" className={classes.rate}>$ {profile.rate} /hr</Typography>
+              <Grid item align="left"> 
+                <Typography
+                  variant="body1"
+                  component="div"
+                > 
+                <Box fontWeight="fontWeightBold" fontSize="h6.fontSize">
+                  About Me
+                </Box><br></br>
+                {profile.description}
+              </Typography>
+              </Grid>
+              <Button className={classes.button} variant="outlined" color="primary" component={Link} to={'/profile'}>Edit Profile</Button>
+            </CardContent>
+          </Card>
+        : <Card className={classes.card}>
+            <Typography variant="h6">No Profile</Typography>
+            <Button className={classes.button} variant="outlined" color="primary" component={Link} to={'/profile'}>Edit Profile</Button>
+          </Card>
+        }
       </Grid>
     </div>
   );
