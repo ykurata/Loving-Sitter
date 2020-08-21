@@ -38,6 +38,10 @@ const EditProfileStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       width: "40%"
     },
+  },
+  error: {
+    color: "red",
+    textAlign: "left"
   }
 }));
 
@@ -55,9 +59,7 @@ const EditProfile = (props) => {
     date: ""
   });
   const [profile, setProfile] = useState("");
-  const [user, setUser] = useState({});
   const [errors, setErrors] = useState([]);
-  const [disabled, setDisabled] = useState(true);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMsg, setSnackBarMsg] = useState("");
   const [formChange, setFormChange] = useState(false);
@@ -89,8 +91,7 @@ const EditProfile = (props) => {
   }, []);
 
  
-  const createProfile = e => {
-    e.preventDefault();
+  const createProfile = () => {
     axios.post("profile/create", userInput, {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -105,13 +106,11 @@ const EditProfile = (props) => {
       });
   }
 
-  const updateProfile = e => {
-    e.preventDefault();
+  const updateProfile = () => {
     axios.put(`profile/update/${userId}`, userInput, {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(res => {
-        setUser(res.data.profile);
         setSnackBarMsg("Profile Saved" );
         setSnackbarOpen(true);
       })
@@ -134,21 +133,11 @@ const EditProfile = (props) => {
     } else {
       createProfile();
     }
-    setDisabled(true);
   };
 
   const snackbarClose = event => {
     setSnackbarOpen(false);
   };
-
-  const enableEdit = e => {
-    setDisabled(false);
-  };
-
-  const cancelEdit = event => {
-    setDisabled(true);
-  };
-
   
   return (
     <div>
@@ -185,11 +174,6 @@ const EditProfile = (props) => {
                 {/* First Name */}
                 <Grid item xs={3}>
                   <p>FIRST NAME</p>
-                  {errors ? (
-                    <div style={{ color: "red" }}>
-                      {errors.firstName}
-                    </div>
-                  ) : null}
                 </Grid>
                 <Grid item xs={9}>
                   <TextField
@@ -200,18 +184,17 @@ const EditProfile = (props) => {
                     onChange={handleInputChange}
                     margin="normal"
                     variant="outlined"
-                    disabled={disabled}
                     fullWidth
                   />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.firstName}
+                    </div>
+                  ) : null}
                 </Grid>
                 {/* Last name */}
                 <Grid item xs={3}>
                   <p>LAST NAME</p>
-                  {errors ? (
-                    <div style={{ color: "red" }}>
-                      {errors.lastName}
-                    </div>
-                  ) : null}
                 </Grid>
                 <Grid item xs={9}>
                   <TextField
@@ -222,18 +205,17 @@ const EditProfile = (props) => {
                     onChange={handleInputChange}
                     margin="normal"
                     variant="outlined"
-                    disabled={disabled}
                     fullWidth
                   />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.lastName}
+                    </div>
+                  ) : null}
                 </Grid>
                 {/* Gender */}
                 <Grid item xs={3}>
                   <p>GENDER</p>
-                  {errors ? (
-                    <div style={{ color: "red" }}>
-                      {errors.gender}
-                    </div>
-                  ) : null}
                 </Grid>
                 <Grid item xs={9}>
                   <TextField
@@ -245,7 +227,6 @@ const EditProfile = (props) => {
                     onChange={handleInputChange}
                     margin="normal"
                     variant="outlined"
-                    disabled={disabled}
                     fullWidth
                   >
                     <MenuItem value="">
@@ -254,15 +235,15 @@ const EditProfile = (props) => {
                     <MenuItem value={"male"}>Male</MenuItem>
                     <MenuItem value={"female"}>Female</MenuItem>
                   </TextField>
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.gender}
+                    </div>
+                  ) : null}
                 </Grid>
                 {/* DOB */}
                 <Grid item xs={3}>
                   <p>BIRTH DATE</p>
-                  {errors ? (
-                    <div style={{ color: "red" }}>
-                      {errors.birthDate}
-                    </div>
-                  ) : null}
                 </Grid>
                 <Grid item xs={9}>
                   <TextField
@@ -273,18 +254,17 @@ const EditProfile = (props) => {
                     onChange={handleInputChange}
                     margin="normal"
                     variant="outlined"
-                    disabled={disabled}
                     fullWidth
                   />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.birthDate}
+                    </div>
+                  ) : null}
                 </Grid>
                 {/* Email */}
                 <Grid item xs={3}>
                   <p>EMAIL ADDRESS</p>
-                  {errors ? (
-                    <div style={{ color: "red" }}>
-                      {errors.email}
-                    </div>
-                  ) : null}
                 </Grid>
                 <Grid item xs={9}>
                   <TextField
@@ -295,18 +275,17 @@ const EditProfile = (props) => {
                     onChange={handleInputChange}
                     margin="normal"
                     variant="outlined"
-                    disabled={disabled}
                     fullWidth
                   />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.email}
+                    </div>
+                  ) : null}
                 </Grid>
                 {/* Phone number */}
                 <Grid item xs={3}>
                   <p>PHONE NUMBER</p>
-                  {errors ? (
-                    <div style={{ color: "red" }}>
-                      {errors.phone}
-                    </div>
-                  ) : null}
                 </Grid>
                 <Grid item xs={9}>
                   <TextField
@@ -316,18 +295,17 @@ const EditProfile = (props) => {
                     onChange={handleInputChange}
                     margin="normal"
                     variant="outlined"
-                    disabled={disabled}
                     fullWidth
                   />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.phone}
+                    </div>
+                  ) : null}
                 </Grid>
                 {/* Address */}
                 <Grid item xs={3}>
                   <p>WHERE YOU LIVE</p>
-                  {errors ? (
-                    <div style={{ color: "red" }}>
-                      {errors.address}
-                    </div>
-                  ) : null}
                 </Grid>
                 <Grid item xs={9}>
                   <TextField
@@ -338,18 +316,17 @@ const EditProfile = (props) => {
                     onChange={handleInputChange}
                     margin="normal"
                     variant="outlined"
-                    disabled={disabled}
                     fullWidth
                   />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.address}
+                    </div>
+                  ) : null}
                 </Grid>
                 {/* Description */}
                 <Grid item xs={3}>
                   <p>DESCRIBE YOURSELF</p>
-                  {errors ? (
-                    <div style={{ color: "red" }}>
-                      {errors.description}
-                    </div>
-                  ) : null}
                 </Grid>
                 <Grid item xs={9}>
                   <TextField
@@ -360,18 +337,17 @@ const EditProfile = (props) => {
                     onChange={handleInputChange}
                     margin="normal"
                     variant="outlined"
-                    disabled={disabled}
                     fullWidth
                   />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.description}
+                    </div>
+                  ) : null}
                 </Grid>
                 {/*Hourly Rate*/}
                 <Grid item xs={3}>
                   <p>YOUR HOURLY RATE</p>
-                  {errors ? (
-                    <div style={{ color: "red" }}>
-                      {errors.rate}
-                    </div>
-                  ) : null}
                 </Grid>
                 <Grid item xs={9}>
                   <TextField
@@ -383,12 +359,16 @@ const EditProfile = (props) => {
                     onChange={handleInputChange}
                     margin="normal"
                     variant="outlined"
-                    disabled={disabled}
                     fullWidth
                   />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.rate}
+                    </div>
+                  ) : null}
                 </Grid>
                 <Grid item xs={12}>
-                  <Button variant="contained" size="large" color="secondary">
+                  <Button type="submit" variant="contained" size="large" color="secondary">
                     Submit
                   </Button>
                 </Grid>
