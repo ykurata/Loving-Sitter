@@ -46,13 +46,13 @@ const EditProfileStyles = makeStyles(theme => ({
   },
   sideNav: {
     width: "70%",
-    margin: "auto",
+    paddingLeft: 100,
     [theme.breakpoints.down('md')]: {
       width: "100%",
+      paddingLeft: 15
     },
     [theme.breakpoints.down('xs')]: {
       width: "40%",
-      marginLeft: 15
     },
   },
   error: {
