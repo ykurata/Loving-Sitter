@@ -5,12 +5,48 @@ import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { Snackbar, IconButton } from "@material-ui/core";
+import { Snackbar, IconButton, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 import Navbar from "../components/Navbar";
 import SideNavigationBar from "../components/SideNavBar";
 
+const EditProfileStyles = makeStyles(theme => ({
+  root: {
+    marginTop: 100,
+  },
+  title: {
+    marginBottom: 50,
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 35
+    },
+  },
+  profileForm: {
+    textAlign: "center",
+    backgroundColor: "white",
+    width: "80%",
+    margin: "auto",
+    padding: 50,
+    marginBottom: 50,
+    [theme.breakpoints.down('sm')]: {
+      width: "100%",
+      padding: 10
+    },
+  },
+  sideNav: {
+    paddingLeft: 10,
+    [theme.breakpoints.down('xs')]: {
+      width: "40%"
+    },
+  },
+  error: {
+    color: "red",
+    textAlign: "left"
+  }
+}));
+
 const EditProfile = (props) => {
+  const classes = EditProfileStyles();
   const [userInput, setUserInput] = useState({
     firstName: "",
     lastName: "",
@@ -23,9 +59,7 @@ const EditProfile = (props) => {
     date: ""
   });
   const [profile, setProfile] = useState("");
-  const [user, setUser] = useState({});
   const [errors, setErrors] = useState([]);
-  const [disabled, setDisabled] = useState(true);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMsg, setSnackBarMsg] = useState("");
   const [formChange, setFormChange] = useState(false);
@@ -57,8 +91,7 @@ const EditProfile = (props) => {
   }, []);
 
  
-  const createProfile = e => {
-    e.preventDefault();
+  const createProfile = () => {
     axios.post("profile/create", userInput, {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -73,13 +106,11 @@ const EditProfile = (props) => {
       });
   }
 
-  const updateProfile = e => {
-    e.preventDefault();
+  const updateProfile = () => {
     axios.put(`profile/update/${userId}`, userInput, {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(res => {
-        setUser(res.data.profile);
         setSnackBarMsg("Profile Saved" );
         setSnackbarOpen(true);
       })
@@ -102,21 +133,11 @@ const EditProfile = (props) => {
     } else {
       createProfile();
     }
-    setDisabled(true);
   };
 
   const snackbarClose = event => {
     setSnackbarOpen(false);
   };
-
-  const enableEdit = e => {
-    setDisabled(false);
-  };
-
-  const cancelEdit = event => {
-    setDisabled(true);
-  };
-
   
   return (
     <div>
@@ -139,351 +160,223 @@ const EditProfile = (props) => {
         ]}
       />
       <Navbar/>
-      <div className="pageArea">
-        <div className="infoArea">
-          <div className="menuArea">
-            <SideNavigationBar></SideNavigationBar>
+      <Grid container className={classes.root}>
+        <Grid item xs={12} sm={2} md={2} >
+          <div className={classes.sideNav}>
+            <SideNavigationBar/>
           </div>
-          <div className="settingsArea">
-            <Grid container spacing={3}>
-              <Grid item xs={12} className="center">
-                <h1>Edit Profile</h1>
+        </Grid>
+        <Grid item xs={12} sm={10} md={10}>
+          <Grid container>
+            <form onSubmit={handleSubmit} className={classes.profileForm}>
+              <Typography  className={classes.title} variant="h3">Edit Profile</Typography>
+              <Grid container spacing={3}>
+                {/* First Name */}
+                <Grid item xs={3}>
+                  <p>FIRST NAME</p>
+                </Grid>
+                <Grid item xs={9}>
+                  <TextField
+                    name="firstName"
+                    id="standard-firstName"
+                    placeholder="John"
+                    value={userInput.firstName}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    variant="outlined"
+                    fullWidth
+                  />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.firstName}
+                    </div>
+                  ) : null}
+                </Grid>
+                {/* Last name */}
+                <Grid item xs={3}>
+                  <p>LAST NAME</p>
+                </Grid>
+                <Grid item xs={9}>
+                  <TextField
+                    name="lastName"
+                    id="standard-lastName"
+                    placeholder="Doe"
+                    value={userInput.lastName}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    variant="outlined"
+                    fullWidth
+                  />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.lastName}
+                    </div>
+                  ) : null}
+                </Grid>
+                {/* Gender */}
+                <Grid item xs={3}>
+                  <p>GENDER</p>
+                </Grid>
+                <Grid item xs={9}>
+                  <TextField
+                    select
+                    name="gender"
+                    id="standard-gender"
+                    label="gender"
+                    value={userInput.gender}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    variant="outlined"
+                    fullWidth
+                  >
+                    <MenuItem value="">
+                      <em>Gender</em>
+                    </MenuItem>
+                    <MenuItem value={"male"}>Male</MenuItem>
+                    <MenuItem value={"female"}>Female</MenuItem>
+                  </TextField>
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.gender}
+                    </div>
+                  ) : null}
+                </Grid>
+                {/* DOB */}
+                <Grid item xs={3}>
+                  <p>BIRTH DATE</p>
+                </Grid>
+                <Grid item xs={9}>
+                  <TextField
+                    type="date"
+                    name="birthDate"
+                    id="standard-birthDate"
+                    value={userInput.birthDate}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    variant="outlined"
+                    fullWidth
+                  />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.birthDate}
+                    </div>
+                  ) : null}
+                </Grid>
+                {/* Email */}
+                <Grid item xs={3}>
+                  <p>EMAIL ADDRESS</p>
+                </Grid>
+                <Grid item xs={9}>
+                  <TextField
+                    name="email"
+                    placeholder="john-doe.s@gmail.com"
+                    id="standard-email"
+                    value={userInput.email}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    variant="outlined"
+                    fullWidth
+                  />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.email}
+                    </div>
+                  ) : null}
+                </Grid>
+                {/* Phone number */}
+                <Grid item xs={3}>
+                  <p>PHONE NUMBER</p>
+                </Grid>
+                <Grid item xs={9}>
+                  <TextField
+                    name="phone"
+                    id="standard-phone"
+                    value={userInput.phone}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    variant="outlined"
+                    fullWidth
+                  />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.phone}
+                    </div>
+                  ) : null}
+                </Grid>
+                {/* Address */}
+                <Grid item xs={3}>
+                  <p>WHERE YOU LIVE</p>
+                </Grid>
+                <Grid item xs={9}>
+                  <TextField
+                    name="address"
+                    placeholder="Address"
+                    id="standard-address"
+                    value={userInput.address}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    variant="outlined"
+                    fullWidth
+                  />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.address}
+                    </div>
+                  ) : null}
+                </Grid>
+                {/* Description */}
+                <Grid item xs={3}>
+                  <p>DESCRIBE YOURSELF</p>
+                </Grid>
+                <Grid item xs={9}>
+                  <TextField
+                    name="description"
+                    placeholder="About you"
+                    id="standard-description"
+                    value={userInput.description}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    variant="outlined"
+                    fullWidth
+                  />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.description}
+                    </div>
+                  ) : null}
+                </Grid>
+                {/*Hourly Rate*/}
+                <Grid item xs={3}>
+                  <p>YOUR HOURLY RATE</p>
+                </Grid>
+                <Grid item xs={9}>
+                  <TextField
+                    name="rate"
+                    placeholder="Your hourly rate"
+                    id="standard-rate"
+                    type="number"
+                    value={userInput.rate}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    variant="outlined"
+                    fullWidth
+                  />
+                  {errors ? (
+                    <div className={classes.error}>
+                      {errors.rate}
+                    </div>
+                  ) : null}
+                </Grid>
+                <Grid item xs={12}>
+                  <Button type="submit" variant="contained" size="large" color="secondary">
+                    Submit
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <form
-                  noValidate
-                  autoComplete="off"
-                  method="POST"
-                  onSubmit={handleSubmit}
-                >
-                  <Grid container spacing={3} className="pb-1">
-
-                    {/* First Name */}
-            
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={9}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={3} className="text-right">
-                          <p>FIRST NAME</p>
-                          {errors ? (
-                            <div style={{ color: "red" }}>
-                              {errors.firstName}
-                            </div>
-                          ) : null}
-                        </Grid>
-                        <Grid item xs={9}>
-                          <TextField
-                            name="firstName"
-                            id="standard-firstName"
-                            placeholder="John"
-                            value={userInput.firstName}
-                            onChange={handleInputChange}
-                            margin="normal"
-                            variant="outlined"
-                            disabled={disabled}
-                            fullWidth
-                          />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={2}></Grid>
-
-                    {/* Last name */}
-
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={9}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={3} className="text-right">
-                          <p>LAST NAME</p>
-                          {errors ? (
-                            <div style={{ color: "red" }}>
-                              {errors.lastName}
-                            </div>
-                          ) : null}
-                        </Grid>
-                        <Grid item xs={9}>
-                          <TextField
-                            name="lastName"
-                            id="standard-lastName"
-                            placeholder="Doe"
-                            value={userInput.lastName}
-                            onChange={handleInputChange}
-                            margin="normal"
-                            variant="outlined"
-                            disabled={disabled}
-                            fullWidth
-                          />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={2}></Grid>
-
-                    {/* Gender */}
-
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={9}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={3} className="text-right">
-                          <p>GENDER</p>
-                          {errors ? (
-                            <div style={{ color: "red" }}>
-                              {errors.gender}
-                            </div>
-                          ) : null}
-                        </Grid>
-                        <Grid item xs={9}>
-                          <TextField
-                            select
-                            name="gender"
-                            id="standard-gender"
-                            label="gender"
-                            value={userInput.gender}
-                            onChange={handleInputChange}
-                            margin="normal"
-                            variant="outlined"
-                            disabled={disabled}
-                            fullWidth
-                          >
-                            <MenuItem value="">
-                              <em>Gender</em>
-                            </MenuItem>
-                            <MenuItem value={"male"}>Male</MenuItem>
-                            <MenuItem value={"female"}>Female</MenuItem>
-                          </TextField>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={2}></Grid>
-
-                    {/* DOB */}
-
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={9}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={3} className="text-right">
-                          <p>BIRTH DATE</p>
-                          {errors ? (
-                            <div style={{ color: "red" }}>
-                              {errors.birthDate}
-                            </div>
-                          ) : null}
-                        </Grid>
-                        <Grid item xs={9}>
-                          <TextField
-                            type="date"
-                            name="birthDate"
-                            id="standard-birthDate"
-                            value={userInput.birthDate}
-                            onChange={handleInputChange}
-                            margin="normal"
-                            variant="outlined"
-                            disabled={disabled}
-                            fullWidth
-                          />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={2}></Grid>
-
-                    {/* Email */}
-
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={9}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={3} className="text-right">
-                          <p>EMAIL ADDRESS</p>
-                          {errors ? (
-                            <div style={{ color: "red" }}>
-                              {errors.email}
-                            </div>
-                          ) : null}
-                        </Grid>
-                        <Grid item xs={9}>
-                          <TextField
-                            name="email"
-                            placeholder="john-doe.s@gmail.com"
-                            id="standard-email"
-                            value={userInput.email}
-                            onChange={handleInputChange}
-                            margin="normal"
-                            variant="outlined"
-                            disabled={disabled}
-                            fullWidth
-                          />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={2}></Grid>
-
-                    {/* Phone number */}
-
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={9}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={3} className="text-right">
-                          <p>PHONE NUMBER</p>
-                          {errors ? (
-                            <div style={{ color: "red" }}>
-                              {errors.phone}
-                            </div>
-                          ) : null}
-                        </Grid>
-                        <Grid item xs={9}>
-                          <TextField
-                            name="phone"
-                            id="standard-phone"
-                            value={userInput.phone}
-                            onChange={handleInputChange}
-                            margin="normal"
-                            variant="outlined"
-                            disabled={disabled}
-                            fullWidth
-                          />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={2}></Grid>
-
-                    {/* Address */}
-
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={9}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={3} className="text-right">
-                          <p>WHERE YOU LIVE</p>
-                          {errors ? (
-                            <div style={{ color: "red" }}>
-                              {errors.address}
-                            </div>
-                          ) : null}
-                        </Grid>
-                        <Grid item xs={9}>
-                          <TextField
-                            name="address"
-                            placeholder="Address"
-                            id="standard-address"
-                            value={userInput.address}
-                            onChange={handleInputChange}
-                            margin="normal"
-                            variant="outlined"
-                            disabled={disabled}
-                            fullWidth
-                          />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={2}></Grid>
-
-                    {/* Description */}
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={9}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={3} className="text-right">
-                          <p>DESCRIBE YOURSELF</p>
-                          {errors ? (
-                            <div style={{ color: "red" }}>
-                              {errors.description}
-                            </div>
-                          ) : null}
-                        </Grid>
-                        <Grid item xs={9}>
-                          <TextField
-                            name="description"
-                            placeholder="About you"
-                            id="standard-description"
-                            value={userInput.description}
-                            onChange={handleInputChange}
-                            margin="normal"
-                            variant="outlined"
-                            disabled={disabled}
-                            fullWidth
-                          />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={2}></Grid>
-
-                    {/*Hourly Rate*/}
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={9}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={3} className="text-right">
-                          <p>YOUR HOURLY RATE</p>
-                          {errors ? (
-                            <div style={{ color: "red" }}>
-                              {errors.rate}
-                            </div>
-                          ) : null}
-                        </Grid>
-                        <Grid item xs={9}>
-                          <TextField
-                            name="rate"
-                            placeholder="Your hourly rate"
-                            id="standard-rate"
-                            type="number"
-                            value={userInput.rate}
-                            onChange={handleInputChange}
-                            margin="normal"
-                            variant="outlined"
-                            disabled={disabled}
-                            fullWidth
-                          />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={2}></Grid>
-
-                    <Grid item xs={4}></Grid>
-
-                    <Grid item xs={4} className="center">
-                      <Button
-                        fullWidth
-                        size="large"
-                        variant="contained"
-                        className="submit-button"
-                        onClick={handleSubmit}
-                        disabled={disabled}
-                      >
-                        Save
-                      </Button>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <Button
-                        fullWidth
-                        size="large"
-                        variant="contained"
-                        className="submit-button"
-                        onClick={enableEdit}
-                        disabled={!disabled}
-                      >
-                        Edit
-                      </Button>
-                    </Grid>
-
-                    {!disabled ? (
-                      <Grid item xs={2}>
-                        <Button
-                          variant="outlined"
-                          color="secondary"
-                          fullWidth
-                          size="large"
-                          onClick={cancelEdit}
-                        >
-                          Cancel
-                        </Button>
-                      </Grid>
-                    ) : (
-                        <Grid item xs={2}></Grid>
-                      )}
-                    <Grid item xs={2}></Grid>
-                  </Grid>
-                </form>
-              </Grid>
-            </Grid>
-          </div>
-        </div>
-      </div>
-      {/* <SimpleSnackbar></SimpleSnackbar> */}
+            </form>
+          </Grid>
+        </Grid>
+      </Grid>
     </div>
   );
 }
