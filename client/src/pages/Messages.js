@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import openSocket from "socket.io-client";
 import Moment from 'react-moment';
 
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
@@ -20,7 +20,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 import Navbar from "../components/Navbar";
 
-const messagesStyle = theme => ({
+const MessagesStyle = makeStyles(theme => ({
   list: {
     maxHeight: "81vh",
     overflow: "auto"
@@ -118,84 +118,72 @@ const messagesStyle = theme => ({
     textAlign: "left",
     paddingBottom: "5px"
   }
-});
+}));
 
-class Messages extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      conversations: [],
-      message: "",
-      messages: [],
-      profiles: [],
-      conversationId: "",
-      firstName: "",
-      lastName: "",
-      photoUrl: "",
-      open: false,
-      token: localStorage.getItem("jwtToken"),
-      userId: localStorage.getItem("userId"),
-    };
-    this.handleOpen = this.handleOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+const Messages = (props) => {
+  const classes = MessagesStyle();
+  const [conversation, setConversation] = useState([]);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [profiles, setProfiles] = useState([]);
+  const [conversationId, setConversationId] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [open, setOpen] = useState(false);
+  const token = localStorage.getItem("jwtToken");
+  const userId = localStorage.getItem("userId");
+  const socket = openSocket("http://localhost:3001");
+     
+  const handleOpen = () => {
+    setOpen(true);
   }
 
-  handleOpen() {
-    this.setState({ open: true });
-  }
-
-  handleClose() {
-    this.setState({ open: false });
+  const handleClose = () => {
+    setOpen(false);
   }
 
   // Handle message change
-  messageChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  const messageChange = e => {
+    setMessage(e.target.value);
   };
-
-  componentDidMount() {
-    this.socket = openSocket("http://localhost:3001");
-    this.socket.on("new message", msg => {
-      this.setState({ messages: [...this.state.messages, msg] });
+  
+  useEffect(() => {
+    socket.on("new message", msg => {
+      setMessages([...messages, msg]);
     });
-    this.getProfiles();
-    this.getConversations();
-  }
-
-  // Get a list of profiles 
-  getProfiles() {
-    axios.get('/profile/get/', { headers: { Authorization: `Bearer ${this.state.token}` }})
+  }, []);
+  
+   // Get a list of profiles 
+  useEffect(() => {
+    axios.get('/profile/get/', { headers: { Authorization: `Bearer ${token}` }})
       .then(res => {
-        this.setState({
-          profiles: res.data.profile 
-        });
+        setProfiles(res.data.profile);
       })
       .catch(err => {
         console.log("Error fetching and parsing data", err);
       }); 
-  }
-
+  }, []);
+  
   // GET a list of conversations and recipient profiles
-  getConversations() {
-    axios.get('/conversation/list/', { headers: { Authorization: `Bearer ${this.state.token}` }})
+  useEffect(() => {
+    axios.get('/conversation/list/', { headers: { Authorization: `Bearer ${token}` }})
       .then(res => {
-        this.setState({
-          conversations: res.data  
-        });
+        setConversation(res.data);
       })
       .catch(err => {
         console.log("Error fetching and parsing data", err);
       }); 
-  };
+  }, []);
 
   // Get a conversation Id to start sending messages
-  getMessages = e => {
-    this.setState({ conversationId: e.target.id });
-    this.setState({ firstName: e.target.getAttribute("firstname") });
-    this.setState({ lastName: e.target.getAttribute("lastname") });
-    this.setState({ photoUrl: e.target.getAttribute("photourl") });
+  const getMessages = e => {
+    setConversationId(e.target.id);
+    setFirstName(e.target.getAttribute("firstname"));
+    setLastName(e.target.getAttribute("lastname"));
+    setPhotoUrl(e.target.getAttribute("photourl"));
 
-    axios.get(`/conversation/${e.target.id}`, { headers: { Authorization: `Bearer ${this.state.token}` }} )
+    axios.get(`/conversation/${e.target.id}`, { headers: { Authorization: `Bearer ${token}` }} )
       .then(res => {
         let msgs = res.data.map(item => ({ 
           id: item._id,
@@ -203,7 +191,7 @@ class Messages extends Component {
           userId: item.userId,
           createdAt: item.createdAt
         }));
-        this.setState({ messages: msgs });
+        setMessages(msgs);
       })
       .catch(err => {
         console.log(err);
@@ -211,19 +199,17 @@ class Messages extends Component {
   };
 
   // Create a new conversation 
-  createConversation = e => {
+  const createConversation = e => {
     e.preventDefault();
     const newConversation = {
       recipientId: e.target.id
     }
-    axios.post('/conversation/', newConversation, { headers: { Authorization: `Bearer ${this.state.token}` }} )
+    axios.post('/conversation/', newConversation, { headers: { Authorization: `Bearer ${token}` }} )
       .then(res => {
         console.log(res.data);
-        axios.get('/conversation/list/', { headers: { Authorization: `Bearer ${this.state.token}` }})
+        axios.get('/conversation/list/', { headers: { Authorization: `Bearer ${token}` }})
         .then(res => {
-          this.setState({
-            conversations: res.data  
-          });
+          setConversation(res.data);
         })
         .catch(err => {
           console.log(err);
@@ -235,262 +221,259 @@ class Messages extends Component {
   }
 
   // Create a new message
-  createMessage = e => {
+  const createMessage = e => {
     e.preventDefault();
     const newMessage = {
-      conversationId: this.state.conversationId,
-      body: this.state.message,
-      userId: this.state.userId
+      conversationId: conversationId,
+      body: message,
+      userId: userId
     }
-    axios.post(`/conversation/${this.state.conversationId}/message`, newMessage, { headers: { Authorization: `Bearer ${this.state.token}` }} )
+    axios.post(`/conversation/${conversationId}/message`, newMessage, { headers: { Authorization: `Bearer ${token}` }} )
       .then(res => {
         console.log(res.data);
       })
       .catch(err => {
         console.log(err.response.data);
       });
-    this.socket.emit("new message", newMessage);
-    this.setState({ message: "" });   
+    socket.emit("new message", newMessage);
+    setMessage("");  
   }
 
-  render() {
-    const { classes } = this.props;
-    const message = this.state.messages.map((message, i) => (
-      message.userId._id === this.state.userId ? 
-        <span key={i} >
-          <p className={classes.sentMessageLength}>
-            <span className={classes.msg}>{message.body}</span>
-          </p>
-          <Typography variant="subtitle1" color="textSecondary" className={classes.date}><Moment format="MMMM Do YYYY, h:mm a">{message.createdAt}</Moment></Typography>
-        </span>
-      : !message.userId._id ?
-        <span key={i} >
-          <p key={i} className={classes.sentMessageLength}>
-            <span className={classes.msg}>{message.body}</span>
-          </p>
-          <Typography variant="subtitle1" color="textSecondary" className={classes.date}><Moment format="MMMM Do YYYY, h:mm a">{message.createdAt}</Moment></Typography>
-        </span>
-      : 
-        <span key={i} >
-          <p key={i} className={classes.sentMessageLengthLeft}>
-            <span className={classes.msgLeft}>{message.body}</span>
-          </p>
-          <Typography variant="subtitle1" color="textSecondary" className={classes.dateLeft}><Moment format="MMMM Do YYYY, h:mm a">{message.createdAt}</Moment></Typography>
-        </span>
-    ));
+  const showMessage = messages.map((message, i) => (
+    message.userId._id === userId ? 
+      <span key={i} >
+        <p className={classes.sentMessageLength}>
+          <span className={classes.msg}>{message.body}</span>
+        </p>
+        <Typography variant="subtitle1" color="textSecondary" className={classes.date}><Moment format="MMMM Do YYYY, h:mm a">{message.createdAt}</Moment></Typography>
+      </span>
+    : !message.userId._id ?
+      <span key={i} >
+        <p key={i} className={classes.sentMessageLength}>
+          <span className={classes.msg}>{message.body}</span>
+        </p>
+        <Typography variant="subtitle1" color="textSecondary" className={classes.date}><Moment format="MMMM Do YYYY, h:mm a">{message.createdAt}</Moment></Typography>
+      </span>
+    : 
+      <span key={i} >
+        <p key={i} className={classes.sentMessageLengthLeft}>
+          <span className={classes.msgLeft}>{message.body}</span>
+        </p>
+        <Typography variant="subtitle1" color="textSecondary" className={classes.dateLeft}><Moment format="MMMM Do YYYY, h:mm a">{message.createdAt}</Moment></Typography>
+      </span>
+  ));
     
-    return (
-      <div>
-        <Navbar/>
-        <Grid container>
-          <Grid item xs={3}>
-            <Grid container>
-              <Grid item xs={11} className={classes.title}>
-                <h3>Inbox Messages</h3>
-              </Grid>
-              <Grid item xs={1} className={classes.title}>
-                <IconButton size="small" className={classes.addIcon} onClick={this.handleOpen}>
-                  <AddBoxIcon />
-                </IconButton>
-                <Modal
-                  aria-labelledby="transition-modal-title"
-                  aria-describedby="transition-modal-description"
-                  className={classes.modal}
-                  open={this.state.open}
-                  onClose={this.handleClose}
-                  closeAfterTransition
-                  BackdropComponent={Backdrop}
-                  BackdropProps={{
-                    timeout: 500
-                  }}
-                >
-                  <Fade in={this.state.open}>
-                    <div className={classes.paper}>
-                      <h2 id="transition-modal-title" style={{textAlign: "center"}}>Dog Sitters</h2>
-                    
-                        {this.state.profiles.map(item => (
-                          item.userId !== this.state.userId ?
-                          <ListItem
-                            key={item._id}
-                            id={item.userId}
-                            button
-                            onClick={this.createConversation}
-                          > 
-                            {item.photoUrl ?
-                              <Avatar
-                                className={classes.avatar}
-                                alt="Remy Sharp" 
-                                src={item.photoUrl}
-                                id={item.userId}
-                              />
-                            : 
-                              <AccountCircleIcon className={classes.avatar} id={item.userId} color="disabled"/>
-                            }
-                            <Typography id={item.userId} variant="h6">{item.firstName} {item.lastName}</Typography>
-                          </ListItem>
-                          : null
-                        ))}
-                       
-                    </div>
-                  </Fade>
-                </Modal>
-              </Grid>
-              <Grid item xs={12}>
-                
-                <List className={classes.list}>
-                  {this.state.conversations.map(item => (
-                    item.members_info[0].userId === this.state.userId ?
-                    <ListItem 
-                      alignItems="flex-start" 
-                      button 
-                      key={item._id} 
-                      id={item._id} 
-                      firstname={item.members_info[1].firstName} 
-                      lastname={item.members_info[1].lastName}
-                      photourl={item.members_info[1].photoUrl}
-                      onClick={this.getMessages} 
-                    > 
-                      {item.members_info[1].photoUrl ?
-                        <Avatar
-                          className={classes.avatar}
-                          id={item._id} 
-                          firstname={item.members_info[1].firstName} 
-                          lastname={item.members_info[1].lastName}
-                          photourl={item.members_info[1].photoUrl}
-                          alt="Remy Sharp" 
-                          src={item.members_info[1].photoUrl}
-                        />
-                      : 
-                        <AccountCircleIcon className={classes.avatar} id={item._id} color="disabled"/>
-                       
-                      }
-                      <Typography 
+  return (
+    <div>
+      <Navbar/>
+      <Grid container>
+        <Grid item xs={3}>
+          <Grid container>
+            <Grid item xs={11} className={classes.title}>
+              <h3>Inbox Messages</h3>
+            </Grid>
+            <Grid item xs={1} className={classes.title}>
+              <IconButton size="small" className={classes.addIcon} onClick={handleOpen}>
+                <AddBoxIcon />
+              </IconButton>
+              <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                className={classes.modal}
+                open={open}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                  timeout: 500
+                }}
+              >
+                <Fade in={open}>
+                  <div className={classes.paper}>
+                    <h2 id="transition-modal-title" style={{textAlign: "center"}}>Dog Sitters</h2>
+                  
+                      {profiles.map(item => (
+                        item.userId !== userId ?
+                        <ListItem
+                          key={item._id}
+                          id={item.userId}
+                          button
+                          onClick={createConversation}
+                        > 
+                          {item.photoUrl ?
+                            <Avatar
+                              className={classes.avatar}
+                              alt="Remy Sharp" 
+                              src={item.photoUrl}
+                              id={item.userId}
+                            />
+                          : 
+                            <AccountCircleIcon className={classes.avatar} id={item.userId} color="disabled"/>
+                          }
+                          <Typography id={item.userId} variant="h6">{item.firstName} {item.lastName}</Typography>
+                        </ListItem>
+                        : null
+                      ))}
+                      
+                  </div>
+                </Fade>
+              </Modal>
+            </Grid>
+            <Grid item xs={12}>
+              
+              <List className={classes.list}>
+                {conversation.map(item => (
+                  item.members_info[0].userId === userId ?
+                  <ListItem 
+                    alignItems="flex-start" 
+                    button 
+                    key={item._id} 
+                    id={item._id} 
+                    firstname={item.members_info[1].firstName} 
+                    lastname={item.members_info[1].lastName}
+                    photourl={item.members_info[1].photoUrl}
+                    onClick={getMessages} 
+                  > 
+                    {item.members_info[1].photoUrl ?
+                      <Avatar
+                        className={classes.avatar}
                         id={item._id} 
                         firstname={item.members_info[1].firstName} 
                         lastname={item.members_info[1].lastName}
                         photourl={item.members_info[1].photoUrl}
-                        style={{marginTop: "10px" }} 
-                        variant="h6"
-                      >
-                        {item.members_info[1].firstName} {item.members_info[1].lastName}
-                      </Typography>
-                    </ListItem>
-                  
-                  : <ListItem
-                      alignItems="flex-start" 
-                      button 
-                      key={item._id} 
+                        alt="Remy Sharp" 
+                        src={item.members_info[1].photoUrl}
+                      />
+                    : 
+                      <AccountCircleIcon className={classes.avatar} id={item._id} color="disabled"/>
+                      
+                    }
+                    <Typography 
                       id={item._id} 
-                      firstname={item.members_info[0].firstName} 
-                      lastname={item.members_info[0].lastName}
-                      photourl={item.members_info[0].photoUrl}
-                      onClick={this.getMessages}
-                    > 
-                      {item.members_info[0].photoUrl ?
-                        <Avatar
-                          className={classes.avatar}
-                          id={item._id} 
-                          firstname={item.members_info[0].firstName} 
-                          lastname={item.members_info[0].lastName}
-                          photourl={item.members_info[0].photoUrl}
-                          alt="Remy Sharp" 
-                          src={item.members_info[0].photoUrl}
-                        />
-                      : 
-                        <AccountCircleIcon className={classes.avatar} id={item._id} color="disabled"/>
-                      }
-                      <Typography 
+                      firstname={item.members_info[1].firstName} 
+                      lastname={item.members_info[1].lastName}
+                      photourl={item.members_info[1].photoUrl}
+                      style={{marginTop: "10px" }} 
+                      variant="h6"
+                    >
+                      {item.members_info[1].firstName} {item.members_info[1].lastName}
+                    </Typography>
+                  </ListItem>
+                
+                : <ListItem
+                    alignItems="flex-start" 
+                    button 
+                    key={item._id} 
+                    id={item._id} 
+                    firstname={item.members_info[0].firstName} 
+                    lastname={item.members_info[0].lastName}
+                    photourl={item.members_info[0].photoUrl}
+                    onClick={getMessages}
+                  > 
+                    {item.members_info[0].photoUrl ?
+                      <Avatar
+                        className={classes.avatar}
                         id={item._id} 
                         firstname={item.members_info[0].firstName} 
                         lastname={item.members_info[0].lastName}
                         photourl={item.members_info[0].photoUrl}
-                        style={{marginTop: "10px" }} 
-                        variant="h6"
-                      >
-                        {item.members_info[0].firstName} {item.members_info[0].lastName}
-                      </Typography>
-                    </ListItem>
-                  ))}
-                </List>
-                
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={9}>
-            <Grid container className={classes.border}>
-                { this.state.photoUrl ? 
-                    <Grid item xs={1}>
-                      <Avatar
-                      alt="Remy Sharp"
-                      className={classes.avatar}
-                      src={this.state.photoUrl}
+                        alt="Remy Sharp" 
+                        src={item.members_info[0].photoUrl}
                       />
-                    </Grid>    
-                  : this.state.photoUrl === null ?
-                    <Grid item xs={1}>
-                      <AccountCircleIcon className={classes.avatar} color="disabled"/>
-                    </Grid>
-                  : 
-                    <Grid item xs={1}>
-                      <Avatar
-                      alt="Remy Sharp"
-                      className={classes.avatar}
-                      style={{ backgroundColor: "white"}}
-                      />
-                    </Grid>
-                }
-                <Grid item xs={11}>
-                  <h3>{this.state.firstName} {this.state.lastName}</h3>
-                </Grid>
-              </Grid>
-            <Grid container className={classes.messagesArea}>
-              <Grid item xs={12}>
-                <div className={classes.sentMessages}>{message}</div>
-              </Grid>
-            </Grid>
-            
-            { this.state.conversationId ? (
-              <Grid container className={classes.messagingArea}>
-                <Grid item xs={8}>
-                  <TextField
-                    id="standard-bare"
-                    name="message"
-                    className={classes.textField}
-                    placeholder="Type a message..."
-                    margin="normal"
-                    value={this.state.message}
-                    onChange={this.messageChange}
-                    inputProps={{
-                      "aria-label": "bare",
-                      className: classes.input1
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={1}></Grid>
-
-                <Grid item xs={2}>
-                  <div className={classes.buttonContainer}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      type="submit"
-                      fullWidth
-                      className={classes.sendButton}
-                      onClick={this.createMessage}
+                    : 
+                      <AccountCircleIcon className={classes.avatar} id={item._id} color="disabled"/>
+                    }
+                    <Typography 
+                      id={item._id} 
+                      firstname={item.members_info[0].firstName} 
+                      lastname={item.members_info[0].lastName}
+                      photourl={item.members_info[0].photoUrl}
+                      style={{marginTop: "10px" }} 
+                      variant="h6"
                     >
-                      Send
-                    </Button>
-                  </div>
-                  <Grid item xs={1}></Grid>
-                </Grid>
-              </Grid> 
-              ) : null }
-
+                      {item.members_info[0].firstName} {item.members_info[0].lastName}
+                    </Typography>
+                  </ListItem>
+                ))}
+              </List>
+              
+            </Grid>
           </Grid>
         </Grid>
-      </div>
-    );
-  }
+        <Grid item xs={9}>
+          <Grid container className={classes.border}>
+              {photoUrl ? 
+                  <Grid item xs={1}>
+                    <Avatar
+                    alt="Remy Sharp"
+                    className={classes.avatar}
+                    src={photoUrl}
+                    />
+                  </Grid>    
+                : photoUrl === null ?
+                  <Grid item xs={1}>
+                    <AccountCircleIcon className={classes.avatar} color="disabled"/>
+                  </Grid>
+                : 
+                  <Grid item xs={1}>
+                    <Avatar
+                    alt="Remy Sharp"
+                    className={classes.avatar}
+                    style={{ backgroundColor: "white"}}
+                    />
+                  </Grid>
+              }
+              <Grid item xs={11}>
+                <h3>{firstName} {lastName}</h3>
+              </Grid>
+            </Grid>
+          <Grid container className={classes.messagesArea}>
+            <Grid item xs={12}>
+              <div className={classes.sentMessages}>{showMessage}</div>
+            </Grid>
+          </Grid>
+          
+          {conversationId ? (
+            <Grid container className={classes.messagingArea}>
+              <Grid item xs={8}>
+                <TextField
+                  id="standard-bare"
+                  name="message"
+                  className={classes.textField}
+                  placeholder="Type a message..."
+                  margin="normal"
+                  value={message}
+                  onChange={messageChange}
+                  inputProps={{
+                    "aria-label": "bare",
+                    className: classes.input1
+                  }}
+                />
+              </Grid>
+              <Grid item xs={1}></Grid>
+
+              <Grid item xs={2}>
+                <div className={classes.buttonContainer}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    fullWidth
+                    className={classes.sendButton}
+                    onClick={createMessage}
+                  >
+                    Send
+                  </Button>
+                </div>
+                <Grid item xs={1}></Grid>
+              </Grid>
+            </Grid> 
+            ) : null }
+
+        </Grid>
+      </Grid>
+    </div>
+  );
 }
 
-export default withStyles(messagesStyle)(Messages);
+export default Messages;
