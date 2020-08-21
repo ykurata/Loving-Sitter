@@ -26,23 +26,39 @@ const photoStyles = makeStyles(theme => ({
       fontSize: 35
     },
   },
-  photoForm: {
-    textAlign: "center",
-    backgroundColor: "white",
-    width: "80%",
+  card: {
+    width: "60%",
     margin: "auto",
     padding: 50,
-    marginBottom: 50,
-    [theme.breakpoints.down('sm')]: {
-      width: "100%",
+    textAlign: "center",
+    [theme.breakpoints.down('md')]: {
+      width: "80%",
       padding: 10
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: "90%",
+    },
+  },
+  sideNav: {
+    width: "70%",
+    paddingLeft: 100,
+    [theme.breakpoints.down('md')]: {
+      width: "100%",
+      paddingLeft: 15
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: "40%",
     },
   },
   bigAvatar: {
     width: 300,
     height: 300,
     margin: "auto",
-    marginBottom: 20
+    marginBottom: 20,
+    [theme.breakpoints.down('xs')]: {
+      width: 200,
+      height: 200
+    },
   },
   button: {
     marginTop: 30
@@ -109,39 +125,43 @@ const Photo = (props) => {
           </div>
         </Grid>
         <Grid item xs={12} sm={10} md={10}>
-          <form onSubmit={handleSubmit} className={classes.photoForm}>
-            <Typography  className={classes.title} variant="h3">Edit Profile</Typography>
-            <Avatar
-              alt="Your Profile Picture"
-              src={file}
-              className={classes.bigAvatar}
-            />
-            <Typography variant="body2">
-              Make sure your photo clearly shows your face
-            </Typography>
-            <Button
-              variant="contained"
-              component="label"
-              className={classes.button}
-            >
-              Upload File
-              <input
-                type="file"
-                style={{ display: "none" }}
-                onChange={handlePhotoChange}
-              />
-            </Button>
-            <Button
-              fullWidth
-              size="large"
-              variant="contained"
-              type="submit"
-              color="secondary"
-              className={classes.button}
-            >
-              Save
-            </Button>
-          </form>
+          <Card className={classes.card}>
+            <CardContent>
+              <form onSubmit={handleSubmit} >
+                <Typography  className={classes.title} variant="h3">Edit Profile</Typography>
+                <Avatar
+                  alt="Your Profile Picture"
+                  src={file}
+                  className={classes.bigAvatar}
+                />
+                <Typography variant="body2">
+                  Make sure your photo clearly shows your face
+                </Typography>
+                <Button
+                  variant="contained"
+                  component="label"
+                  className={classes.button}
+                >
+                  Upload File
+                  <input
+                    type="file"
+                    style={{ display: "none" }}
+                    onChange={handlePhotoChange}
+                  />
+                </Button>
+                <Button
+                  fullWidth
+                  size="large"
+                  variant="contained"
+                  type="submit"
+                  color="secondary"
+                  className={classes.button}
+                >
+                  Save
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
     </div>
