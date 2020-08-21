@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { Snackbar, IconButton } from "@material-ui/core";
+import { Snackbar, IconButton, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Navbar from "../components/Navbar";
@@ -15,12 +15,23 @@ const EditProfileStyles = makeStyles(theme => ({
   root: {
     marginTop: 100,
   },
+  title: {
+    marginBottom: 50,
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 35
+    },
+  },
   profileForm: {
     textAlign: "center",
     backgroundColor: "white",
     width: "80%",
     margin: "auto",
-    padding: 50
+    padding: 50,
+    marginBottom: 50,
+    [theme.breakpoints.down('sm')]: {
+      width: "100%",
+      padding: 10
+    },
   },
   sideNav: {
     paddingLeft: 10,
@@ -169,7 +180,7 @@ const EditProfile = (props) => {
         <Grid item xs={12} sm={10} md={10}>
           <Grid container>
             <form onSubmit={handleSubmit} className={classes.profileForm}>
-              <h1>Edit Profile</h1>
+              <Typography  className={classes.title} variant="h3">Edit Profile</Typography>
               <Grid container spacing={3}>
                 {/* First Name */}
                 <Grid item xs={3}>
@@ -375,6 +386,11 @@ const EditProfile = (props) => {
                     disabled={disabled}
                     fullWidth
                   />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button variant="contained" size="large" color="secondary">
+                    Submit
+                  </Button>
                 </Grid>
               </Grid>
             </form>
