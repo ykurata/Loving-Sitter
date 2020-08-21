@@ -3,6 +3,7 @@ import axios from "axios";
 
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
+import Typograhy from "@material-ui/core/Typography";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,7 +13,12 @@ import ProfileCard from "../components/ProfileCard";
 
 const ProfileListStyle = makeStyles(theme => ({
   root: {
-    marginTop: 50
+    marginTop: 80
+  },
+  title: {
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 35
+    },
   },
   avatar: {
     width: 100,
@@ -68,7 +74,7 @@ const ProfileList = () => {
       <Navbar/>
       <Grid container className={classes.root} justify="center">
         <Grid item xs={12} align='center'>
-          <h1>Find Dog Sitters</h1>
+          <Typograhy variant="h3" className={classes.title}>Find Dog Sitters</Typograhy>
         </Grid>
         <Grid item xs={4}>
           <TextField
