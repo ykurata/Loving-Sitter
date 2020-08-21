@@ -1,31 +1,23 @@
 import React from "react";
-import MenuList from "@material-ui/core/MenuList";
 import { Link } from "react-router-dom";
+import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from '@material-ui/core/styles';
 
+const useStyles = makeStyles(theme => ({
+  selectedMenu: {
+    color: "black"
+  },
+  notSelectedMenu: {
+    color: "#979797"
+  }
+}));
+
 export default function SideNavigationBar() {
-  var pageURL = window.location.href;
-  var lastURLSegment = pageURL.substr(pageURL.lastIndexOf("/") + 1);
-
-  const useStyles = makeStyles(theme => ({
-    root: {
-      width: '100%',
-      maxWidth: 360,
-      backgroundColor: theme.palette.background.paper,
-    },
-
-    selectedMenu: {
-      color: "black"
-    },
-
-    notSelectedMenu: {
-      color: "#979797"
-    }
-  }));
+  let pageURL = window.location.href;
+  let lastURLSegment = pageURL.substr(pageURL.lastIndexOf("/") + 1);
   const classes = useStyles();
 
-  
   return (
     <MenuList>
       <MenuItem
