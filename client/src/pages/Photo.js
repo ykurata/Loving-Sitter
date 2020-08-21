@@ -69,6 +69,8 @@ const Photo = (props) => {
   const classes = photoStyles();
   const [file, setFile] = useState(null);
   const [sendFile, setSendFile] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMsg, setSnackBarMsg] = useState("");
   
   const handlePhotoChange = e => {
     setFile(URL.createObjectURL(e.target.files[0]));
@@ -89,34 +91,41 @@ const Photo = (props) => {
       })
       .then(res => {
         console.log(res.data);
+        setSnackBarMsg("Profile Image Saved" );
+        setSnackbarOpen(true);
       })
       .catch(err => {
-        console.log({ err });
+        console.log(err);
+        setSnackbarOpen(true);
+        setSnackBarMsg("Something went wrong" );
       });
     }
   };
 
- 
+  const snackbarClose = event => {
+    setSnackbarOpen(false);
+  };
+
   return (
     <div>
-      {/* <Snackbar
+      <Snackbar
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "left"
         }}
-        open={this.state.snackbaropen}
+        open={snackbarOpen}
         autoHideDuration={3000}
         onClose={snackbarClose}
-        message={<span id="message-id">{this.state.snackbarmsg}</span>}
+        message={<span id="message-id">{snackbarMsg}</span>}
         action={[
           <IconButton
             key="close"
             arial-label="Close"
             color="inherit"
-            onClick={this.snackbarClose}
+            onClick={snackbarClose}
           ></IconButton>
         ]}
-      /> */}
+      />
       <Navbar/>
       <Grid container className={classes.root}>
         <Grid item xs={12} sm={2} md={2} >
