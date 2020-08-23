@@ -152,6 +152,7 @@ class Navbar extends Component{
     const {classes} = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
+    
     return (
       <AppBar className={classes.navbar}>
         <Toolbar>
@@ -175,7 +176,7 @@ class Navbar extends Component{
               <IconButton aria-label="avatar" onClick={this.handleClick}>
                 <Avatar
                   alt="Remy Sharp"
-                  src=""
+                  src={this.state.profile.photoUrl}
                   className={classes.avatar}
                 />
               </IconButton>
