@@ -21,6 +21,9 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Navbar from "../components/Navbar";
 
 const MessagesStyle = makeStyles(theme => ({
+  root: {
+    marginTop: 70
+  },  
   list: {
     maxHeight: "81vh",
     overflow: "auto"
@@ -28,18 +31,34 @@ const MessagesStyle = makeStyles(theme => ({
   cardStyle: {
     height: "82vh"
   },
+  inboxAvatar: {
+    width: 50,
+    height: 50,
+    marginBottom: 5,
+    marginTop: 5,
+    marginRight: 10,
+    marginLeft: 0,
+  },
+  inboxName: {
+    [theme.breakpoints.down('md')]: {
+      fontSize: 15
+    },
+  },
   avatar: {
     width: 50,
     height: 50,
-    marginBottom: "5px",
-    marginTop: "5px",
-    marginLeft: "10px",
-    marginRight: "10px"
+    marginBottom: 5,
+    marginTop: 5,
+    marginLeft: 20,
+    marginRight: 10
   },
   title: {
     borderTop: "0.5px solid #e6e6e6",
     borderBottom: "0.5px solid #e6e6e6",
-    textAlign: "center"
+    textAlign: "center",
+    [theme.breakpoints.between('sm', 'md')]: {
+      fontSize: 15,
+    },
   },
   addIcon: {
     height: "100%",
@@ -52,6 +71,7 @@ const MessagesStyle = makeStyles(theme => ({
   messagesArea: {
     height: "70vh",
     overflow: "auto",
+    border: "1px solid #e6e6e6"
   },
   messagingArea: {
     border: "1px solid #e6e6e6"
@@ -61,10 +81,7 @@ const MessagesStyle = makeStyles(theme => ({
     paddingLeft: "10px"
   },
   input1: {
-    height: "8vh"
-  },
-  buttonContainer: {
-    height: "100%"
+    height: 50
   },
   sendButton: {
     margin: theme.spacing(1),
@@ -266,13 +283,13 @@ const Messages = (props) => {
   return (
     <div>
       <Navbar/>
-      <Grid container>
-        <Grid item xs={3}>
+      <Grid container className={classes.root}>
+        <Grid item xs={12} sm={3}>
           <Grid container>
-            <Grid item xs={11} className={classes.title}>
+            <Grid item xs={10} className={classes.title}>
               <h3>Inbox Messages</h3>
             </Grid>
-            <Grid item xs={1} className={classes.title}>
+            <Grid item xs={2} className={classes.title}>
               <IconButton size="small" className={classes.addIcon} onClick={handleOpen}>
                 <AddBoxIcon />
               </IconButton>
@@ -302,13 +319,13 @@ const Messages = (props) => {
                         > 
                           {item.photoUrl ?
                             <Avatar
-                              className={classes.avatar}
+                              className={classes.inboxAvatar}
                               alt="Remy Sharp" 
                               src={item.photoUrl}
                               id={item.userId}
                             />
                           : 
-                            <AccountCircleIcon className={classes.avatar} id={item.userId} color="disabled"/>
+                            <AccountCircleIcon className={classes.inboxAvatar} id={item.userId} color="disabled"/>
                           }
                           <Typography id={item.userId} variant="h6">{item.firstName} {item.lastName}</Typography>
                         </ListItem>
@@ -320,7 +337,6 @@ const Messages = (props) => {
               </Modal>
             </Grid>
             <Grid item xs={12}>
-              
               <List className={classes.list}>
                 {conversation.map(item => (
                   item.members_info[0].userId === userId ?
@@ -336,7 +352,7 @@ const Messages = (props) => {
                   > 
                     {item.members_info[1].photoUrl ?
                       <Avatar
-                        className={classes.avatar}
+                        className={classes.inboxAvatar}
                         id={item._id} 
                         firstname={item.members_info[1].firstName} 
                         lastname={item.members_info[1].lastName}
@@ -345,7 +361,7 @@ const Messages = (props) => {
                         src={item.members_info[1].photoUrl}
                       />
                     : 
-                      <AccountCircleIcon className={classes.avatar} id={item._id} color="disabled"/>
+                      <AccountCircleIcon className={classes.inboxAvatar} id={item._id} color="disabled"/>
                       
                     }
                     <Typography 
@@ -355,7 +371,8 @@ const Messages = (props) => {
                       photourl={item.members_info[1].photoUrl}
                       style={{marginTop: "10px" }} 
                       variant="h6"
-                    >
+                      className={classes.inboxName}
+                    > 
                       {item.members_info[1].firstName} {item.members_info[1].lastName}
                     </Typography>
                   </ListItem>
@@ -400,10 +417,10 @@ const Messages = (props) => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={9}>
-          <Grid container className={classes.border}>
+        <Grid item xs={12} sm={9} className={classes.border}>
+          <Grid container >
               {photoUrl ? 
-                  <Grid item xs={1}>
+                  <Grid item xs={2}>
                     <Avatar
                     alt="Remy Sharp"
                     className={classes.avatar}
@@ -411,11 +428,11 @@ const Messages = (props) => {
                     />
                   </Grid>    
                 : photoUrl === null ?
-                  <Grid item xs={1}>
+                  <Grid item xs={2}>
                     <AccountCircleIcon className={classes.avatar} color="disabled"/>
                   </Grid>
                 : 
-                  <Grid item xs={1}>
+                  <Grid item xs={2}>
                     <Avatar
                     alt="Remy Sharp"
                     className={classes.avatar}
@@ -423,7 +440,7 @@ const Messages = (props) => {
                     />
                   </Grid>
               }
-              <Grid item xs={11}>
+              <Grid item xs={10}>
                 <h3>{firstName} {lastName}</h3>
               </Grid>
             </Grid>
@@ -435,7 +452,7 @@ const Messages = (props) => {
           
           {conversationId ? (
             <Grid container className={classes.messagingArea}>
-              <Grid item xs={8}>
+              <Grid item xs={9}>
                 <TextField
                   id="standard-bare"
                   name="message"
@@ -450,22 +467,16 @@ const Messages = (props) => {
                   }}
                 />
               </Grid>
-              <Grid item xs={1}></Grid>
-
-              <Grid item xs={2}>
-                <div className={classes.buttonContainer}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    fullWidth
-                    className={classes.sendButton}
-                    onClick={createMessage}
-                  >
-                    Send
-                  </Button>
-                </div>
-                <Grid item xs={1}></Grid>
+              <Grid item xs={3}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  className={classes.sendButton}
+                  onClick={createMessage}
+                >
+                  Send
+                </Button>
               </Grid>
             </Grid> 
             ) : null }

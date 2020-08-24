@@ -15,6 +15,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
   },
+  title: {
+    marginTop: 40,
+    marginBottom: 10,
+    fontWeight: "bold"
+  },
   image: {
     backgroundImage: `url(${landing})`,
     backgroundRepeat: 'no-repeat',
@@ -73,7 +78,7 @@ const Landing = (props) => {
         <Grid item xs={12} sm={12} md={6} component={Paper} elevation={6} square>
           <Grid container className={classes.form}>
             <Grid item xs={12} className={classes.mainText}>
-              <h1>Find the care your dog deserves</h1>
+              <Typography variant="h3" className={classes.title}>Find the care your dog deserves</Typography>
             </Grid>
 
             <Grid item xs={12}>
