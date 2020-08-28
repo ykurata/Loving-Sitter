@@ -1,7 +1,8 @@
-import { GET_PROFILES } from "../actions/types";
+import { GET_PROFILES, GET_PROFILE } from "../actions/types";
 
 const initialState = {
   profiles: [],
+  profile: "",
 };
 
 export default function(state = initialState, action) {
@@ -10,6 +11,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         profiles: action.payload,
+      };
+    case GET_PROFILE:
+      return {
+        ...state,
+        profile: action.payload,
       };
     default:
       return state;

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import Button from "@material-ui/core/Button";
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
@@ -14,14 +14,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import Navbar from "../components/Navbar";
 import SideNavigationBar from "../components/SideNavBar";
 
-const EditProfileStyles = makeStyles(theme => ({
+const EditProfileStyles = makeStyles((theme) => ({
   root: {
     marginTop: 100,
   },
   title: {
     marginBottom: 50,
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 35
+    [theme.breakpoints.down("xs")]: {
+      fontSize: 35,
     },
   },
   card: {
@@ -29,29 +29,32 @@ const EditProfileStyles = makeStyles(theme => ({
     margin: "auto",
     padding: 50,
     textAlign: "center",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       width: "80%",
-      padding: 10
+      padding: 10,
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       width: "90%",
     },
   },
   sideNav: {
     width: "70%",
     paddingLeft: 100,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       width: "100%",
-      paddingLeft: 15
+      paddingLeft: 15,
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       width: "40%",
     },
   },
   error: {
     color: "red",
-    textAlign: "left"
-  }
+    textAlign: "left",
+  },
+  gender: {
+    textAlign: "left",
+  },
 }));
 
 const EditProfile = (props) => {
@@ -65,7 +68,7 @@ const EditProfile = (props) => {
     phone: "",
     address: "",
     description: "",
-    date: ""
+    date: "",
   });
   const [profile, setProfile] = useState("");
   const [errors, setErrors] = useState([]);
@@ -73,66 +76,68 @@ const EditProfile = (props) => {
   const [snackbarMsg, setSnackBarMsg] = useState("");
   const token = localStorage.getItem("jwtToken");
   const userId = localStorage.getItem("userId");
-  
+
   useEffect(() => {
-    axios.get(`profile/get/${userId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    .then(res => {
-      setProfile(res.data.profile);
-      setUserInput({
-        firstName: res.data.profile.firstName,
-        lastName: res.data.profile.lastName,
-        gender: res.data.profile.gender,
-        birthDate: res.data.profile.birthDate,
-        email: res.data.profile.email,
-        phone: res.data.profile.phone,
-        address: res.data.profile.address,
-        description: res.data.profile.description,
-        date: res.data.profile.date
+    axios
+      .get(`profile/get/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
       })
-    })
-    .catch(err => {
-      console.log(err);
-    });
+      .then((res) => {
+        setProfile(res.data.profile);
+        setUserInput({
+          firstName: res.data.profile.firstName,
+          lastName: res.data.profile.lastName,
+          gender: res.data.profile.gender,
+          birthDate: res.data.profile.birthDate,
+          email: res.data.profile.email,
+          phone: res.data.profile.phone,
+          address: res.data.profile.address,
+          description: res.data.profile.description,
+          date: res.data.profile.date,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
- 
   const createProfile = () => {
-    axios.post("profile/create", userInput, {
-        headers: { Authorization: `Bearer ${token}` }
+    axios
+      .post("profile/create", userInput, {
+        headers: { Authorization: `Bearer ${token}` },
       })
-      .then(res => {
-        setSnackBarMsg("Profile Saved" );
+      .then((res) => {
+        setSnackBarMsg("Profile Saved");
         setSnackbarOpen(true);
       })
-      .catch(err => {
+      .catch((err) => {
         setSnackBarMsg("Please fill up all the fields!");
         setSnackbarOpen(true);
         setErrors(err.response.data);
       });
-  }
-
-  const updateProfile = () => {
-    axios.put(`profile/update/${userId}`, userInput, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      .then(res => {
-        setSnackBarMsg("Profile Saved" );
-        setSnackbarOpen(true);
-      })
-      .catch(err => {
-        setSnackBarMsg("Please fill up all the fields!");
-        setSnackbarOpen(true);
-        setErrors(err.response.data);
-      });
-  }
-
-  const handleInputChange = e => {
-    setUserInput({...userInput, [e.target.name]: e.target.value })
   };
 
-  const handleSubmit = e => {
+  const updateProfile = () => {
+    axios
+      .put(`profile/update/${userId}`, userInput, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        setSnackBarMsg("Profile Saved");
+        setSnackbarOpen(true);
+      })
+      .catch((err) => {
+        setSnackBarMsg("Please fill up all the fields!");
+        setSnackbarOpen(true);
+        setErrors(err.response.data);
+      });
+  };
+
+  const handleInputChange = (e) => {
+    setUserInput({ ...userInput, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (profile) {
@@ -142,16 +147,16 @@ const EditProfile = (props) => {
     }
   };
 
-  const snackbarClose = event => {
+  const snackbarClose = (event) => {
     setSnackbarOpen(false);
   };
-  
+
   return (
     <div>
       <Snackbar
         anchorOrigin={{
           vertical: "top",
-          horizontal: "center"
+          horizontal: "center",
         }}
         open={snackbarOpen}
         autoHideDuration={3000}
@@ -163,21 +168,23 @@ const EditProfile = (props) => {
             arial-label="Close"
             color="inherit"
             onClick={snackbarClose}
-          ></IconButton>
+          ></IconButton>,
         ]}
       />
-      <Navbar/>
+      <Navbar />
       <Grid container className={classes.root}>
-        <Grid item xs={12} sm={2} md={2} >
+        <Grid item xs={12} sm={2} md={2}>
           <div className={classes.sideNav}>
-            <SideNavigationBar/>
+            <SideNavigationBar />
           </div>
         </Grid>
         <Grid item xs={12} sm={10} md={10}>
           <Card className={classes.card}>
             <CardContent>
               <form onSubmit={handleSubmit}>
-                <Typography  className={classes.title} variant="h3">Edit Profile</Typography>
+                <Typography className={classes.title} variant="h3">
+                  Edit Profile
+                </Typography>
                 <Grid container spacing={3}>
                   {/* First Name */}
                   <Grid item xs={3}>
@@ -195,9 +202,7 @@ const EditProfile = (props) => {
                       fullWidth
                     />
                     {errors ? (
-                      <div className={classes.error}>
-                        {errors.firstName}
-                      </div>
+                      <div className={classes.error}>{errors.firstName}</div>
                     ) : null}
                   </Grid>
                   {/* Last name */}
@@ -216,9 +221,7 @@ const EditProfile = (props) => {
                       fullWidth
                     />
                     {errors ? (
-                      <div className={classes.error}>
-                        {errors.lastName}
-                      </div>
+                      <div className={classes.error}>{errors.lastName}</div>
                     ) : null}
                   </Grid>
                   {/* Gender */}
@@ -236,6 +239,7 @@ const EditProfile = (props) => {
                       margin="normal"
                       variant="outlined"
                       fullWidth
+                      className={classes.gender}
                     >
                       <MenuItem value="">
                         <em>Gender</em>
@@ -244,9 +248,7 @@ const EditProfile = (props) => {
                       <MenuItem value={"female"}>Female</MenuItem>
                     </TextField>
                     {errors ? (
-                      <div className={classes.error}>
-                        {errors.gender}
-                      </div>
+                      <div className={classes.error}>{errors.gender}</div>
                     ) : null}
                   </Grid>
                   {/* DOB */}
@@ -265,9 +267,7 @@ const EditProfile = (props) => {
                       fullWidth
                     />
                     {errors ? (
-                      <div className={classes.error}>
-                        {errors.birthDate}
-                      </div>
+                      <div className={classes.error}>{errors.birthDate}</div>
                     ) : null}
                   </Grid>
                   {/* Email */}
@@ -286,9 +286,7 @@ const EditProfile = (props) => {
                       fullWidth
                     />
                     {errors ? (
-                      <div className={classes.error}>
-                        {errors.email}
-                      </div>
+                      <div className={classes.error}>{errors.email}</div>
                     ) : null}
                   </Grid>
                   {/* Phone number */}
@@ -306,9 +304,7 @@ const EditProfile = (props) => {
                       fullWidth
                     />
                     {errors ? (
-                      <div className={classes.error}>
-                        {errors.phone}
-                      </div>
+                      <div className={classes.error}>{errors.phone}</div>
                     ) : null}
                   </Grid>
                   {/* Address */}
@@ -327,9 +323,7 @@ const EditProfile = (props) => {
                       fullWidth
                     />
                     {errors ? (
-                      <div className={classes.error}>
-                        {errors.address}
-                      </div>
+                      <div className={classes.error}>{errors.address}</div>
                     ) : null}
                   </Grid>
                   {/* Description */}
@@ -348,9 +342,7 @@ const EditProfile = (props) => {
                       fullWidth
                     />
                     {errors ? (
-                      <div className={classes.error}>
-                        {errors.description}
-                      </div>
+                      <div className={classes.error}>{errors.description}</div>
                     ) : null}
                   </Grid>
                   {/*Hourly Rate*/}
@@ -370,13 +362,16 @@ const EditProfile = (props) => {
                       fullWidth
                     />
                     {errors ? (
-                      <div className={classes.error}>
-                        {errors.rate}
-                      </div>
+                      <div className={classes.error}>{errors.rate}</div>
                     ) : null}
                   </Grid>
                   <Grid item xs={12}>
-                    <Button type="submit" variant="contained" size="large" color="secondary">
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      size="large"
+                      color="secondary"
+                    >
                       Submit
                     </Button>
                   </Grid>
@@ -388,6 +383,6 @@ const EditProfile = (props) => {
       </Grid>
     </div>
   );
-}
+};
 
 export default EditProfile;
