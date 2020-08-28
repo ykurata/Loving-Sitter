@@ -56,8 +56,16 @@ const Login = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     dispatch(loginUser(userInput));
+  };
+
+  const demoLogin = (e) => {
+    e.preventDefault();
+    const demoUser = {
+      email: "demouser@email.com",
+      password: "password",
+    };
+    dispatch(loginUser());
   };
 
   return (
