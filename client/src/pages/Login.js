@@ -1,97 +1,78 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import jwt_decode from "jwt-decode";
+import { useSelector, useDispatch } from "react-redux";
+import { loginUser } from "../actions/authActions";
 
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
 
-const LoginStyles = theme => ({
+const loginStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(18),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   label: {
     margin: theme.spacing(1, 1, 1, 0),
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-});
+  error: {
+    color: "red",
+  },
+}));
 
+const Login = (props) => {
+  const classes = loginStyles();
+  const [userInput, setUserInput] = useState({
+    email: "",
+    password: "",
+  });
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const error = useSelector((state) => state.error);
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: "",
-      error: "",
-      validationErrors: []
-    }
-  }
-  
   // Update user input
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  }
-
-  handleSubmit = e => {
-    e.preventDefault();
-    const { email, password } = this.state;
-    const data = {
-      email: email,
-      password: password
-    };
-    axios.post("/users/login", data)
-      .then(res => {
-        const { token } = res.data;
-        const decoded = jwt_decode(token);
-        localStorage.setItem("jwtToken", token);
-        localStorage.setItem("userId", decoded.id);
-        localStorage.setItem('name', decoded.name);
-        this.props.history.push("/profile");
-      })
-      .catch(err => {
-        this.setState({
-          validationErrors: err.response.data, // Error messages from backend
-          error: err.response.data.error
-        });
-      });  
+  const onChange = (e) => {
+    setUserInput({ ...userInput, [e.target.name]: e.target.value });
   };
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <Container component="main" maxWidth="xs">
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      props.history.push("/sitter-search");
+    }
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch(loginUser(userInput));
+  };
+
+  return (
+    <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h4">
-          Log In 
+          Log In
         </Typography>
-        {this.state.error ? 
-          <div style={{ color: "red", marginTop: "10px" }}>
-            {this.state.error}
-          </div>
-        : null}
-        <form className={classes.form} onSubmit={this.handleSubmit}>
+        {error.error ? (
+          <div className={classes.error}>{error.error}</div>
+        ) : null}
+        <form className={classes.form} onSubmit={handleSubmit}>
           <Typography className={classes.label}>Email Address</Typography>
-          {this.state.validationErrors ? 
-            <div style={{ color: "red" }}>
-              {this.state.validationErrors.email}
-            </div>
-          : null}
+          {error ? <div className={classes.error}>{error.email}</div> : null}
           <TextField
             variant="outlined"
             margin="normal"
@@ -99,14 +80,10 @@ class Login extends Component {
             id="email"
             name="email"
             placeholder="Email Address"
-            onChange={this.onChange}
+            onChange={onChange}
           />
           <Typography className={classes.label}>Password</Typography>
-          {this.state.validationErrors ? 
-            <div style={{ color: "red" }}>
-              {this.state.validationErrors.password}
-            </div>
-          : null}
+          {error ? <div className={classes.error}>{error.password}</div> : null}
           <TextField
             variant="outlined"
             margin="normal"
@@ -115,7 +92,7 @@ class Login extends Component {
             type="password"
             id="password"
             placeholder="Password"
-            onChange={this.onChange}
+            onChange={onChange}
           />
           <Button
             type="submit"
@@ -126,18 +103,22 @@ class Login extends Component {
           >
             Log In
           </Button>
-          <Grid container alignItems="center" justify="center" >
+          <Grid container alignItems="center" justify="center">
             <Grid item>
-              <Typography variant="body2" component={Link} to={"/signup"} style={{ textDecoration: "none" }}>
+              <Typography
+                variant="body2"
+                component={Link}
+                to={"/signup"}
+                style={{ textDecoration: "none" }}
+              >
                 Don't have an account? Sign Up
               </Typography>
             </Grid>
           </Grid>
         </form>
       </div>
-      </Container>
-    );
-  }
-}
+    </Container>
+  );
+};
 
-export default withStyles(LoginStyles)(Login);
+export default Login;

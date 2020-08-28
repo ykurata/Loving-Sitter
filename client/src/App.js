@@ -2,6 +2,7 @@ import React from "react";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser } from "./actions/authActions";
 import { Provider } from "react-redux";
+import jwt_decode from "jwt-decode";
 
 import { BrowserRouter, Route } from "react-router-dom";
 import { MuiThemeProvider } from "@material-ui/core";
