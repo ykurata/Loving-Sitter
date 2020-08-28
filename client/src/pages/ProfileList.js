@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getProfiles } from "../actions/profileActions";
 
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Typograhy from "@material-ui/core/Typography";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 
 import Navbar from "../components/Navbar";
 import ProfileCard from "../components/ProfileCard";
 
-const ProfileListStyle = makeStyles(theme => ({
+const ProfileListStyle = makeStyles((theme) => ({
   root: {
-    marginTop: 80
+    marginTop: 80,
   },
   title: {
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 35
+    [theme.breakpoints.down("xs")]: {
+      fontSize: 35,
     },
   },
   avatar: {
@@ -25,56 +26,54 @@ const ProfileListStyle = makeStyles(theme => ({
     height: 100,
     margin: "auto",
     marginTop: "20px",
-    marginBottom: "20px"
+    marginBottom: "20px",
   },
   card: {
     width: 345,
     maxWidth: 345,
-    margin: "30px"
+    margin: "30px",
   },
   location: {
-    height: 50
-  }
+    height: 50,
+  },
 }));
 
 const ProfileList = () => {
+  const classes = ProfileListStyle();
   const [userInput, setUserInput] = useState({
     location: "",
-    date: ""
+    date: "",
   });
-  const [profiles, setProfiles] = useState([]);
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("jwtToken");
-  const classes = ProfileListStyle();
- 
+  const dispatch = useDispatch();
+  const profiles = useSelector((state) => state.profile.profiles);
+
   // Update user input
-  const onChange = e => {
-    setUserInput({...userInput, [e.target.name]: e.target.value });
-  }
-  
+  const onChange = (e) => {
+    setUserInput({ ...userInput, [e.target.name]: e.target.value });
+  };
+
   useEffect(() => {
-    axios.get("/profile/get", { headers: { Authorization: `Bearer ${token}` } })
-      .then(res => {
-        setProfiles(res.data.profile);
-      })
-      .catch(err => {
-        console.log("Error fetching and parsing data", err);
-      });
-  }, [])
-  
-  let filteredProfiles = profiles.filter(
-    (profile) => {
-      return profile.address.toLowerCase().indexOf(
-        userInput.location.toLocaleLowerCase()) !== -1;
-    }
-  );
+    dispatch(getProfiles(token));
+  }, []);
+
+  let filteredProfiles = profiles.filter((profile) => {
+    return (
+      profile.address
+        .toLowerCase()
+        .indexOf(userInput.location.toLocaleLowerCase()) !== -1
+    );
+  });
 
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <Grid container className={classes.root} justify="center">
-        <Grid item xs={12} align='center'>
-          <Typograhy variant="h3" className={classes.title}>Find Dog Sitters</Typograhy>
+        <Grid item xs={12} align="center">
+          <Typograhy variant="h3" className={classes.title}>
+            Find Dog Sitters
+          </Typograhy>
         </Grid>
         <Grid item xs={4}>
           <TextField
@@ -83,7 +82,7 @@ const ProfileList = () => {
                 <InputAdornment position="start">
                   <SearchIcon color="secondary" />
                 </InputAdornment>
-              )
+              ),
             }}
             id="outlined-bare"
             name="location"
@@ -106,11 +105,11 @@ const ProfileList = () => {
             variant="outlined"
             fullWidth
           />
-        </Grid>    
+        </Grid>
         <ProfileCard data={filteredProfiles} userId={userId} />
       </Grid>
     </div>
   );
-}
+};
 
 export default ProfileList;
