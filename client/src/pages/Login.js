@@ -27,6 +27,7 @@ const loginStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    marginRight: 10,
   },
   error: {
     color: "red",
@@ -65,7 +66,7 @@ const Login = (props) => {
       email: "demouser@email.com",
       password: "password",
     };
-    dispatch(loginUser());
+    dispatch(loginUser(demoUser));
   };
 
   return (
@@ -104,12 +105,20 @@ const Login = (props) => {
           />
           <Button
             type="submit"
-            fullWidth
             variant="contained"
             color="secondary"
             className={classes.submit}
           >
             Log In
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            color="default"
+            className={classes.submit}
+            onClick={demoLogin}
+          >
+            Demo User
           </Button>
           <Grid container alignItems="center" justify="center">
             <Grid item>
