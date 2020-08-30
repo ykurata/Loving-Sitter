@@ -74,8 +74,6 @@ const EditProfile = (props) => {
     rate: "",
   });
   const [profile, setProfile] = useState("");
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMsg, setSnackbarMsg] = useState("");
   const token = localStorage.getItem("jwtToken");
   const userId = localStorage.getItem("userId");
   const dispatch = useDispatch();
