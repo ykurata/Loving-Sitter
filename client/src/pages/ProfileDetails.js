@@ -80,9 +80,6 @@ const ProfileDetails = (props) => {
   const dispatch = useDispatch();
   const profile = useSelector((state) => state.profile.profile);
 
-  console.log(profile);
-  console.log(props.match.params.id);
-
   useEffect(() => {
     dispatch(getProfile(props.match.params.id, token));
   }, []);

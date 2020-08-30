@@ -1,8 +1,15 @@
-import { GET_PROFILES, GET_PROFILE } from "../actions/types";
+import {
+  GET_PROFILES,
+  GET_PROFILE,
+  CREATE_PROFILE,
+  UPDATE_PROFILE,
+} from "../actions/types";
 
 const initialState = {
   profiles: [],
   profile: "",
+  snackbarOpen: false,
+  snakbarMsg: "",
 };
 
 export default function(state = initialState, action) {
@@ -16,6 +23,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         profile: action.payload,
+      };
+    case CREATE_PROFILE:
+      return {
+        ...state,
+        snackbarOpen: true,
+        snackbarMsg: "Profile saved",
+      };
+    case UPDATE_PROFILE:
+      return {
+        ...state,
+        snackbarOpen: true,
+        snackbarMsg: "Profile saved",
       };
     default:
       return state;
