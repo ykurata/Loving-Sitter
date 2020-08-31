@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getProfile } from "../actions/profileActions";
-import axios from "axios";
+import { sendRequest } from "../actions/requestActions";
+import { closeSnackbar } from "../actions/snackbarActions";
 
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
@@ -66,6 +67,9 @@ const ProfileDetailsStyles = makeStyles((theme) => ({
   date: {
     marginBottom: 20,
   },
+  error: {
+    color: "red",
+  },
 }));
 
 const ProfileDetails = (props) => {
@@ -74,11 +78,11 @@ const ProfileDetails = (props) => {
     startDate: "",
     endDate: "",
   });
+  const [error, setError] = useState("");
   const token = localStorage.getItem("jwtToken");
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMsg, setSnackbarMsg] = useState("");
   const dispatch = useDispatch();
   const profile = useSelector((state) => state.profile.profile);
+  const snackbar = useSelector((state) => state.snackbar);
 
   useEffect(() => {
     dispatch(getProfile(props.match.params.id, token));
@@ -88,42 +92,34 @@ const ProfileDetails = (props) => {
     setUserInput({ ...userInput, [e.target.name]: e.target.value });
   };
 
-  const sendRequest = () => {
-    const request = {
-      recieverId: props.match.params.id,
-      startDate: userInput.startDate,
-      endDate: userInput.endDate,
-    };
-
-    axios
-      .post("/request", request, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => {
-        setSnackbarMsg("Request was sent");
-        setSnackbarOpen(true);
-      })
-      .catch((err) => {
-        setSnackbarOpen(`${err.response.data.error}`);
-        setSnackbarOpen(true);
-      });
+  const onSubmit = () => {
+    if (userInput.startDate === "" || userInput.endDate === "") {
+      setError("Please select both dates");
+    } else {
+      const request = {
+        recieverId: props.match.params.id,
+        startDate: userInput.startDate,
+        endDate: userInput.endDate,
+      };
+      dispatch(sendRequest(request, token));
+    }
   };
 
   const snackbarClose = (e) => {
-    snackbarOpen(false);
+    dispatch(closeSnackbar());
   };
 
   return (
     <div>
       <Snackbar
         anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
+          vertical: "top",
+          horizontal: "center",
         }}
-        open={snackbarOpen}
-        autoHideDuration={3000}
+        open={snackbar.snackbarOpen}
+        autoHideDuration={2000}
         onClose={snackbarClose}
-        message={<span id="message-id">{snackbarMsg}</span>}
+        message={<span id="message-id">{snackbar.snackbarMsg}</span>}
         action={[
           <IconButton
             key="close"
@@ -182,6 +178,11 @@ const ProfileDetails = (props) => {
             <CardContent align="center">
               <Typography variant="h4">${profile.rate}/hr</Typography>
               <Rating value={5} readOnly className={"mb-1"} />
+              {error ? (
+                <Typography variant="body2" className={classes.error}>
+                  Please select both dates
+                </Typography>
+              ) : null}
               <Grid container>
                 <Grid item xs={12} className={classes.date}>
                   <TextField
@@ -212,7 +213,7 @@ const ProfileDetails = (props) => {
                 size="large"
                 variant="contained"
                 color="secondary"
-                onClick={sendRequest}
+                onClick={onSubmit}
               >
                 Send Request
               </Button>

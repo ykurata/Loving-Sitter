@@ -28,13 +28,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         snackbarOpen: true,
-        snackbarMsg: "Profile saved",
+        snackbarMsg: action.payload,
       };
     case UPDATE_PROFILE:
       return {
         ...state,
         snackbarOpen: true,
-        snackbarMsg: "Profile saved",
+        snackbarMsg: action.payload,
       };
     default:
       return state;
