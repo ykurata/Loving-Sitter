@@ -1,4 +1,8 @@
-import { SNACKBAR_OPEN, SNACKBAR_CLOSE } from "../actions/types";
+import {
+  SNACKBAR_OPEN,
+  SNACKBAR_OPEN_WITH_ERROR,
+  SNACKBAR_CLOSE,
+} from "../actions/types";
 
 const initialState = {
   snackbarOpen: false,
@@ -12,6 +16,12 @@ export default function(state = initialState, action) {
         ...state,
         snackbarOpen: true,
         snackbarMsg: "Succesfully saved!",
+      };
+    case SNACKBAR_OPEN_WITH_ERROR:
+      return {
+        ...state,
+        snackbarOpen: true,
+        snackbarMsg: "SOmething went wrong",
       };
     case SNACKBAR_CLOSE:
       return {

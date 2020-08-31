@@ -1,6 +1,12 @@
 import axios from "axios";
 
-import { GET_PROFILES, GET_PROFILE, GET_ERRORS, SNACKBAR_OPEN } from "./types";
+import {
+  GET_PROFILES,
+  GET_PROFILE,
+  GET_ERRORS,
+  SNACKBAR_OPEN,
+  SNACKBAR_CLOSE,
+} from "./types";
 
 export const getProfiles = (token) => (dispatch) => {
   axios
@@ -65,5 +71,23 @@ export const updateProfile = (userId, userInput, token) => (dispatch) => {
         type: GET_ERRORS,
         payload: err.response.data,
       });
+    });
+};
+
+export const postProfileImage = (formData, token) => (dispatch) => {
+  axios
+    .post("/files/image-upload", formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => {
+      dispatch({
+        type: SNACKBAR_OPEN,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };
