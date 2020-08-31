@@ -46,6 +46,7 @@ export const createProfile = (userInput, token) => (dispatch) => {
     .then((res) => {
       dispatch({
         type: SNACKBAR_OPEN,
+        payload: "Saved successfully!",
       });
     })
     .catch((err) => {
@@ -64,6 +65,7 @@ export const updateProfile = (userId, userInput, token) => (dispatch) => {
     .then((res) => {
       dispatch({
         type: SNACKBAR_OPEN,
+        payload: "Saved successfully!",
       });
     })
     .catch((err) => {
@@ -85,6 +87,7 @@ export const postProfileImage = (formData, token) => (dispatch) => {
     .then((res) => {
       dispatch({
         type: SNACKBAR_OPEN,
+        payload: "Saved Successfully!",
       });
     })
     .catch((err) => {

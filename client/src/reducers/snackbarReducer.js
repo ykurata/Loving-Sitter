@@ -15,13 +15,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         snackbarOpen: true,
-        snackbarMsg: "Succesfully saved!",
+        snackbarMsg: action.payload,
       };
     case SNACKBAR_OPEN_WITH_ERROR:
       return {
         ...state,
         snackbarOpen: true,
-        snackbarMsg: "SOmething went wrong",
+        snackbarMsg: "Something went wrong",
       };
     case SNACKBAR_CLOSE:
       return {
