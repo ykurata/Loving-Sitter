@@ -9,3 +9,4 @@ export const SNACKBAR_OPEN_WITH_ERROR = "SNACKBAR_OPEN_WITH_ERROR";
 export const SNACKBAR_CLOSE = "SNACKBAR_CLOSE";
 export const SEND_REQUEST = "SEND_REQUEST";
 export const GET_REQUESTS = "GET_REQUESTS";
+export const GET_JOBS = "GET_JOBS";

@@ -1,9 +1,11 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getJobs, changeRequestStatue } from "../actions/requestActions";
 
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -15,7 +17,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 
 import Navbar from "../components/Navbar";
 
-const MyJobsStyle = (theme) => ({
+const MyJobsStyle = makeStyles((theme) => ({
   root: {
     marginTop: 100,
   },
@@ -39,39 +41,21 @@ const MyJobsStyle = (theme) => ({
   button: {
     marginRight: "20px",
   },
-});
+}));
 
-class MyJobs extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      recievedRequests: [],
-      token: localStorage.getItem("jwtToken"),
-    };
-  }
+const MyJobs = (props) => {
+  const classes = MyJobsStyle();
+  const token = localStorage.getItem("jwtToken");
+  const jobs = useSelector((state) => state.request.jobs);
+  const dispatch = useDispatch();
 
-  componentDidMount() {
-    this.getRequests();
-  }
-
-  // Get all requests you sent
-  getRequests() {
-    axios
-      .get("/request/get-requested", {
-        headers: { Authorization: `Bearer ${this.state.token}` },
-      })
-      .then((res) => {
-        this.setState({
-          recievedRequests: res.data,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  // Get all jobs you recieved
+  useEffect(() => {
+    dispatch(getJobs(token));
+  }, []);
 
   // Remove a request
-  removeRequest(item) {
+  const removeRequest = (item) => {
     axios
       .delete(`request/delete/${item._id}`, {
         headers: { Authorization: `Bearer ${this.state.token}` },
@@ -94,9 +78,9 @@ class MyJobs extends Component {
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
-  updateRequest(item) {
+  const updateRequest = (item) => {
     const request = {
       senderId: item.senderId,
       recieverId: item.recieverId,
@@ -104,159 +88,134 @@ class MyJobs extends Component {
       endDate: item.endDate,
       accepted: true,
     };
-    axios
-      .put(`request/update/${item._id}`, request, {
-        headers: { Authorization: `Bearer ${this.state.token}` },
-      })
-      .then((res) => {
-        return axios
-          .get("/request/get-requested", {
-            headers: { Authorization: `Bearer ${this.state.token}` },
-          })
-          .then((res) => {
-            this.setState({
-              recievedRequests: res.data,
-            });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+    dispatch(changeRequestStatue(item, request, token));
+  };
 
-  render() {
-    const { classes } = this.props;
-    const { recievedRequests } = this.state;
-    let requests;
-    if (recievedRequests.length > 0) {
-      requests = recievedRequests.map((item, i) => (
-        <Grid item xs={12} align="center" className={classes.container} key={i}>
-          <List className={classes.card}>
-            <ListItem divider={true}>
-              <ListItemAvatar
+  let requests;
+  if (jobs.length > 0) {
+    requests = jobs.map((item, i) => (
+      <Grid item xs={12} align="center" className={classes.container} key={i}>
+        <List className={classes.card}>
+          <ListItem divider={true}>
+            <ListItemAvatar
+              className={classes.avatar}
+              src={item.sender_info[0].photoUrl}
+            >
+              <Avatar
                 className={classes.avatar}
+                alt="complex"
                 src={item.sender_info[0].photoUrl}
-              >
-                <Avatar
-                  className={classes.avatar}
-                  alt="complex"
-                  src={item.sender_info[0].photoUrl}
-                  component={Link}
-                  to={`/profile-details/${item.sender_info[0].userId}`}
-                />
-              </ListItemAvatar>
-              <ListItemText>
-                <Grid item>
-                  <Typography variant="h5">
-                    {item.sender_info[0].firstName}{" "}
-                    {item.sender_info[0].lastName}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography variant="body2" gutterBottom>
-                    From: <Moment format="MMM Do YYYY">{item.startDate}</Moment>{" "}
-                    - <Moment format="MMM Do YYYY">{item.endDate}</Moment>
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  {item.accepted === true ? (
-                    <p>Status: Accepted</p>
-                  ) : (
-                    <p>Status: Pending</p>
-                  )}
-                </Grid>
-
+                component={Link}
+                to={`/profile-details/${item.sender_info[0].userId}`}
+              />
+            </ListItemAvatar>
+            <ListItemText>
+              <Grid item>
+                <Typography variant="h5">
+                  {item.sender_info[0].firstName} {item.sender_info[0].lastName}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant="body2" gutterBottom>
+                  From: <Moment format="MMM Do YYYY">{item.startDate}</Moment> -{" "}
+                  <Moment format="MMM Do YYYY">{item.endDate}</Moment>
+                </Typography>
+              </Grid>
+              <Grid item>
                 {item.accepted === true ? (
-                  <Grid container>
-                    <Grid item className={classes.button}>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        component={Link}
-                        to={"/messages"}
-                      >
-                        Contact User
-                      </Button>
-                    </Grid>
-                  </Grid>
+                  <p>Status: Accepted</p>
                 ) : (
-                  <Grid container>
-                    <Grid item className={classes.button}>
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={(e) => {
-                          if (
-                            window.confirm(
-                              "Are you sure you want to accept this request?"
-                            )
-                          )
-                            this.updateRequest(item);
-                        }}
-                      >
-                        Accept
-                      </Button>
-                    </Grid>
-                    <Grid item className={classes.button}>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        component={Link}
-                        to={"/messages"}
-                      >
-                        Contact User
-                      </Button>
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        variant="outlined"
-                        className={classes.button}
-                        onClick={(e) => {
-                          if (
-                            window.confirm(
-                              "Are you sure you wish to decline this request?"
-                            )
-                          )
-                            this.removeRequest(item);
-                        }}
-                      >
-                        Decline
-                      </Button>
-                    </Grid>
-                  </Grid>
+                  <p>Status: Pending</p>
                 )}
-              </ListItemText>
-            </ListItem>
-          </List>
-        </Grid>
-      ));
-    } else {
-      requests = (
-        <Grid item xs={12} align="center" className={classes.container}>
-          <p>There is no requests</p>
-        </Grid>
-      );
-    }
+              </Grid>
 
-    return (
-      <div>
-        <Navbar />
-        <div className={classes.root}>
-          <Grid container>
-            <Grid item xs={12} align="center">
-              <Typography className={classes.title} variant="h3">
-                My Jobs
-              </Typography>
-            </Grid>
-            {requests}
-          </Grid>
-        </div>
-      </div>
+              {item.accepted === true ? (
+                <Grid container>
+                  <Grid item className={classes.button}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      component={Link}
+                      to={"/messages"}
+                    >
+                      Contact User
+                    </Button>
+                  </Grid>
+                </Grid>
+              ) : (
+                <Grid container>
+                  <Grid item className={classes.button}>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={(e) => {
+                        if (
+                          window.confirm(
+                            "Are you sure you want to accept this request?"
+                          )
+                        )
+                          this.updateRequest(item);
+                      }}
+                    >
+                      Accept
+                    </Button>
+                  </Grid>
+                  <Grid item className={classes.button}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      component={Link}
+                      to={"/messages"}
+                    >
+                      Contact User
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      variant="outlined"
+                      className={classes.button}
+                      onClick={(e) => {
+                        if (
+                          window.confirm(
+                            "Are you sure you wish to decline this request?"
+                          )
+                        )
+                          this.removeRequest(item);
+                      }}
+                    >
+                      Decline
+                    </Button>
+                  </Grid>
+                </Grid>
+              )}
+            </ListItemText>
+          </ListItem>
+        </List>
+      </Grid>
+    ));
+  } else {
+    requests = (
+      <Grid item xs={12} align="center" className={classes.container}>
+        <p>There is no requests</p>
+      </Grid>
     );
   }
-}
 
-export default withStyles(MyJobsStyle)(MyJobs);
+  return (
+    <div>
+      <Navbar />
+      <div className={classes.root}>
+        <Grid container>
+          <Grid item xs={12} align="center">
+            <Typography className={classes.title} variant="h3">
+              My Jobs
+            </Typography>
+          </Grid>
+          {requests}
+        </Grid>
+      </div>
+    </div>
+  );
+};
+
+export default MyJobs;
