@@ -10,4 +10,5 @@ export default combineReducers({
   error: errorReducer,
   profile: profileReducer,
   snackbar: snackbarReducer,
+  request: requestReducer,
 });

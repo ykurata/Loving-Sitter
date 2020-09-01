@@ -17,9 +17,7 @@ const ProfileListStyle = makeStyles((theme) => ({
     marginTop: 80,
   },
   title: {
-    [theme.breakpoints.down("xs")]: {
-      fontSize: 35,
-    },
+    fontSize: "7vmin",
   },
   avatar: {
     width: 100,
