@@ -82,8 +82,8 @@ const Request = (props) => {
               </Grid>
               <Grid item>
                 <Typography variant="body2" gutterBottom>
-                  From : <Moment format="YYYY/MM/DD">{item.startDate}</Moment> -{" "}
-                  <Moment format="YYYY/MM/DD">{item.endDate}</Moment>
+                  From: <Moment format="MMM Do YYYY">{item.startDate}</Moment> -{" "}
+                  <Moment format="MMM Do YYYY">{item.endDate}</Moment>
                 </Typography>
               </Grid>
               <Grid item>
