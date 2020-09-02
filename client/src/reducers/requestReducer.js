@@ -1,7 +1,8 @@
-import { GET_REQUESTS } from "../actions/types";
+import { GET_REQUESTS, GET_JOBS } from "../actions/types";
 
 const initialState = {
   requests: [],
+  jobs: [],
 };
 
 export default function(state = initialState, action) {
@@ -10,6 +11,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         requests: action.payload,
+      };
+    case GET_JOBS:
+      return {
+        ...state,
+        jobs: action.payload,
       };
     default:
       return state;
