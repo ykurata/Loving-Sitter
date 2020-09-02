@@ -82,6 +82,29 @@ export const getJobs = (token) => (dispatch) => {
     });
 };
 
+export const declineRequest = (item, token) => (dispatch) => {
+  axios
+    .delete(`request/delete/${item._id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
+      console.log("successfully deleted");
+    });
+  axios
+    .get("/request/get-requested", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
+      dispatch({
+        type: GET_JOBS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export const changeRequestStatue = (item, request, token) => (dispatch) => {
   axios
     .put(`request/update/${item._id}`, request, {

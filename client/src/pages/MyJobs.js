@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getJobs, changeRequestStatue } from "../actions/requestActions";
+import {
+  getJobs,
+  changeRequestStatue,
+  declineRequest,
+} from "../actions/requestActions";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
@@ -54,32 +57,12 @@ const MyJobs = (props) => {
     dispatch(getJobs(token));
   }, []);
 
-  // Remove a request
+  // Decline a request
   const removeRequest = (item) => {
-    axios
-      .delete(`request/delete/${item._id}`, {
-        headers: { Authorization: `Bearer ${this.state.token}` },
-      })
-      .then((res) => {
-        console.log("successfully deleted");
-      });
-    axios
-      .get("/request/get-requested", {
-        headers: { Authorization: `Bearer ${this.state.token}` },
-      })
-      .then((res) => {
-        this.setState({
-          recievedRequests: res.data,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(declineRequest(item, token));
   };
 
+  // Change a request status
   const updateRequest = (item) => {
     const request = {
       senderId: item.senderId,
@@ -154,7 +137,7 @@ const MyJobs = (props) => {
                             "Are you sure you want to accept this request?"
                           )
                         )
-                          this.updateRequest(item);
+                          updateRequest(item);
                       }}
                     >
                       Accept
@@ -177,10 +160,10 @@ const MyJobs = (props) => {
                       onClick={(e) => {
                         if (
                           window.confirm(
-                            "Are you sure you wish to decline this request?"
+                            "Are you sure you want to decline this request?"
                           )
                         )
-                          this.removeRequest(item);
+                          removeRequest(item);
                       }}
                     >
                       Decline

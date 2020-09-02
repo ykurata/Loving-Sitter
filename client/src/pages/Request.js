@@ -55,8 +55,6 @@ const Request = (props) => {
     dispatch(deleteRequest(item, token));
   };
 
-  console.log(sentRequests.map((x) => x.endDate));
-
   let requests;
   if (sentRequests.length > 0) {
     requests = sentRequests.map((item, i) => (
@@ -103,7 +101,7 @@ const Request = (props) => {
                         "Are you sure you wish to delete this item?"
                       )
                     )
-                      this.removeRequest(item);
+                      removeRequest(item);
                   }}
                 >
                   Remove
