@@ -40,9 +40,29 @@ const MyJobsStyle = makeStyles((theme) => ({
     height: 100,
     margin: "10px",
     marginRight: "30px",
+    [theme.breakpoints.down("xs")]: {
+      width: 80,
+      height: 80,
+      margin: 5,
+    },
   },
   button: {
     marginRight: "20px",
+    [theme.breakpoints.down("sm")]: {
+      marginBottom: 5,
+      size: "small",
+      marginRigth: 0,
+    },
+  },
+  username: {
+    [theme.breakpoints.down("xs")]: {
+      fontSize: 20,
+    },
+  },
+  date: {
+    [theme.breakpoints.down("xs")]: {
+      fontSize: 13,
+    },
   },
 }));
 
@@ -80,10 +100,7 @@ const MyJobs = (props) => {
       <Grid item xs={12} align="center" className={classes.container} key={i}>
         <List className={classes.card}>
           <ListItem divider={true}>
-            <ListItemAvatar
-              className={classes.avatar}
-              src={item.sender_info[0].photoUrl}
-            >
+            <ListItemAvatar>
               <Avatar
                 className={classes.avatar}
                 alt="complex"
@@ -94,12 +111,16 @@ const MyJobs = (props) => {
             </ListItemAvatar>
             <ListItemText>
               <Grid item>
-                <Typography variant="h5">
+                <Typography variant="h5" className={classes.username}>
                   {item.sender_info[0].firstName} {item.sender_info[0].lastName}
                 </Typography>
               </Grid>
               <Grid item>
-                <Typography variant="body2" gutterBottom>
+                <Typography
+                  variant="body2"
+                  gutterBottom
+                  className={classes.date}
+                >
                   From: <Moment format="MMM Do YYYY">{item.startDate}</Moment> -{" "}
                   <Moment format="MMM Do YYYY">{item.endDate}</Moment>
                 </Typography>

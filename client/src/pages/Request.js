@@ -36,6 +36,36 @@ const RequestStyle = makeStyles((theme) => ({
     height: 100,
     margin: "10px",
     marginRight: "30px",
+    [theme.breakpoints.down("xs")]: {
+      width: 80,
+      height: 80,
+      margin: 5,
+    },
+  },
+  username: {
+    [theme.breakpoints.down("xs")]: {
+      fontSize: 20,
+    },
+  },
+  date: {
+    [theme.breakpoints.down("xs")]: {
+      fontSize: 13,
+    },
+  },
+  button: {
+    [theme.breakpoints.down("sm")]: {
+      marginBottom: 5,
+      margin: 0,
+      size: "small",
+      marginRight: 10,
+    },
+  },
+  rate: {
+    marginBottom: 80,
+    [theme.breakpoints.down("xs")]: {
+      fontSize: 13,
+      marginBottom: 130,
+    },
   },
 }));
 
@@ -73,13 +103,17 @@ const Request = (props) => {
             </ListItemAvatar>
             <ListItemText>
               <Grid item>
-                <Typography variant="h5">
+                <Typography variant="h5" className={classes.username}>
                   {item.reciever_info[0].firstName}{" "}
                   {item.reciever_info[0].lastName}
                 </Typography>
               </Grid>
               <Grid item>
-                <Typography variant="body2" gutterBottom>
+                <Typography
+                  variant="body2"
+                  gutterBottom
+                  className={classes.date}
+                >
                   From: <Moment format="MMM Do YYYY">{item.startDate}</Moment> -{" "}
                   <Moment format="MMM Do YYYY">{item.endDate}</Moment>
                 </Typography>
@@ -91,36 +125,39 @@ const Request = (props) => {
                   <p>Status: Pending</p>
                 )}
               </Grid>
-              <Grid item>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  onClick={(e) => {
-                    if (
-                      window.confirm(
-                        "Are you sure you wish to delete this item?"
-                      )
-                    )
-                      removeRequest(item);
-                  }}
-                >
-                  Remove
-                </Button>
-                {item.accepted === true ? (
+              <Grid container>
+                <Grid item className={classes.button}>
                   <Button
                     variant="outlined"
-                    color="primary"
-                    style={{ marginLeft: "10px" }}
-                    component={Link}
-                    to={"/payment"}
+                    color="secondary"
+                    onClick={(e) => {
+                      if (
+                        window.confirm(
+                          "Are you sure you wish to delete this item?"
+                        )
+                      )
+                        removeRequest(item);
+                    }}
                   >
-                    Pay Now
+                    Remove
                   </Button>
-                ) : null}
+                </Grid>
+                <Grid item className={classes.button}>
+                  {item.accepted === true ? (
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      component={Link}
+                      to={"/payment"}
+                    >
+                      Pay Now
+                    </Button>
+                  ) : null}
+                </Grid>
               </Grid>
             </ListItemText>
             <ListItemText>
-              <Grid item style={{ marginBottom: "80px" }}>
+              <Grid item className={classes.rate}>
                 <p>$ {item.reciever_info[0].rate}/hr</p>
               </Grid>
             </ListItemText>
