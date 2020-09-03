@@ -1,12 +1,6 @@
 import axios from "axios";
 
-import {
-  SEND_REQUEST,
-  SNACKBAR_OPEN,
-  SNACKBAR_CLOSE,
-  GET_REQUESTS,
-  GET_JOBS,
-} from "./types";
+import { SNACKBAR_OPEN, GET_REQUESTS, GET_JOBS } from "./types";
 
 export const sendRequest = (request, token) => (dispatch) => {
   axios

@@ -1,11 +1,4 @@
-import { SNACKBAR_OPEN, SNACKBAR_CLOSE } from "./types";
-
-// export const openSnackbar = (message) => (dispatch) => {
-//   dispatch({
-//     type: SNACKBAR_OPEN,
-//     message,
-//   });
-// };
+import { SNACKBAR_CLOSE } from "./types";
 
 export const closeSnackbar = () => (dispatch) => {
   dispatch({

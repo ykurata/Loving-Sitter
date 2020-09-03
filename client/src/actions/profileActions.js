@@ -1,12 +1,6 @@
 import axios from "axios";
 
-import {
-  GET_PROFILES,
-  GET_PROFILE,
-  GET_ERRORS,
-  SNACKBAR_OPEN,
-  SNACKBAR_CLOSE,
-} from "./types";
+import { GET_PROFILES, GET_PROFILE, GET_ERRORS, SNACKBAR_OPEN } from "./types";
 
 export const getProfiles = (token) => (dispatch) => {
   axios

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { postProfileImage } from "../actions/profileActions";
 import { closeSnackbar } from "../actions/snackbarActions";
