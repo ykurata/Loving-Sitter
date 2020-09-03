@@ -39,8 +39,6 @@ const CardStyles = makeStyles((theme) => ({
 
 const ProfileCard = (props) => {
   const classes = CardStyles();
-  console.log(props.loading);
-
   let list;
   if (props.data.length === 0 && props.loading === true) {
     list = (

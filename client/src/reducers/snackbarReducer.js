@@ -7,6 +7,7 @@ import {
 const initialState = {
   snackbarOpen: false,
   snackbarMsg: "",
+  loading: true,
 };
 
 export default function(state = initialState, action) {
@@ -16,6 +17,7 @@ export default function(state = initialState, action) {
         ...state,
         snackbarOpen: true,
         snackbarMsg: action.payload,
+        loading: false,
       };
     case SNACKBAR_OPEN_WITH_ERROR:
       return {
