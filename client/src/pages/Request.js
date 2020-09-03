@@ -53,11 +53,10 @@ const RequestStyle = makeStyles((theme) => ({
     },
   },
   button: {
+    marginRight: 10,
     [theme.breakpoints.down("sm")]: {
       marginBottom: 5,
-      margin: 0,
       size: "small",
-      marginRight: 10,
     },
   },
   rate: {
