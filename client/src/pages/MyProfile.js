@@ -14,6 +14,7 @@ import RoomIcon from "@material-ui/icons/Room";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 import Navbar from "../components/Navbar";
+import Loading from "../components/Loading";
 
 const MyProfileStyle = makeStyles((theme) => ({
   root: {

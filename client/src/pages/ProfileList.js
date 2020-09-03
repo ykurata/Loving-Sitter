@@ -46,6 +46,7 @@ const ProfileList = () => {
   const token = localStorage.getItem("jwtToken");
   const dispatch = useDispatch();
   const profiles = useSelector((state) => state.profile.profiles);
+  const loading = useSelector((state) => state.profile.loading);
 
   // Update user input
   const onChange = (e) => {
@@ -104,7 +105,11 @@ const ProfileList = () => {
             fullWidth
           />
         </Grid>
-        <ProfileCard data={filteredProfiles} userId={userId} />
+        <ProfileCard
+          data={filteredProfiles}
+          loading={loading}
+          userId={userId}
+        />
       </Grid>
     </div>
   );

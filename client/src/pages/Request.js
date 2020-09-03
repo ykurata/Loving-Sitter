@@ -13,6 +13,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import Navbar from "../components/Navbar";
 
@@ -72,6 +73,7 @@ const Request = (props) => {
   const classes = RequestStyle();
   const token = localStorage.getItem("jwtToken");
   const sentRequests = useSelector((state) => state.request.requests);
+  const loading = useSelector((state) => state.request.loading);
   const dispatch = useDispatch();
 
   // Get all requests you sent
@@ -85,7 +87,7 @@ const Request = (props) => {
   };
 
   let requests;
-  if (sentRequests.length > 0) {
+  if (sentRequests.length > 0 && loading === true) {
     requests = sentRequests.map((item, i) => (
       <Grid item xs={12} align="center" className={classes.container} key={i}>
         <List className={classes.card}>
@@ -164,6 +166,12 @@ const Request = (props) => {
         </List>
       </Grid>
     ));
+  } else if (loading === false) {
+    requests = (
+      <Grid item xs={12} align="center" className={classes.container}>
+        <CircularProgress />
+      </Grid>
+    );
   } else {
     requests = (
       <Grid item xs={12} align="center" className={classes.container}>
