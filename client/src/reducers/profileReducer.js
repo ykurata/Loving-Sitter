@@ -3,6 +3,7 @@ import {
   GET_PROFILE,
   CREATE_PROFILE,
   UPDATE_PROFILE,
+  POST_PROFILE_IMAGE,
 } from "../actions/types";
 
 const initialState = {
@@ -38,6 +39,11 @@ export default function(state = initialState, action) {
         ...state,
         snackbarOpen: true,
         snackbarMsg: action.payload,
+      };
+    case POST_PROFILE_IMAGE:
+      return {
+        ...state,
+        loading: true,
       };
     default:
       return state;

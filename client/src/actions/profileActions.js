@@ -1,6 +1,12 @@
 import axios from "axios";
 
-import { GET_PROFILES, GET_PROFILE, GET_ERRORS, SNACKBAR_OPEN } from "./types";
+import {
+  GET_PROFILES,
+  GET_PROFILE,
+  GET_ERRORS,
+  SNACKBAR_OPEN,
+  POST_PROFILE_IMAGE,
+} from "./types";
 
 export const getProfiles = (token) => (dispatch) => {
   axios
@@ -71,6 +77,9 @@ export const updateProfile = (userId, userInput, token) => (dispatch) => {
 };
 
 export const postProfileImage = (formData, token) => (dispatch) => {
+  dispatch({
+    type: POST_PROFILE_IMAGE,
+  });
   axios
     .post("/files/image-upload", formData, {
       headers: {
