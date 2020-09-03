@@ -170,15 +170,14 @@ class Navbar extends Component {
                 >
                   Find Sitters
                 </ListItem>
-                <ListItem className={classes.listItem} button>
-                  Messages
-                </ListItem>
                 <ListItem
                   className={classes.listItem}
                   button
                   component={Link}
                   to="/messages"
-                ></ListItem>
+                >
+                  Messages
+                </ListItem>
                 <ListItem
                   className={classes.listItem}
                   button
