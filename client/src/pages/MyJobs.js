@@ -17,6 +17,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import Navbar from "../components/Navbar";
 
@@ -70,6 +71,7 @@ const MyJobs = (props) => {
   const classes = MyJobsStyle();
   const token = localStorage.getItem("jwtToken");
   const jobs = useSelector((state) => state.request.jobs);
+  const loading = useSelector((state) => state.request.loading);
   const dispatch = useDispatch();
 
   // Get all jobs you recieved
@@ -95,7 +97,7 @@ const MyJobs = (props) => {
   };
 
   let requests;
-  if (jobs.length > 0) {
+  if (jobs.length > 0 && loading === true) {
     requests = jobs.map((item, i) => (
       <Grid item xs={12} align="center" className={classes.container} key={i}>
         <List className={classes.card}>
@@ -197,6 +199,12 @@ const MyJobs = (props) => {
         </List>
       </Grid>
     ));
+  } else if (loading === false) {
+    requests = (
+      <Grid item xs={12} align="center" className={classes.container}>
+        <CircularProgress />
+      </Grid>
+    );
   } else {
     requests = (
       <Grid item xs={12} align="center" className={classes.container}>

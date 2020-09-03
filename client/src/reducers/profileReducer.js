@@ -10,6 +10,7 @@ const initialState = {
   profile: "",
   snackbarOpen: false,
   snakbarMsg: "",
+  loading: false,
 };
 
 export default function(state = initialState, action) {
@@ -17,11 +18,13 @@ export default function(state = initialState, action) {
     case GET_PROFILES:
       return {
         ...state,
+        loading: true,
         profiles: action.payload,
       };
     case GET_PROFILE:
       return {
         ...state,
+        loading: true,
         profile: action.payload,
       };
     case CREATE_PROFILE:
