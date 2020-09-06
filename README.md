@@ -60,6 +60,11 @@ The following software is required to be installed on your system:
 ## Features
 
 - Authentication with JSON Web Token.
+<div align="center">
+  <img src="./readme-assets/loving-sitter-login.gif" width="700" heigt="500">
+</div>    
+<br />
+<br />
 - Create a profile.
 - Search dog sitters by location.
 - View dog sitters profiles.
