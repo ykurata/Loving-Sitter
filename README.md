@@ -65,6 +65,7 @@ The following software is required to be installed on your system:
 </div>    
 <br />
 <br />
+
 - Create a profile.
 - Search dog sitters by location.
 - View dog sitters profiles.
