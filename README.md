@@ -64,7 +64,7 @@ The following software is required to be installed on your system:
 - Search dog sitters by location.
 - View dog sitters profiles.
 - Send requests to potential sitters.
-- Send messages to potential sitters.
+- Real time messaging between the dog owner and the dog sitter.
 - Dog sitters can approve or deny requests.
 
 ## Authors
