@@ -67,11 +67,46 @@ The following software is required to be installed on your system:
 <br />
 
 - Create a profile.
+<div align="center">
+  <img src="./readme-assets/loving-sitter-create-profile.gif" width="700" heigt="500">
+</div>    
+<br />
+<br />
+
 - Search dog sitters by location.
+<div align="center">
+  <img src="./readme-assets/loving-sitter-search-by-location.gif" width="700" heigt="500">
+</div>    
+<br />
+<br />
+
 - View dog sitters profiles.
+<div align="center">
+  <img src="./readme-assets/loving-sitter-view-profile.gif" width="700" heigt="500">
+</div>    
+<br />
+<br />
+
 - Send requests to potential sitters.
+<div align="center">
+  <img src="./readme-assets/loving-sitter-send-request.gif" width="700" heigt="500">
+</div>    
+<br />
+<br />
+
 - Real time messaging between the dog owner and the dog sitter.
+<div align="center">
+  <img src="./readme-assets/loving-sitter-send-message.gif" width="700" heigt="500">
+</div>    
+<br />
+<br />
+
 - Dog sitters can approve or deny requests.
+<div align="center">
+  <img src="./readme-assets/loving-sitter-accept-job.gif" width="700" heigt="500">
+</div>    
+<br />
+<br />
 
 ## Authors
 
