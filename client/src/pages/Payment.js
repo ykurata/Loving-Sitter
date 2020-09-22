@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import StripeCheckout from "react-stripe-checkout";
+import axios from "axios";
 
+import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -32,8 +34,19 @@ const Payment = (props) => {
     setUserInput({ ...userInput, [e.target.name]: e.target.value });
   };
 
-  const onToken = (amount, description) => (token) => {
-    alert("Successfully Charged");
+  const makePayment = (token) => {
+    const body = {
+      token,
+      amount: userInput.amount,
+    };
+    axios
+      .post("/payment", body)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -63,13 +76,15 @@ const Payment = (props) => {
               </Grid>
               <Grid item xs={12}>
                 <StripeCheckout
+                  stripeKey="pk_test_jB07RDdD2SJjuc0khprUiBce00z88npnC5"
+                  token={makePayment}
                   name={userInput.name}
                   amount={userInput.amount * 100}
-                  currency="CAD"
-                  description={userInput.description}
-                  stripeKey="pk_test_jB07RDdD2SJjuc0khprUiBce00z88npnC5"
-                  token={onToken(userInput.amount, userInput.description)}
-                />
+                >
+                  <Button variant="contained" color="primary">
+                    Pay Now $ {userInput.amount}
+                  </Button>
+                </StripeCheckout>
               </Grid>
             </Grid>
           </form>

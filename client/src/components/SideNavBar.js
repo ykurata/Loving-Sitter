@@ -2,15 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   selectedMenu: {
-    color: "black"
+    color: "black",
   },
   notSelectedMenu: {
-    color: "#979797"
-  }
+    color: "#979797",
+  },
 }));
 
 export default function SideNavigationBar() {
@@ -24,7 +24,11 @@ export default function SideNavigationBar() {
         component={Link}
         to="/profile"
         selected={"profile" === lastURLSegment}
-        className={ lastURLSegment === "profile" ? classes.selectedMenu : classes.notSelectedMenu}
+        className={
+          lastURLSegment === "profile"
+            ? classes.selectedMenu
+            : classes.notSelectedMenu
+        }
       >
         Edit Profile
       </MenuItem>
@@ -32,9 +36,25 @@ export default function SideNavigationBar() {
         component={Link}
         to="/profile-photo"
         selected={"profile-photo" === lastURLSegment}
-        className={ lastURLSegment === "profile-photo" ? classes.selectedMenu : classes.notSelectedMenu}
+        className={
+          lastURLSegment === "profile-photo"
+            ? classes.selectedMenu
+            : classes.notSelectedMenu
+        }
       >
         Profile Photo
+      </MenuItem>
+      <MenuItem
+        component={Link}
+        to="/payment"
+        selected={"payment" === lastURLSegment}
+        className={
+          lastURLSegment === "payment"
+            ? classes.selectedMenu
+            : classes.notSelectedMenu
+        }
+      >
+        Make Payment
       </MenuItem>
     </MenuList>
   );
