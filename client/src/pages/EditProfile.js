@@ -20,6 +20,9 @@ import SideNavigationBar from "../components/SideNavBar";
 const EditProfileStyles = makeStyles((theme) => ({
   root: {
     marginTop: 100,
+    [theme.breakpoints.down("xs")]: {
+      marginTop: 50,
+    },
   },
   title: {
     marginBottom: 50,
