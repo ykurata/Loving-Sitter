@@ -94,6 +94,13 @@ The following software is required to be installed on your system:
 <br />
 <br />
 
+- Make payment of dog sitting fee.
+<div align="center">
+  <img src="./readme-assets/loving-sitter-payment.gif" width="700" heigt="500">
+</div>    
+<br />
+<br />
+
 - Real time messaging between the dog owner and the dog sitter.
 <div align="center">
   <img src="./readme-assets/loving-sitter-send-message.gif" width="700" heigt="500">
