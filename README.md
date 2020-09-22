@@ -94,7 +94,7 @@ The following software is required to be installed on your system:
 <br />
 <br />
 
-- Make payment of dog sitting fee.
+- Make payment for dog sitting fee.
 <div align="center">
   <img src="./readme-assets/loving-sitter-payment.gif" width="700" heigt="500">
 </div>    
