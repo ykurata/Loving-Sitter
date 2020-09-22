@@ -90,8 +90,8 @@ const Payment = (props) => {
           </div>
         </Grid>
         <Grid item xs={12} sm={10} md={10}>
-          <form>
-            <Card className={classes.card}>
+          <Card className={classes.card}>
+            <form>
               <CardMedia
                 className={classes.cardHead}
                 image={dogImage}
@@ -125,8 +125,8 @@ const Payment = (props) => {
                   </Button>
                 </StripeCheckout>
               </CardContent>
-            </Card>
-          </form>
+            </form>
+          </Card>
         </Grid>
       </Grid>
     </div>
