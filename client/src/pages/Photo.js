@@ -19,6 +19,9 @@ import SideNavigationBar from "../components/SideNavBar";
 const photoStyles = makeStyles((theme) => ({
   root: {
     marginTop: 100,
+    [theme.breakpoints.down("xs")]: {
+      marginTop: 50,
+    },
   },
   title: {
     marginBottom: 50,

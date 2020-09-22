@@ -3,22 +3,53 @@ import StripeCheckout from "react-stripe-checkout";
 import axios from "axios";
 
 import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Navbar from "../components/Navbar";
+import SideNavigationBar from "../components/SideNavBar";
+import dogImage from "../images/dog-image.jpg";
 
 const PaymentStyles = makeStyles((theme) => ({
   root: {
     marginTop: 100,
-  },
-  formContainer: {
-    marginTop: 80,
+    [theme.breakpoints.down("xs")]: {
+      marginTop: 50,
+    },
   },
   title: {
     paddingBottom: 20,
+  },
+  card: {
+    width: "60%",
+    margin: "auto",
+    padding: 0,
+    textAlign: "center",
+    [theme.breakpoints.down("md")]: {
+      width: "80%",
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "90%",
+    },
+  },
+  cardHead: {
+    height: 150,
+  },
+  sideNav: {
+    width: "70%",
+    paddingLeft: 100,
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+      paddingLeft: 15,
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "40%",
+    },
   },
 }));
 
@@ -53,15 +84,23 @@ const Payment = (props) => {
     <div>
       <Navbar />
       <Grid container className={classes.root}>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={2} md={2}>
+          <div className={classes.sideNav}>
+            <SideNavigationBar />
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={10} md={10}>
           <form>
-            <Grid container align="center">
-              <Grid item xs={12}>
+            <Card className={classes.card}>
+              <CardMedia
+                className={classes.cardHead}
+                image={dogImage}
+                title="Contemplative Reptile"
+              />
+              <CardContent>
                 <Typography className={classes.title} variant="h6">
                   Amount to pay
                 </Typography>
-              </Grid>
-              <Grid item xs={12}>
                 <TextField
                   name="amount"
                   id="standard-amount"
@@ -73,8 +112,8 @@ const Payment = (props) => {
                   variant="outlined"
                   required
                 />
-              </Grid>
-              <Grid item xs={12}>
+              </CardContent>
+              <CardContent>
                 <StripeCheckout
                   stripeKey="pk_test_jB07RDdD2SJjuc0khprUiBce00z88npnC5"
                   token={makePayment}
@@ -85,8 +124,8 @@ const Payment = (props) => {
                     Pay Now $ {userInput.amount}
                   </Button>
                 </StripeCheckout>
-              </Grid>
-            </Grid>
+              </CardContent>
+            </Card>
           </form>
         </Grid>
       </Grid>
