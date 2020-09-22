@@ -158,7 +158,7 @@ class Navbar extends Component {
                   className={classes.listItem}
                   button
                   component={Link}
-                  to={"/login"}
+                  to={"/profile"}
                 >
                   Become a Sitter
                 </ListItem>
@@ -212,7 +212,12 @@ class Navbar extends Component {
               </List>
             ) : (
               <List className={this.props.classes.list}>
-                <ListItem className={classes.listItem} button>
+                <ListItem
+                  className={classes.listItem}
+                  button
+                  component={Link}
+                  to={"/sitter-search"}
+                >
                   Find Sitters
                 </ListItem>
                 <ListItem
