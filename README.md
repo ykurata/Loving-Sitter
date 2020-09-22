@@ -51,6 +51,7 @@ The following software is required to be installed on your system:
   - Express
   - MongoDB
   - AWS S3 bucket
+  - Stripe (Online payment)
 
 - Frontend
   - React
@@ -80,16 +81,16 @@ The following software is required to be installed on your system:
 <br />
 <br />
 
-- View dog sitters profiles.
+- Send requests to potential sitters.
 <div align="center">
-  <img src="./readme-assets/loving-sitter-view-profile.gif" width="700" heigt="500">
+  <img src="./readme-assets/loving-sitter-send-request.gif" width="700" heigt="500">
 </div>    
 <br />
 <br />
 
-- Send requests to potential sitters.
+- Make payment for dog sitting fee.
 <div align="center">
-  <img src="./readme-assets/loving-sitter-send-request.gif" width="700" heigt="500">
+  <img src="./readme-assets/loving-sitter-payment.gif" width="700" heigt="500">
 </div>    
 <br />
 <br />
