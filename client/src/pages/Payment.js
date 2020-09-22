@@ -51,6 +51,9 @@ const PaymentStyles = makeStyles((theme) => ({
       width: "40%",
     },
   },
+  marginTop: {
+    marginTop: 10,
+  },
 }));
 
 const Payment = (props) => {
@@ -124,6 +127,13 @@ const Payment = (props) => {
                     Pay Now $ {userInput.amount}
                   </Button>
                 </StripeCheckout>
+                <Typography
+                  className={classes.marginTop}
+                  variant="body2"
+                  color="textSecondary"
+                >
+                  Default card number is 4242 4242 4242 4242
+                </Typography>
               </CardContent>
             </form>
           </Card>
