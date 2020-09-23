@@ -60,16 +60,22 @@ The following software is required to be installed on your system:
 
 ## Features
 
-- Authentication with JSON Web Token.
+### Authentication with JSON Web Token.
+
 Hash password with bcrypt and generate a token in server.
 Store the token in the local storage when user logged in.
+
 <div align="center">
   <img src="./readme-assets/loving-sitter-login.gif" width="700" heigt="500">
 </div>    
 <br />
 <br />
 
-- Create a profile.
+### Create a profile.
+
+User can create a profile with name, location, hourly rate, etc.
+Once user created the profile, saved profile is displayed on the profile form and user can edit the form.
+
 <div align="center">
   <img src="./readme-assets/loving-sitter-create-profile.gif" width="700" heigt="500">
 </div>    
