@@ -82,35 +82,50 @@ Once user created the profile, saved profile is displayed on the profile form an
 <br />
 <br />
 
-- Search dog sitters by location.
+### Search dog sitters by location.
+
+There is a search input for location. User can filter the dog sitters by location.
+
 <div align="center">
   <img src="./readme-assets/loving-sitter-search-by-location.gif" width="700" heigt="500">
 </div>    
 <br />
 <br />
 
-- Send requests to potential sitters.
+### Send requests to potential sitters.
+
+From the dog sitter's detail page, user can send a request to dog sitters by selecting drop in date and drop out date.
+
 <div align="center">
   <img src="./readme-assets/loving-sitter-send-request.gif" width="700" heigt="500">
 </div>    
 <br />
 <br />
 
-- Make payment for dog sitting fee.
+### Make payment for dog sitting fee.
+
+User can make payments for dog sitting fee by entering the amount to pay and clicking the pay now button.
+
 <div align="center">
   <img src="./readme-assets/loving-sitter-payment.gif" width="700" heigt="500">
 </div>    
 <br />
 <br />
 
-- Real time messaging between the dog owner and the dog sitter.
+### Real time messaging between the dog owner and the dog sitter.
+
+The Dog owner and the dog sitter are able to communicate through real time messaging. In the message page, by clicking the Plus sign on the lnbox, user can find the dog sitter who needs to contact.
+
 <div align="center">
   <img src="./readme-assets/loving-sitter-send-message.gif" width="700" heigt="500">
 </div>    
 <br />
 <br />
 
-- Dog sitters can approve or deny requests.
+### Dog sitters can approve or deny requests.
+
+Once requests are sent, dog sitters are able to see all requests from My Jobs page. User can select Approve or Decline the request.
+
 <div align="center">
   <img src="./readme-assets/loving-sitter-accept-job.gif" width="700" heigt="500">
 </div>    
