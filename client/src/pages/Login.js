@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { loginUser } from "../actions/authActions";
+
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -49,10 +52,45 @@ const useStyles = makeStyles((theme) => ({
   buttonContainer: {
     textAlign: "center",
   },
+  error: {
+    color: "red",
+  },
 }));
 
-const Login = () => {
+const Login = (props) => {
   const classes = useStyles();
+  const [userInput, setUserInput] = useState({
+    email: "",
+    password: "",
+  });
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const error = useSelector((state) => state.error);
+
+  // Update user input
+  const onChange = (e) => {
+    setUserInput({ ...userInput, [e.target.name]: e.target.value });
+  };
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      props.history.push("/sitter-search");
+    }
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(loginUser(userInput));
+  };
+
+  const demoLogin = (e) => {
+    e.preventDefault();
+    const demoUser = {
+      email: "demouser@email.com",
+      password: "password",
+    };
+    dispatch(loginUser(demoUser));
+  };
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -66,28 +104,33 @@ const Login = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} onSubmit={handleSubmit}>
+            {error.error ? (
+              <div className={classes.error}>{error.error}</div>
+            ) : null}
+            {error ? <div className={classes.error}>{error.email}</div> : null}
             <TextField
               variant="outlined"
               margin="normal"
-              required
               fullWidth
               id="email"
               label="Email Address"
               name="email"
-              autoComplete="email"
               autoFocus
+              onChange={onChange}
             />
+            {error ? (
+              <div className={classes.error}>{error.password}</div>
+            ) : null}
             <TextField
               variant="outlined"
               margin="normal"
-              required
               fullWidth
               name="password"
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
+              onChange={onChange}
             />
             <div className={classes.buttonContainer}>
               <Button
@@ -100,7 +143,7 @@ const Login = () => {
                 Sign In
               </Button>
               <Button
-                type="submit"
+                onClick={demoLogin}
                 size="large"
                 variant="outlined"
                 color="secondary"
