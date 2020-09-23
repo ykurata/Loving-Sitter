@@ -114,7 +114,7 @@ User can make payments for dog sitting fee by entering the amount to pay and cli
 
 ### Real time messaging between the dog owner and the dog sitter.
 
-The Dog owner and the dog sitter are able to communicate through real time messaging. In the message page, by clicking the Plus sign on the lnbox, user can find the dog sitter who needs to contact.
+The dog owner and the dog sitter are able to communicate through real time messaging. In the message page, by clicking the Plus sign on the lnbox, user can find the dog sitter who needs to contact.
 
 <div align="center">
   <img src="./readme-assets/loving-sitter-send-message.gif" width="700" heigt="500">
